@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Paces</string>
+
+    //MainActivity
+    <string name="weather_location_ph">未知</string>
+</resources>
