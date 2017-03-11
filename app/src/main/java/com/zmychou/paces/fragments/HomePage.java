@@ -1,7 +1,6 @@
 package com.zmychou.paces.fragments;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import com.zmychou.paces.R;
 
 /**
  * A simple {@link Fragment} subclass.
- *
  */
 public class HomePage extends Fragment {
 
