@@ -2,6 +2,7 @@ package com.zmychou.paces;
 
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.widget.CalendarView;
 
 import com.zmychou.paces.fragments.HomePage;
+import com.zmychou.paces.fragments.MorePageFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,5 +24,6 @@ public class MainActivity extends AppCompatActivity {
         Fragment homePage = new HomePage();
         fragmentTransaction.replace(R.id.fragment_holder,homePage);
         fragmentTransaction.commit();
+        startActivity(new Intent(this,ProfileActivity.class));
     }
 }
