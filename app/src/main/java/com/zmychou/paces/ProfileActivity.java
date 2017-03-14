@@ -7,6 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+/**
+ * To display the user's profiles ,such as id,name,height,wight and so on.
+ *
+ * create at: 2017/3/12
+ * last modify:2017/3/14
+ * @author zmychou
+ *
+ * */
+
 public class ProfileActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +29,6 @@ public class ProfileActivity extends AppCompatActivity {
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
         list.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
         list.setAdapter(adapter);
     }
 }

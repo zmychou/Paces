@@ -13,6 +13,11 @@ import android.widget.CalendarView;
 import com.zmychou.paces.fragments.HomePage;
 import com.zmychou.paces.fragments.MorePageFragment;
 
+/**
+ * Home page activity.Display some info about the user and its activity history.
+ * create:2017/3/11
+ * modify:2017/3/14
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

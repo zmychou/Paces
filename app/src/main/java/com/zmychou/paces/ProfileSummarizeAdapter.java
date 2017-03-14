@@ -15,7 +15,9 @@ import com.zmychou.paces.models.SummarizeProfile;
 import java.util.ArrayList;
 
 /**
- * Created by ming on 17-3-13.
+ * The adapter which connect the info summary of user profiles with the recyclerview.
+ * Created by zmychou on 17-3-13.
+ * Modify by zmychou on 2017/3/14
  */
 public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -28,6 +30,12 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
             textView = (TextView) view.findViewById(R.id.summarize_row_name);
             imageView = (ImageView) view.findViewById(R.id.summarize_row_pic);
         }
+
+        /**
+         * Set the  item's content of the RecyclerView
+         * @param content An instance of class SummarizeProfile which contain the whole info of
+         *                an item.
+         */
         public void setViewContent(SummarizeProfile content){
             textView.setText(content.getName());
         }
@@ -38,7 +46,6 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
         itemList.add(new SummarizeProfile("周明阳"));
         itemList.add(new SummarizeProfile("燕山大学"));
         itemList.add(new SummarizeProfile("计算机"));
-        Log.e("zmy","here"+itemList.size());
     }
     @Override
     public int getItemCount(){
@@ -55,7 +62,6 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
-        //RecyclerView.ViewHolder viewHolder = ViewGroup;
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.summarize_list_row,parent,false);
 
