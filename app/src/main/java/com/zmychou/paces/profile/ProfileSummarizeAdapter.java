@@ -1,4 +1,4 @@
-package com.zmychou.paces;
+package com.zmychou.paces.profile;
 
 import android.content.Context;
 import android.os.Environment;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zmychou.paces.R;
 import com.zmychou.paces.models.SummarizeProfile;
 
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.summarize_list_row,parent,false);
-
         return new MyViewHolder(view);
     }
 }

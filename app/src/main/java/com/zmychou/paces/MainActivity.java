@@ -8,10 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.CalendarView;
 
 import com.zmychou.paces.fragments.HomePage;
-import com.zmychou.paces.fragments.MorePageFragment;
+import com.zmychou.paces.profile.ProfileActivity;
 
 /**
  * Home page activity.Display some info about the user and its activity history.

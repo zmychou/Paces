@@ -1,11 +1,13 @@
-package com.zmychou.paces;
+package com.zmychou.paces.profile;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import com.zmychou.paces.DividerItemDecoration;
+import com.zmychou.paces.R;
 
 /**
  * To display the user's profiles ,such as id,name,height,wight and so on.
@@ -22,7 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         RecyclerView list = (RecyclerView) findViewById(R.id.profile_summarize_list);
         ProfileSummarizeAdapter adapter = new ProfileSummarizeAdapter();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

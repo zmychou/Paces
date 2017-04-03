@@ -17,8 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".RunningRecordsActivity"></activity>
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".RunningRecordsActivity" />
+        <activity android:name=".running.RunningActivity"></activity>
     </application>
 
 </manifest>
