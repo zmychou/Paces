@@ -1,5 +1,7 @@
 package com.zmychou.paces.running;
 
+import android.widget.RemoteViews;
+
 /**
  * <pre>
  * Package    :com.zmychou.paces.running
@@ -11,5 +13,9 @@ package com.zmychou.paces.running;
  * description:
  * </pre>
  */
-public class NotificationView {
+public class NotificationView extends RemoteViews {
+    public static NotificationView CREATOR;
+    public NotificationView(String packageName, int layoutId) {
+        super(packageName, layoutId);
+    }
 }
