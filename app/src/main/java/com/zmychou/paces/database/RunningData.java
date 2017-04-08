@@ -1,7 +1,5 @@
 package com.zmychou.paces.database;
 
-import com.zmychou.paces.running.Running;
-
 /**
  * <pre>
  * Package    :com.zmychou.paces.database

@@ -29,22 +29,18 @@ public class DataDeriveService extends Service {
     private AMapLocationListener mLocationRecordListener;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
+    private State mPrevState;
 
 
     class MyBinder extends Binder{
-
         public DataDeriveService getService() {
             return DataDeriveService.this;
         }
-
     }
-
     class LocationChangeListener implements AMapLocationListener{
-
         @Override
         public void onLocationChanged(AMapLocation location) {
-//            location.
-            Log.e("DataDeriveService",this.getClass()+"");
+            Log.e("DataDeriveService",this.getClass()+"++++++get data");
         }
     }
 
@@ -53,24 +49,36 @@ public class DataDeriveService extends Service {
      */
     public DataDeriveService() {
     }
-
+//@42a945b8
+//@42a945b8@42b8a110
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("DataDeriveService",this.toString()+"----------------I start serving");
         return super.onStartCommand(intent, flags, startId);
     }
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e("DataDeriveService","----------------some one bind me");
+        setupClient();
         showNotification();
         return new MyBinder();
     }
-    public void Test(){
-
-        Log.e("debug output",this.toString());
-        Toast.makeText(DataDeriveService.this, "test"+this.toString(), Toast.LENGTH_SHORT).show();
+    public void start(State state) {
+        mPrevState = state;
+        startLocation();
+        updateNotification("Location start");
     }
-    public void updateNotification(){
+    public void pause(State state) {
+        mPrevState = state;
+        stopLocation();
+        updateNotification("Location pause");
+    }
+    public State getPrevState(){
+        return mPrevState;
+    }
+    public void updateNotification(String debugMsg){
         //todo: set the remoteiews values
-//        mNotification.contentView.setTextViewText(R.id.remote_text,"if You can see me?");
+        mNotification.contentView.setTextViewText(R.id.remote_text,debugMsg);
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(mNotificationId,mNotification);
     }

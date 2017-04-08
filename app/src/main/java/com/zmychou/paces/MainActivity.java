@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         Fragment homePage = new HomePage();
 //        SQLiteDatabase sqLiteDatabase = new SqliteHelper(this).getWritableDatabase();
         RunningEntryUtils utils = new RunningEntryUtils(this);
-        utils.insert();
-        utils.insert();
-        utils.insert();
-        utils.insert();
-        utils.insert();
+//        utils.insert();
+//        utils.insert();
+//        utils.insert();
+//        utils.insert();
+//        utils.insert();
         fragmentTransaction.replace(R.id.fragment_holder,homePage);
         fragmentTransaction.commit();
-        //startActivity(new Intent(this,RunningActivity.class));
+        startActivity(new Intent(this,RunningActivity.class));
     }
 }

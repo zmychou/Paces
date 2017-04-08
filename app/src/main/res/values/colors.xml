@@ -6,4 +6,18 @@
     <color name="colorBlack">#101010</color>
     <color name="colorLightBlack">#353434</color>
     <color name="colorWhite">#ffffff</color>
+
+    <!--yellow clan-->
+    <color name="colorYellowLight">#ffdc16</color>
+    <color name="colorYellowDark">#b99d00</color>
+    <color name="colorOrangeLight">#fa9d11</color>
+    <color name="colorOrangeDark">#c67c0d</color>
+
+    <!--green clan-->
+    <color name="colorGreenDark">#05710e</color>
+    <color name="colorGreenLight">#08bf17</color>
+
+    <!--red clan-->
+    <color name="colorRedDark">#bc1d1a</color>
+    <color name="colorRedLight">#fc0808</color>
 </resources>
