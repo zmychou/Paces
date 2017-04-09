@@ -25,6 +25,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.R;
+import com.zmychou.paces.profile.ProfileActivity;
 
 public class RunningActivity extends AppCompatActivity
         implements ServiceConnection {
@@ -73,7 +74,10 @@ public class RunningActivity extends AppCompatActivity
         slave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                runningService.stop();
+                unbindService(RunningActivity.this);
+                startActivity(new Intent(RunningActivity.this, ProfileActivity.class));
+                RunningActivity.this.finish();
             }
         });
 
@@ -104,7 +108,7 @@ public class RunningActivity extends AppCompatActivity
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             openGps();
-            finish();
+//            finish();
             return false;
         }
         return true;
@@ -184,6 +188,9 @@ public class RunningActivity extends AppCompatActivity
                                     aMapLocation.getLatitude(),
                                     aMapLocation.getLongitude())
                     ));
+                else {
+                    Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
+                }
                 Log.e("Running:",this.getClass()+"Satellite:"+mSatellites);
             }
         };
@@ -192,6 +199,8 @@ public class RunningActivity extends AppCompatActivity
         clientOption.setMockEnable(true);
         clientOption.setOnceLocation(false);
         clientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        clientOption.setLocationCacheEnable(true);
+        clientOption.setGpsFirst(true);
         locationClient.setLocationOption(clientOption);
         locationClient.setLocationListener(locationListener);
     }

@@ -73,6 +73,11 @@ public class DataDeriveService extends Service {
         stopLocation();
         updateNotification("Location pause");
     }
+    public void stop(){
+        stopForeground(true);
+        //Do some cleaning job,then stopSelf
+        stopSelf();
+    }
     public State getPrevState(){
         return mPrevState;
     }
@@ -117,4 +122,10 @@ public class DataDeriveService extends Service {
 
     }
     public void doRecord(){}
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.e("DataDeriveService",this.toString()+"-----My job done!");
+    }
 }

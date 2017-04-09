@@ -27,7 +27,7 @@
 
     <meta-data
         android:name="com.amap.api.v2.apikey"
-        android:value="b9067bd8283811e4e4bafc92d210fc5c" />
+        android:value="c8e33a10f7f99bec793a8770a86faa08" />
 
     <application
         android:allowBackup="true"

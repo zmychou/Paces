@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.SqliteHelper;
@@ -39,6 +40,6 @@ public class MainActivity extends AppCompatActivity {
 //        utils.insert();
         fragmentTransaction.replace(R.id.fragment_holder,homePage);
         fragmentTransaction.commit();
-        startActivity(new Intent(this,RunningActivity.class));
+
     }
 }
