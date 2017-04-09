@@ -22,6 +22,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.R;
@@ -88,6 +89,11 @@ public class RunningActivity extends AppCompatActivity
         super.onStart();
         locationClient.startLocation();
     }
+
+    /**
+     * When an activity create ,invoke this method to prepare the map ,such as show the user
+     * where are they now.
+     */
     public void prepare(){
         if (gpsReady()) {
             initMap();
@@ -97,13 +103,19 @@ public class RunningActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Fire an intent to start the activity of switch the GPS module on and
+     * chose location accuracy if the device's GPS module is not in service now
+     */
     public void openGps(){
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-    //Detect whether the GPS module is in service.
+    /**
+     * Detect whether the device's GPS module is in service or not
+     */
     public boolean gpsReady(){
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -114,6 +126,10 @@ public class RunningActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Show an alert dialog to user ,tell them GPS is not ready at this time,let them  decide to
+     * choose whether start now or wait a second
+     */
     public void showAlertDialog(){
         new AlertDialog.Builder(this)
                 .setMessage(R.string.gps_not_ready)
@@ -176,18 +192,20 @@ public class RunningActivity extends AppCompatActivity
     public void onServiceDisconnected(ComponentName name) {
         runningService = null;
     }
-    //Before running ,we show the user the state of the app
+
+    /**
+     * Before running ,we show the user the state of the app
+     */
     public void initMap(){
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
         locationListener = new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
                 mSatellites = aMapLocation.getSatellites();
                 if (mSatellites > 0)
-                    mMap.moveCamera(CameraUpdateFactory.changeLatLng(
-                            new LatLng(
-                                    aMapLocation.getLatitude(),
-                                    aMapLocation.getLongitude())
-                    ));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),20));
                 else {
                     Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
                 }
