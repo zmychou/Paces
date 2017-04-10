@@ -69,8 +69,8 @@ public class DataDeriveService extends Service {
         public void onLocationChanged(AMapLocation location) {
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
-//            if (mDistance > 1000) {
-            if (mLatLngs.size() > 10) {
+            if (mDistance > 1000) {
+//            if (mLatLngs.size() > 10) {
                 mRunningData.setLatLngs(mLatLngs);
                 mRunningData.setDistance(1000);
                 mRunningData.setFinishTime(location.getTime());
