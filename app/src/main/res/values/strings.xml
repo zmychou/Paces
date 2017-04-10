@@ -12,5 +12,8 @@
     <string name="start_anyway">Start anyway</string>
     <string name="wait_gps">Wait</string>
 
-
+    <!--File save info-->
+    <string name="save_success">File saved</string>
+    <string name="external_device_invalid">External storage unavailable</string>
+    <string name="failed_to_save">Failed to save file</string>
 </resources>

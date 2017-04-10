@@ -22,7 +22,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.R;
@@ -87,7 +86,9 @@ public class RunningActivity extends AppCompatActivity
     @Override
     public void onStart(){
         super.onStart();
-        locationClient.startLocation();
+        if (locationClient != null) {
+            locationClient.startLocation();
+        }
     }
 
     /**
@@ -120,7 +121,7 @@ public class RunningActivity extends AppCompatActivity
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             openGps();
-//            finish();
+            finish();
             return false;
         }
         return true;
@@ -151,7 +152,9 @@ public class RunningActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationClient.unRegisterLocationListener(locationListener);
+        if (locationClient != null) {
+            locationClient.unRegisterLocationListener(locationListener);
+        }
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -164,7 +167,9 @@ public class RunningActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        locationClient.stopLocation();
+        if (locationClient != null) {
+            locationClient.stopLocation();
+        }
         //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         mMapView.onPause();
     }
