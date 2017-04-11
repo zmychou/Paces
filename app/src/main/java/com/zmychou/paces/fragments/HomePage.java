@@ -33,6 +33,7 @@ public class HomePage extends Fragment {
     public void onActivityCreated(Bundle bundle){
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
+//        mOwingActivity
         mOwingActivity.findViewById(R.id.user_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

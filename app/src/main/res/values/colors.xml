@@ -20,4 +20,5 @@
     <!--red clan-->
     <color name="colorRedDark">#bc1d1a</color>
     <color name="colorRedLight">#fc0808</color>
+    <color name="colorTransparent">#00fc0808</color>
 </resources>

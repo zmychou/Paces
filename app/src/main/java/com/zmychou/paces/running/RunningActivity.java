@@ -22,10 +22,16 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
+import com.zmychou.paces.io.JsonFileParser;
 import com.zmychou.paces.profile.ProfileActivity;
+
+import java.util.ArrayList;
 
 public class RunningActivity extends AppCompatActivity
         implements ServiceConnection {
@@ -101,6 +107,16 @@ public class RunningActivity extends AppCompatActivity
             Intent intent = new Intent(this,DataDeriveService.class);
             startService(intent);
             bindService(intent,this, Service.BIND_AUTO_CREATE);
+
+            ArrayList<LatLng> list = new JsonFileParser().parserLatLngArray(this);
+            PolylineOptions polylineOptions = new PolylineOptions();
+            for (LatLng ll : list) {
+                polylineOptions.add(ll);
+            }
+            polylineOptions.color(R.color.colorRedLight);
+            polylineOptions.aboveMaskLayer(true);
+            polylineOptions.width(8);
+            mMap.addPolyline(polylineOptions);
         }
     }
 
@@ -154,6 +170,7 @@ public class RunningActivity extends AppCompatActivity
         super.onDestroy();
         if (locationClient != null) {
             locationClient.unRegisterLocationListener(locationListener);
+            locationClient.onDestroy();
         }
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
@@ -202,7 +219,13 @@ public class RunningActivity extends AppCompatActivity
      * Before running ,we show the user the state of the app
      */
     public void initMap(){
+        MyLocationStyle locationStyle = new MyLocationStyle();
+        locationStyle.strokeWidth(0);
+        locationStyle.strokeColor(R.color.colorTransparent);
+        locationStyle.radiusFillColor(R.color.colorTransparent);
+
         mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationStyle(locationStyle);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
         locationListener = new AMapLocationListener() {
             @Override
@@ -210,7 +233,7 @@ public class RunningActivity extends AppCompatActivity
                 mSatellites = aMapLocation.getSatellites();
                 if (mSatellites > 0)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),20));
+                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),18));
                 else {
                     Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
                 }

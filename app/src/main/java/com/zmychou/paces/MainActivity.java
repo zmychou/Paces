@@ -9,11 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.SqliteHelper;
 import com.zmychou.paces.fragments.HomePage;
+import com.zmychou.paces.io.JsonFileParser;
 import com.zmychou.paces.profile.ProfileActivity;
 import com.zmychou.paces.running.RunningActivity;
 
@@ -31,15 +34,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment homePage = new HomePage();
-//        SQLiteDatabase sqLiteDatabase = new SqliteHelper(this).getWritableDatabase();
-        RunningEntryUtils utils = new RunningEntryUtils(this);
-//        utils.insert();
-//        utils.insert();
-//        utils.insert();
-//        utils.insert();
-//        utils.insert();
         fragmentTransaction.replace(R.id.fragment_holder,homePage);
         fragmentTransaction.commit();
 
+        JsonFileParser parser = new JsonFileParser();
+        parser.parser(this);
+        Log.e("separate line", "------------------------------");
+        for (LatLng ll : parser.parserLatLngArray(this)) {
+            Log.e("latitude", ll.latitude+"");
+        }
     }
 }

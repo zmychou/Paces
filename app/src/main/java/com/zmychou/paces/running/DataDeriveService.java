@@ -65,8 +65,13 @@ public class DataDeriveService extends Service {
         }
     }
     class LocationChangeListener implements AMapLocationListener{
+        private int updateNotificationElapse ;
         @Override
         public void onLocationChanged(AMapLocation location) {
+            updateNotificationElapse++;
+            if (updateNotificationElapse > 5) {
+                updateNotification("have run:"+mDistance+"meter");
+            }
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
             if (mDistance > 1000) {
@@ -167,10 +172,27 @@ public class DataDeriveService extends Service {
     public void stop() {
         stopForeground(true);
         isFinish = false;
+
+       // setRunningDate(mDistance);
         //Do some cleaning job,then stopSelf
         stopSelf();
     }
 
+    public void setRunningDate(int distance, AMapLocation location) {
+        mRunningData.setLatLngs(mLatLngs);
+        mRunningData.setDistance(distance);
+        mRunningData.setFinishTime(location.getTime());
+        mRunningData.setStartTime(mPerMileStartTime);
+        mRunningData.setDuration(mTimeAccumulate
+                += (location.getTime() - mPerMileStartTime));
+        mRunningData.setSequenceNumber(++mMiles);
+//                mRunningData.setSteps();
+        SaveDataWorker worker = new SaveDataWorker();
+        worker.execute(mRunningData);
+        mLatLngs = new ArrayList<>();
+        mDistance = 0;
+        mPerMileStartTime = location.getTime();
+    }
     /**
      * Start position of the user's sport records
      * @param latLng A LatLng object include latitude and longitude
