@@ -10,11 +10,13 @@ import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -46,8 +48,14 @@ public class RunningActivity extends AppCompatActivity
     private int mSatellites;
     private boolean hasStart;
 
-    MapView mMapView = null;
+    //UI View relative
     State mRunningState ;
+    MapView mMapView = null;
+    private TextView mDistance;
+    private TextView mDuration;
+    private TextView mVelocity;
+    private TextView mCalories;
+    private TextView mSteps;
     Button main;
     Button slave;
     public void changeState(State state){
@@ -67,6 +75,11 @@ public class RunningActivity extends AppCompatActivity
         mMap = mMapView.getMap();
         main = (Button) findViewById(R.id.btn_running_activity_main);
         slave = (Button) findViewById(R.id.btn_running_activity_slave);
+        mDistance = (TextView) findViewById(R.id.btn_running_activity_distance);
+        mDuration = (TextView) findViewById(R.id.btn_running_activity_duration);
+        mVelocity = (TextView) findViewById(R.id.btn_running_activity_velocity);
+        mCalories = (TextView) findViewById(R.id.btn_running_activity_calories);
+        mSteps = (TextView) findViewById(R.id.btn_running_activity_steps);
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +102,7 @@ public class RunningActivity extends AppCompatActivity
 
         prepare();
     }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -97,6 +111,22 @@ public class RunningActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Update the UI ,let's user know there running state
+     * @param distance How far have there gone
+     * @param duration How long have there insist
+     * @param velocity There velocity
+     * @param calories How much calories have been burn
+     * @param steps Steps
+     */
+    public void updateUi(String distance, String duration, String velocity,
+                         String calories, String steps) {
+        mDistance.setText(distance);
+        mDuration.setText(duration);
+        mVelocity.setText(velocity);
+        mCalories.setText(calories);
+        mSteps.setText(steps);
+    }
     /**
      * When an activity create ,invoke this method to prepare the map ,such as show the user
      * where are they now.
@@ -108,16 +138,18 @@ public class RunningActivity extends AppCompatActivity
             startService(intent);
             bindService(intent,this, Service.BIND_AUTO_CREATE);
 
-            ArrayList<LatLng> list = new JsonFileParser().parserLatLngArray(this);
-            PolylineOptions polylineOptions = new PolylineOptions();
-            for (LatLng ll : list) {
-                polylineOptions.add(ll);
-            }
-            polylineOptions.color(R.color.colorRedLight);
-            polylineOptions.aboveMaskLayer(true);
-            polylineOptions.width(8);
-            mMap.addPolyline(polylineOptions);
+            setPolyline("tmp_run_trace_20170411-180131.json");
         }
+    }
+
+    public void setPolyline(@NonNull String... fileNames) {
+        ArrayList<LatLng> list = new JsonFileParser().parserLatLngArray(this,fileNames[0]);
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.setPoints(list);
+        polylineOptions.color(getResources().getColor(R.color.colorOrangeLight));
+        polylineOptions.aboveMaskLayer(true);
+        polylineOptions.width(8);
+        mMap.addPolyline(polylineOptions);
     }
 
     /**
@@ -172,6 +204,9 @@ public class RunningActivity extends AppCompatActivity
             locationClient.unRegisterLocationListener(locationListener);
             locationClient.onDestroy();
         }
+        if (runningService != null) {
+            runningService.unregisterBindActivity();
+        }
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -204,14 +239,18 @@ public class RunningActivity extends AppCompatActivity
         if (state != null) {
             state.handle(this);
             hasStart = true;
+
         }
         else {
             mRunningState = new PreparationState();
         }
+        runningService.registerBindActivty(this);
+
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
+        runningService.unregisterBindActivity();
         runningService = null;
     }
 
@@ -222,7 +261,7 @@ public class RunningActivity extends AppCompatActivity
         MyLocationStyle locationStyle = new MyLocationStyle();
         locationStyle.strokeWidth(0);
         locationStyle.strokeColor(R.color.colorTransparent);
-        locationStyle.radiusFillColor(R.color.colorTransparent);
+        locationStyle.radiusFillColor(0x00fc0808);
 
         mMap.setMyLocationEnabled(true);
         mMap.setMyLocationStyle(locationStyle);

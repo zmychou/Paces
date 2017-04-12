@@ -36,7 +36,6 @@ public class DataDeriveService extends Service {
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private State mPrevState;
-    private Thread mWorker;
     private ArrayList<LatLng> mLatLngs;
     private RunningActivity mBindActivity;
 
@@ -45,6 +44,7 @@ public class DataDeriveService extends Service {
     private long mPerMileStartTime;
     //Use to save how long have running before pause
     private long mTimeAccumulate;
+    private long mTotalTime;
     private LatLng mPrevLatLng ;
     private RunningData mRunningData;
     private int mMiles ;
@@ -70,26 +70,14 @@ public class DataDeriveService extends Service {
         public void onLocationChanged(AMapLocation location) {
             updateNotificationElapse++;
             if (updateNotificationElapse > 5) {
+                updateUi();
                 updateNotification("have run:"+mDistance+"meter");
+                updateNotificationElapse = 0;
             }
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
             if (mDistance > 1000) {
-                setRunningDate(1000,location.getTime());
-//            if (mLatLngs.size() > 10) {
-//                mRunningData.setLatLngs(mLatLngs);
-//                mRunningData.setDistance(1000);
-//                mRunningData.setFinishTime(location.getTime());
-//                mRunningData.setStartTime(mPerMileStartTime);
-//                mRunningData.setDuration(mTimeAccumulate
-//                        += (location.getTime() - mPerMileStartTime));
-//                mRunningData.setSequenceNumber(++mMiles);
-////                mRunningData.setSteps();
-//                SaveDataWorker worker = new SaveDataWorker();
-//                worker.execute(mRunningData);
-//                mLatLngs = new ArrayList<>();
-//                mDistance = 0;
-//                mPerMileStartTime = location.getTime();
+                saveRunningDate(1000,location.getTime());
             }
             mPrevLatLng = latLng;
             mLatLngs.add(latLng);
@@ -104,12 +92,14 @@ public class DataDeriveService extends Service {
         @Override
         protected Void doInBackground(RunningData... params) {
             RunningEntryUtils utils = new RunningEntryUtils(DataDeriveService.this);
+            //Save to the external storage media with the json data format
             RunningDataJsonFileWriter writer
                     = new RunningDataJsonFileWriter(DataDeriveService.this,params[0]);
             String filePath = writer.save();
             if (filePath != null) {
                 params[0].setLatLngFile(filePath);
                 params[0].setStepsFile(filePath);
+                //Save to the SQLite database
                 utils.insert(params[0]);
                 params[0].clear();
             }
@@ -147,15 +137,18 @@ public class DataDeriveService extends Service {
     public void registerBindActivty(RunningActivity activity) {
         mBindActivity = activity;
     }
+
     public void unregisterBindActivity() {
         mBindActivity = null;
     }
+
     protected void updateBindActivityInfo() {
         if (mBindActivity == null)
 
             return;
 
     }
+
     public void start(State state) {
         isRunning = true;
         mPrevState = state;
@@ -164,6 +157,10 @@ public class DataDeriveService extends Service {
         updateNotification("Location start");
     }
 
+    /**
+     * When user pause running ,set the running flag and calculate the time usage
+     * @param state
+     */
     public void pause(State state) {
         isRunning = false;
         mPrevState = state;
@@ -171,30 +168,92 @@ public class DataDeriveService extends Service {
         stopLocation();
         updateNotification("Location pause");
     }
+
+    /**
+     * After user stop running ,the last stage of the service
+     */
     public void stop() {
         stopForeground(true);
         isFinish = false;
 
-        setRunningDate(mDistance, System.currentTimeMillis());
+        saveRunningDate(mDistance, System.currentTimeMillis());
+        stopLocation();
+        if (mLocationClient != null) {
+            mLocationClient.unRegisterLocationListener(mLocationRecordListener);
+        }
         //Do some cleaning job,then stopSelf
         stopSelf();
     }
 
-    public void setRunningDate(float distance,long currentTime) {
+    /**
+     * Start an worker thread to save the running data to the external storage
+     * and to the SQLite database
+     * @param distance How long this period have run
+     * @param currentTime How much time has elapsed
+     */
+    public void saveRunningDate(float distance,long currentTime) {
         mRunningData.setLatLngs(mLatLngs);
         mRunningData.setDistance(distance);
         mRunningData.setFinishTime(currentTime);
         mRunningData.setStartTime(mPerMileStartTime);
-        mRunningData.setDuration(mTimeAccumulate
-                += (currentTime - mPerMileStartTime));
+        mRunningData.setDuration((mTimeAccumulate += (currentTime - mPerMileStartTime)) / 1000);
         mRunningData.setSequenceNumber(++mMiles);
 //                mRunningData.setSteps();
+//                mRunningData.setCalories();
         SaveDataWorker worker = new SaveDataWorker();
         worker.execute(mRunningData);
+
+        //Reset
+        mTotalTime += mTimeAccumulate;
         mLatLngs = new ArrayList<>();
         mDistance = 0;
         mPerMileStartTime = currentTime;
+        mTimeAccumulate = 0;
+
     }
+
+    /**
+     * Update the Running activity's ui content if mBindActivity,which if a RunningActivity
+     * reference that bind to this Service,is not null
+     */
+    public void updateUi() {
+        if (mBindActivity != null) {
+            //Total distance
+            String distance = mMiles+"."+(((int)mDistance));
+            mBindActivity.updateUi(distance, formatDuration(), getVelocity(),
+                    calculateCalories(),233+"");
+        }
+    }
+
+    private String getVelocity() {
+        return 10.5+"";
+    }
+    private String calculateCalories() {
+        // TODO: 17-4-12  a stub to calculate calories
+        return 123+"";
+    }
+
+    private String formatDuration() {
+        long totalSeconds = (mTotalTime + mTimeAccumulate
+                + System.currentTimeMillis() - mPerMileStartTime) / 1000;
+        int secondsInMinute = (int) totalSeconds % 60;
+        int minutesInHour = (int) totalSeconds / 60 % 60;
+        int hours = (int) totalSeconds / 3600;
+        StringBuffer sb = new StringBuffer();
+        sb.append(hours);
+        sb.append(":");
+        if (minutesInHour < 10) {
+            sb.append("0");
+        }
+        sb.append(minutesInHour);
+        sb.append(":");
+        if (totalSeconds < 10) {
+            sb.append("0");
+        }
+        sb.append(secondsInMinute);
+        return sb.toString();
+    }
+
     /**
      * Start position of the user's sport records
      * @param latLng A LatLng object include latitude and longitude
@@ -257,8 +316,8 @@ public class DataDeriveService extends Service {
         RemoteViews remote = new RemoteViews("com.zmychou.paces",
                 R.layout.notification_content );
         mNotification = new NotificationCompat.Builder(this)
-                .setContentTitle("Test")
-                .setContentText("this is content")
+                .setContentTitle("Paces")
+                .setContentText("Notification")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContent(remote)
                 .setContentIntent(pi).build();
@@ -269,7 +328,6 @@ public class DataDeriveService extends Service {
      * Setup the LocationClient
      */
     public void setupClient(){
-
         mLocationRecordListener = new LocationChangeListener();
         mLocationClient = new AMapLocationClient(this);
         mLocationOption = new AMapLocationClientOption();
@@ -282,16 +340,15 @@ public class DataDeriveService extends Service {
     }
     public void startLocation(){
         isRunning = true;
-        mLocationClient.startLocation();
-        //doRecord();
+        if (mLocationClient != null) {
+            mLocationClient.startLocation();
+        }
     }
     public void stopLocation(){
         isRunning = false;
-        mLocationClient.stopLocation();
-
-    }
-    public void saveToExternal() {
-
+        if (mLocationClient != null) {
+            mLocationClient.stopLocation();
+        }
     }
 
     @Override

@@ -22,8 +22,8 @@ public class RunningData {
     private long timestamp;
     private long startTime;
     private long finishTime;
-    private float distance;
-    private float duration;
+    private int distance;
+    private long duration;
     private int steps;
     private int calories;
     private String latLngFile;
@@ -40,20 +40,7 @@ public class RunningData {
         return self;
     }
     private RunningData(){}
-//    private void setAll(long timestamp, long startTime, long finishTime,
-//                       float distance, float duration, int steps, int calories,
-//                       String latLngFile, String stepsFile) {
-//        this.sequenceNumber++;
-//        this.timestamp = timestamp;
-//        this.startTime = startTime;
-//        this.finishTime = finishTime;
-//        this.distance = distance;
-//        this.duration = duration;
-//        this.steps = steps;
-//        this.calories = calories;
-//        this.latLngFile = latLngFile;
-//        this.stepsFile = stepsFile;
-//    }
+
     public void clear() {
         this.startTime = 0;
         this.finishTime = 0;
@@ -147,10 +134,10 @@ public class RunningData {
     }
 
     public void setDistance(float distance) {
-        this.distance = distance;
+        this.distance = (int)distance;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

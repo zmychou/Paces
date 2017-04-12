@@ -2,7 +2,6 @@ package com.zmychou.paces.io;
 
 import android.content.Context;
 import android.os.Environment;
-import android.os.Message;
 import android.util.*;
 import android.widget.Toast;
 
@@ -11,25 +10,34 @@ import com.zmychou.paces.R;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class JsonFileParser {
-	protected File openFile(Context context) {
+	protected File openFile(Context context,String fileName) {
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			File root = Environment.getExternalStorageDirectory();
 			File path = new File(root,"Paces/file/json");
 			if (!path.exists()){
 				path.mkdirs();
 			}
-			return new File(path,"tmp_run_trace_20170411-180131.json");
+			return new File(path,fileName);
 		}
 		Toast.makeText(context, R.string.external_device_invalid, Toast.LENGTH_SHORT).show();
 		return null;
 	}
-    public ArrayList<LatLng> parserLatLngArray(Context context) {
+    //"tmp_run_trace_20170411-180131.json"
+
+    public ArrayList<ArrayList<LatLng>> parserLatLngArrrays(Context context,String... fileNames) {
+        ArrayList<ArrayList<LatLng>> ll = new ArrayList<>();
+        for (String fileName : fileNames) {
+            ll.add(parserLatLngArray(context,fileName));
+        }
+        return ll;
+    }
+
+    public ArrayList<LatLng> parserLatLngArray(Context context,String fileName) {
         ArrayList<LatLng> list = null;
         try {
-            File file = openFile(context);
+            File file = openFile(context,fileName);
             JsonReader jr = new JsonReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             jr.beginObject();
             while (jr.hasNext()) {
@@ -52,10 +60,10 @@ public class JsonFileParser {
         }
         return list;
     }
-	public ArrayList<String> parser(Context context) {
+	public ArrayList<String> parser(Context context,String fileName) {
         ArrayList<String> list = new ArrayList<>();
 		try {
-			File file = openFile(context);
+			File file = openFile(context,fileName);
 		    JsonReader jr = new JsonReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 			jr.beginObject();
 			while (jr.hasNext()) {

@@ -1,24 +1,15 @@
 package com.zmychou.paces;
 
-
-
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.amap.api.maps.model.LatLng;
-import com.zmychou.paces.database.RunningEntryUtils;
-import com.zmychou.paces.database.SqliteHelper;
 import com.zmychou.paces.fragments.HomePage;
 import com.zmychou.paces.io.JsonFileParser;
-import com.zmychou.paces.profile.ProfileActivity;
-import com.zmychou.paces.running.RunningActivity;
 
 /**
  * Home page activity.Display some info about the user and its activity history.
@@ -38,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         JsonFileParser parser = new JsonFileParser();
-        parser.parser(this);
+        parser.parser(this,"tmp_run_trace_20170411-180131.json");
         Log.e("separate line", "------------------------------");
-        for (LatLng ll : parser.parserLatLngArray(this)) {
+        for (LatLng ll : parser.parserLatLngArray(this,"tmp_run_trace_20170411-180131.json")) {
             Log.e("latitude", ll.latitude+"");
         }
     }
