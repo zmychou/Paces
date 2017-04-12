@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile files('libs/AMap3DMap_5.0.0_AMapNavi_5.0.0_AMapSearch_5.0.0_AMapLocation_3.3.0_20170321.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }

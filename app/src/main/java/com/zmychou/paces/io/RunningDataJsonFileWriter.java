@@ -2,7 +2,7 @@ package com.zmychou.paces.io;
 
 import android.content.Context;
 
-import com.amap.api.maps.model.LatLng;
+import com.baidu.mapapi.model.LatLng;
 import com.zmychou.paces.database.RunningData;
 
 import org.json.JSONArray;

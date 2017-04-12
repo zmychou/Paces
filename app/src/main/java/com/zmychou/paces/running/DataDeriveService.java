@@ -14,12 +14,12 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
@@ -32,9 +32,9 @@ public class DataDeriveService extends Service {
     private int mNotificationId = 1;
     private int mRequestCode = 1;
     private Notification mNotification;
-    private AMapLocationListener mLocationRecordListener;
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
+    private BDLocationListener mLocationRecordListener;
+    private LocationClient mLocationClient;
+    private LocationClientOption mLocationOption;
     private State mPrevState;
     private Thread mWorker;
     private ArrayList<LatLng> mLatLngs;
@@ -64,18 +64,50 @@ public class DataDeriveService extends Service {
             return DataDeriveService.this;
         }
     }
-    class LocationChangeListener implements AMapLocationListener{
+    class LocationChangeListener implements BDLocationListener {
         private int updateNotificationElapse ;
+//        @Override
+//        public void onLocationChanged(AMapLocation location) {
+//            updateNotificationElapse++;
+//            if (updateNotificationElapse > 5) {
+//                updateNotification("have run:"+mDistance+"meter");
+//            }
+//            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+//            mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
+//            if (mDistance > 1000) {
+//                setRunningDate(1000,location.getTime());
+////            if (mLatLngs.size() > 10) {
+////                mRunningData.setLatLngs(mLatLngs);
+////                mRunningData.setDistance(1000);
+////                mRunningData.setFinishTime(location.getTime());
+////                mRunningData.setStartTime(mPerMileStartTime);
+////                mRunningData.setDuration(mTimeAccumulate
+////                        += (location.getTime() - mPerMileStartTime));
+////                mRunningData.setSequenceNumber(++mMiles);
+//////                mRunningData.setSteps();
+////                SaveDataWorker worker = new SaveDataWorker();
+////                worker.execute(mRunningData);
+////                mLatLngs = new ArrayList<>();
+////                mDistance = 0;
+////                mPerMileStartTime = location.getTime();
+//            }
+//            mPrevLatLng = latLng;
+//            mLatLngs.add(latLng);
+//            setMaxRectangle(latLng);
+//            Log.e("DataDeriveService","++++++get data"+mLatLngs.size()+":::dstance"+mDistance);
+//
+//        }
+
         @Override
-        public void onLocationChanged(AMapLocation location) {
+        public void onReceiveLocation(BDLocation location) {
             updateNotificationElapse++;
             if (updateNotificationElapse > 5) {
                 updateNotification("have run:"+mDistance+"meter");
             }
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-            mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
+            mDistance += DistanceUtil.getDistance(mPrevLatLng,latLng);
             if (mDistance > 1000) {
-                setRunningDate(1000,location.getTime());
+                setRunningDate(1000,Long.parseLong(location.getTime()));
 //            if (mLatLngs.size() > 10) {
 //                mRunningData.setLatLngs(mLatLngs);
 //                mRunningData.setDistance(1000);
@@ -98,6 +130,10 @@ public class DataDeriveService extends Service {
 
         }
 
+        @Override
+        public void onConnectHotSpotMessage(String s, int i) {
+
+        }
     }
     class SaveDataWorker extends AsyncTask<RunningData,Void,Void> {
 
@@ -271,24 +307,25 @@ public class DataDeriveService extends Service {
     public void setupClient(){
 
         mLocationRecordListener = new LocationChangeListener();
-        mLocationClient = new AMapLocationClient(this);
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setMockEnable(true);
-        mLocationOption.setOnceLocation(false);
-        mLocationOption.setInterval(2000);
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        mLocationClient.setLocationOption(mLocationOption);
-        mLocationClient.setLocationListener(mLocationRecordListener);
+        mLocationClient = new LocationClient(this);
+        mLocationOption = new LocationClientOption();
+//        mLocationOption.setMockEnable(true);
+//        mLocationOption.setOnceLocation(false);
+//        mLocationOption.setInterval(2000);
+        mLocationOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        mLocationClient.setLocOption(mLocationOption);
+        mLocationClient.registerLocationListener(mLocationRecordListener);
     }
     public void startLocation(){
         isRunning = true;
-        mLocationClient.startLocation();
+//        mLocationClient.startLocation();
+        mLocationClient.start();
         //doRecord();
     }
     public void stopLocation(){
         isRunning = false;
-        mLocationClient.stopLocation();
-
+//        mLocationClient.stopLocation();
+        mLocationClient.stop();
     }
     public void saveToExternal() {
 

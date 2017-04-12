@@ -32,8 +32,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="c8e33a10f7f99bec793a8770a86faa08" />
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="fx76NDsE8t3xg6DpNDl2qo2CFtVNW5Pe" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoTitleBarTheme">

@@ -2,16 +2,14 @@ package com.zmychou.paces.io;
 
 import android.content.Context;
 import android.os.Environment;
-import android.os.Message;
 import android.util.*;
 import android.widget.Toast;
 
-import com.amap.api.maps.model.LatLng;
+import com.baidu.mapapi.model.LatLng;
 import com.zmychou.paces.R;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class JsonFileParser {
 	protected File openFile(Context context) {

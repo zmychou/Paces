@@ -1,6 +1,7 @@
 package com.zmychou.paces.database;
 
-import com.amap.api.maps.model.LatLng;
+
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 

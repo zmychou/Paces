@@ -10,11 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
-import com.amap.api.maps.model.LatLng;
-import com.zmychou.paces.database.RunningEntryUtils;
-import com.zmychou.paces.database.SqliteHelper;
+import com.baidu.mapapi.model.LatLng;
 import com.zmychou.paces.fragments.HomePage;
 import com.zmychou.paces.io.JsonFileParser;
 import com.zmychou.paces.profile.ProfileActivity;

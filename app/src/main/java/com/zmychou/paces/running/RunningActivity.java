@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.BitmapFactory;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -16,17 +18,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.PolylineOptions;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.PolylineOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.zmychou.paces.R;
 import com.zmychou.paces.io.JsonFileParser;
 import com.zmychou.paces.profile.ProfileActivity;
@@ -37,11 +38,11 @@ public class RunningActivity extends AppCompatActivity
         implements ServiceConnection {
 
 
-    AMap mMap;
+    BaiduMap mMap;
     private LatLng mLatLng;
-    private AMapLocationListener locationListener;
-    private AMapLocationClient locationClient;
-    private AMapLocationClientOption clientOption;
+    private BDLocationListener locationListener;
+    private LocationClient locationClient;
+    private LocationClientOption clientOption;
     DataDeriveService runningService;
     private int mSatellites;
     private boolean hasStart;
@@ -57,12 +58,13 @@ public class RunningActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_running);
 
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
-        mMapView.onCreate(savedInstanceState);
+//        mMapView.onCreate(savedInstanceState);
         mMapView.setVisibility(View.VISIBLE);
         mMap = mMapView.getMap();
         main = (Button) findViewById(R.id.btn_running_activity_main);
@@ -93,7 +95,7 @@ public class RunningActivity extends AppCompatActivity
     public void onStart(){
         super.onStart();
         if (locationClient != null) {
-            locationClient.startLocation();
+//            locationClient.startLocation();
         }
     }
 
@@ -110,13 +112,13 @@ public class RunningActivity extends AppCompatActivity
 
             ArrayList<LatLng> list = new JsonFileParser().parserLatLngArray(this);
             PolylineOptions polylineOptions = new PolylineOptions();
-            for (LatLng ll : list) {
-                polylineOptions.add(ll);
-            }
+            polylineOptions.points(list);
             polylineOptions.color(R.color.colorRedLight);
-            polylineOptions.aboveMaskLayer(true);
+//            polylineOptions.aboveMaskLayer(true);
             polylineOptions.width(8);
-            mMap.addPolyline(polylineOptions);
+            mMap.addOverlay(polylineOptions);
+//            mMap.
+//            mMap.addPolyline(polylineOptions);
         }
     }
 
@@ -170,7 +172,7 @@ public class RunningActivity extends AppCompatActivity
         super.onDestroy();
         if (locationClient != null) {
             locationClient.unRegisterLocationListener(locationListener);
-            locationClient.onDestroy();
+//            locationClient.onDestroy();
         }
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
@@ -185,7 +187,8 @@ public class RunningActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         if (locationClient != null) {
-            locationClient.stopLocation();
+//            locationClient.stopLocation();
+            locationClient.stop();
         }
         //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         mMapView.onPause();
@@ -219,36 +222,73 @@ public class RunningActivity extends AppCompatActivity
      * Before running ,we show the user the state of the app
      */
     public void initMap(){
-        MyLocationStyle locationStyle = new MyLocationStyle();
-        locationStyle.strokeWidth(0);
-        locationStyle.strokeColor(R.color.colorTransparent);
-        locationStyle.radiusFillColor(R.color.colorTransparent);
+//        MyLocationStyle locationStyle = new MyLocationStyle();
+//        locationStyle.strokeWidth(0);
+//        locationStyle.strokeColor(R.color.colorTransparent);
+//        locationStyle.radiusFillColor(R.color.colorTransparent);
 
         mMap.setMyLocationEnabled(true);
-        mMap.setMyLocationStyle(locationStyle);
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-        locationListener = new AMapLocationListener() {
+//        mMap.getUiSettings().set
+//        mMap.setMyLocationStyle(locationStyle);
+//        mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        locationListener = new BDLocationListener() {
             @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                mSatellites = aMapLocation.getSatellites();
-                if (mSatellites > 0)
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),18));
-                else {
-                    Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
-                }
+            public void onReceiveLocation(BDLocation aMapLocation) {
+                mSatellites = aMapLocation.getSatelliteNumber();
+                mMap.setMyLocationEnabled(true);
+                MyLocationData locationData = new MyLocationData.Builder()
+                        .latitude(aMapLocation.getLatitude())
+                        .longitude(aMapLocation.getLongitude())
+                        .accuracy(10)
+                        .build();
+                mMap.setMyLocationData(locationData);
+//                mMap.set
+//                if (mSatellites > 0)
+//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+//                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),18));
+//                else {
+//                    Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
+//                }
                 Log.e("Running:",this.getClass()+"Satellite:"+mSatellites);
             }
-        };
 
-        locationClient = new AMapLocationClient(this);
-        clientOption = new AMapLocationClientOption();
-        clientOption.setMockEnable(true);
-        clientOption.setOnceLocation(false);
-        clientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        clientOption.setLocationCacheEnable(true);
-        clientOption.setGpsFirst(true);
-        locationClient.setLocationOption(clientOption);
-        locationClient.setLocationListener(locationListener);
+            @Override
+            public void onConnectHotSpotMessage(String s, int i) {
+
+            }
+        };
+//        locationListener = new BDLocationListener() {
+//            @Override
+//            public void onLocationChanged(AMapLocation aMapLocation) {
+//                mSatellites = aMapLocation.getSatellites();
+//                if (mSatellites > 0)
+//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+//                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),18));
+//                else {
+//                    Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
+//                }
+//                Log.e("Running:",this.getClass()+"Satellite:"+mSatellites);
+//            }
+//        };
+
+        locationClient = new LocationClient(this);
+        clientOption = new LocationClientOption();
+        clientOption.setScanSpan(2000);
+        clientOption.setLocationNotify(true);
+        clientOption.setCoorType("bd0911");
+
+//        clientOption.
+//        clientOption.setMockEnable(true);
+//        clientOption.setOnceLocation(false);
+        clientOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+//        clientOption.setLocationCacheEnable(true);
+//        clientOption.setGpsFirst(true);
+//        locationClient.setLocationOption(clientOption);
+        locationClient.setLocOption(clientOption);
+//        locationClient.
+        locationClient.registerLocationListener(locationListener);
+        locationClient.requestLocation();
+        locationClient.start();
+//        locationClient.setLocationListener(locationListener);
     }
 }
