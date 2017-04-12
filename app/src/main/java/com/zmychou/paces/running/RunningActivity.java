@@ -240,6 +240,7 @@ public class RunningActivity extends AppCompatActivity
                 Log.e("Running:",this.getClass()+"Satellite:"+mSatellites);
             }
         };
+
         locationClient = new AMapLocationClient(this);
         clientOption = new AMapLocationClientOption();
         clientOption.setMockEnable(true);
