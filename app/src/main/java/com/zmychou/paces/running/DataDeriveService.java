@@ -75,20 +75,21 @@ public class DataDeriveService extends Service {
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
             if (mDistance > 1000) {
+                setRunningDate(1000,location.getTime());
 //            if (mLatLngs.size() > 10) {
-                mRunningData.setLatLngs(mLatLngs);
-                mRunningData.setDistance(1000);
-                mRunningData.setFinishTime(location.getTime());
-                mRunningData.setStartTime(mPerMileStartTime);
-                mRunningData.setDuration(mTimeAccumulate
-                        += (location.getTime() - mPerMileStartTime));
-                mRunningData.setSequenceNumber(++mMiles);
-//                mRunningData.setSteps();
-                SaveDataWorker worker = new SaveDataWorker();
-                worker.execute(mRunningData);
-                mLatLngs = new ArrayList<>();
-                mDistance = 0;
-                mPerMileStartTime = location.getTime();
+//                mRunningData.setLatLngs(mLatLngs);
+//                mRunningData.setDistance(1000);
+//                mRunningData.setFinishTime(location.getTime());
+//                mRunningData.setStartTime(mPerMileStartTime);
+//                mRunningData.setDuration(mTimeAccumulate
+//                        += (location.getTime() - mPerMileStartTime));
+//                mRunningData.setSequenceNumber(++mMiles);
+////                mRunningData.setSteps();
+//                SaveDataWorker worker = new SaveDataWorker();
+//                worker.execute(mRunningData);
+//                mLatLngs = new ArrayList<>();
+//                mDistance = 0;
+//                mPerMileStartTime = location.getTime();
             }
             mPrevLatLng = latLng;
             mLatLngs.add(latLng);
@@ -151,6 +152,7 @@ public class DataDeriveService extends Service {
     }
     protected void updateBindActivityInfo() {
         if (mBindActivity == null)
+
             return;
 
     }
@@ -173,25 +175,25 @@ public class DataDeriveService extends Service {
         stopForeground(true);
         isFinish = false;
 
-       // setRunningDate(mDistance);
+        setRunningDate(mDistance, System.currentTimeMillis());
         //Do some cleaning job,then stopSelf
         stopSelf();
     }
 
-    public void setRunningDate(int distance, AMapLocation location) {
+    public void setRunningDate(float distance,long currentTime) {
         mRunningData.setLatLngs(mLatLngs);
         mRunningData.setDistance(distance);
-        mRunningData.setFinishTime(location.getTime());
+        mRunningData.setFinishTime(currentTime);
         mRunningData.setStartTime(mPerMileStartTime);
         mRunningData.setDuration(mTimeAccumulate
-                += (location.getTime() - mPerMileStartTime));
+                += (currentTime - mPerMileStartTime));
         mRunningData.setSequenceNumber(++mMiles);
 //                mRunningData.setSteps();
         SaveDataWorker worker = new SaveDataWorker();
         worker.execute(mRunningData);
         mLatLngs = new ArrayList<>();
         mDistance = 0;
-        mPerMileStartTime = location.getTime();
+        mPerMileStartTime = currentTime;
     }
     /**
      * Start position of the user's sport records
