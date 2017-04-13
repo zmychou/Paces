@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.zmychou.paces.R;
+import com.zmychou.paces.RunningRecordsActivity;
 import com.zmychou.paces.running.RunningActivity;
 
 /**
@@ -17,6 +19,7 @@ import com.zmychou.paces.running.RunningActivity;
  */
 public class HomePage extends Fragment {
 
+    private ImageView mSummarize;
     private Activity mOwingActivity;
     public HomePage() {
         // Required empty public constructor
@@ -33,7 +36,14 @@ public class HomePage extends Fragment {
     public void onActivityCreated(Bundle bundle){
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
-//        mOwingActivity
+        mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
+
+        mSummarize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOwingActivity.startActivity(new Intent(mOwingActivity, RunningRecordsActivity.class));
+            }
+        });
         mOwingActivity.findViewById(R.id.user_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

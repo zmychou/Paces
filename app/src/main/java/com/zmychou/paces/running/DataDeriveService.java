@@ -5,10 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -176,13 +178,34 @@ public class DataDeriveService extends Service {
         stopForeground(true);
         isFinish = false;
 
-        saveRunningDate(mDistance, System.currentTimeMillis());
+        showSaveFileAlertDialog();
         stopLocation();
         if (mLocationClient != null) {
             mLocationClient.unRegisterLocationListener(mLocationRecordListener);
         }
         //Do some cleaning job,then stopSelf
         stopSelf();
+    }
+
+    /**
+     *
+     */
+    private void showSaveFileAlertDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Stop running?")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveRunningDate(mDistance, System.currentTimeMillis());
+                    }
+                })
+                .show();
     }
 
     /**
