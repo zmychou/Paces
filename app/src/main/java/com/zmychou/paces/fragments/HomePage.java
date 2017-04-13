@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.zmychou.paces.R;
-import com.zmychou.paces.RunningRecordsActivity;
+import com.zmychou.paces.running.RunningRecordsActivity;
 import com.zmychou.paces.running.RunningActivity;
 
 /**

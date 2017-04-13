@@ -34,6 +34,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c8e33a10f7f99bec793a8770a86faa08" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoTitleBarTheme">
@@ -44,16 +45,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".profile.ProfileActivity" />
-        <activity android:name=".RunningRecordsActivity" />
-        <activity android:name=".running.RunningActivity"
-            android:launchMode="singleInstance"/>
+        <activity android:name=".running.RunningRecordsActivity" />
+        <activity
+            android:name=".running.RunningActivity"
+            android:launchMode="singleInstance" />
         <activity android:name=".pedestrian.PedestrianACtivity" />
 
         <service android:name="com.amap.api.location.APSService" />
         <service
             android:name=".running.DataDeriveService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".running.ViewRunningRecordActivity"></activity>
     </application>
 
 </manifest>

@@ -1,14 +1,15 @@
-package com.zmychou.paces;
+package com.zmychou.paces.running;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +28,9 @@ import java.util.Date;
  */
 public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAdapter.MyViewHolder> {
 
+    public static final String TIME_STAMP = "com.zmychou.paces.TIME_STAMP";
     private Cursor mCursor;
+    private Activity mActivity;
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView date;
@@ -37,6 +40,14 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
             super(itemView);
             date = (TextView) itemView.findViewById(R.id.tv_running_record_date);
             distance = (TextView) itemView.findViewById(R.id.tv_running_record_distance);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity,ViewRunningRecordActivity.class);
+                    intent.putExtra(TIME_STAMP,date.getText());
+                    mActivity.startActivity(intent);
+                }
+            });
         }
 
         public void setDate(String date) {
@@ -50,6 +61,13 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
 
     public RunningRecordsAdapter(Cursor cursor) {
         mCursor = cursor;
+    }
+
+    public void registerActivity(Activity activity) {
+        mActivity = activity;
+    }
+    public void unregisterActivity() {
+        mActivity = null;
     }
 
     @Override
