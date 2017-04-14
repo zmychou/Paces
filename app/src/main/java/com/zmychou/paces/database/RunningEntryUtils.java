@@ -103,7 +103,7 @@ public class RunningEntryUtils implements BaseColumns{
     public Cursor getAllSummarize(){
         return sDatabase.query(
                 TABLE_NAME,
-                new String[]{TIME_STAMP,DISTANCE,DURATION,"sum("+DISTANCE+")","sum("+DURATION+")"},
+                new String[]{"sum("+DISTANCE+")",TIME_STAMP,"sum("+DURATION+")"},
                 null,
                 null,
                 TIME_STAMP,

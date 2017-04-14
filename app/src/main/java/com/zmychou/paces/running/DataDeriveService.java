@@ -26,6 +26,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.io.RunningDataJsonFileWriter;
+import com.zmychou.paces.profile.ProfileActivity;
 
 import java.util.ArrayList;
 
@@ -71,8 +72,8 @@ public class DataDeriveService extends Service {
         @Override
         public void onLocationChanged(AMapLocation location) {
             updateNotificationElapse++;
+            updateUi();
             if (updateNotificationElapse > 5) {
-                updateUi();
                 updateNotification("have run:"+mDistance+"meter");
                 updateNotificationElapse = 0;
             }
@@ -177,21 +178,14 @@ public class DataDeriveService extends Service {
     public void stop() {
         stopForeground(true);
         isFinish = false;
-
         showSaveFileAlertDialog();
-        stopLocation();
-        if (mLocationClient != null) {
-            mLocationClient.unRegisterLocationListener(mLocationRecordListener);
-        }
-        //Do some cleaning job,then stopSelf
-        stopSelf();
     }
 
     /**
      *
      */
     private void showSaveFileAlertDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(mBindActivity)
                 .setTitle("Stop running?")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -203,9 +197,17 @@ public class DataDeriveService extends Service {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         saveRunningDate(mDistance, System.currentTimeMillis());
+                        stopLocation();
+                        if (mLocationClient != null) {
+                            mLocationClient.unRegisterLocationListener(mLocationRecordListener);
+                        }
+                        //Do some cleaning job,then stopSelf
+                        mBindActivity.startActivity(new Intent(mBindActivity, ProfileActivity.class));
+                        mBindActivity.finish();
+                        DataDeriveService.this.stopSelf();
                     }
-                })
-                .show();
+                }).create();
+                dialog.show();
     }
 
     /**
@@ -219,7 +221,7 @@ public class DataDeriveService extends Service {
         mRunningData.setDistance(distance);
         mRunningData.setFinishTime(currentTime);
         mRunningData.setStartTime(mPerMileStartTime);
-        mRunningData.setDuration((mTimeAccumulate += (currentTime - mPerMileStartTime)) / 1000);
+        mRunningData.setDuration((mTimeAccumulate += (currentTime - mPerMileStartTime)));
         mRunningData.setSequenceNumber(++mMiles);
 //                mRunningData.setSteps();
 //                mRunningData.setCalories();

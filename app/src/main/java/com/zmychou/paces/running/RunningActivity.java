@@ -95,8 +95,11 @@ public class RunningActivity extends AppCompatActivity
             public void onClick(View v) {
                 runningService.stop();
                 unbindService(RunningActivity.this);
-                startActivity(new Intent(RunningActivity.this, ProfileActivity.class));
-                RunningActivity.this.finish();
+
+//                if (runningService != null) {
+////                    runningService
+//                }
+//                RunningActivity.this.finish();
             }
         });
 
@@ -138,7 +141,7 @@ public class RunningActivity extends AppCompatActivity
             startService(intent);
             bindService(intent,this, Service.BIND_AUTO_CREATE);
 
-            setPolyline("tmp_run_trace_20170411-180131.json");
+            setPolyline("tmp_run_trace_20170414-180527.json");
         }
     }
 

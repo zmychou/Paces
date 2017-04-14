@@ -1,6 +1,13 @@
 package com.zmychou.paces.pedestrian;
 
-import com.zmychou.paces.Sport;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * <pre>
@@ -13,9 +20,22 @@ import com.zmychou.paces.Sport;
  * description:
  * </pre>
  */
-public class Pedestrian implements Sport{
+public class Pedestrian implements SensorEventListener {
 
-    public void start(){}
+    private SensorManager mSensorManager;
+    private ArrayList<Float> mList = new ArrayList<>();
+
+    private float prev;
+
+    public void start(Context context){
+        Sensor sensor = hasAccelerator(context);
+        if (sensor == null) {
+            Toast.makeText(context, "Device don't ship any accelerometer", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        mSensorManager.registerListener(this,sensor,SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
+    }
     public void pause(){}
     public void stop(){}
     public void restart(){}
@@ -28,8 +48,11 @@ public class Pedestrian implements Sport{
     public int getIntensify(){
         return 0;
     }
-    private boolean hasAccelerator(){
-        return false;
+    private Sensor hasAccelerator(Context context){
+        mSensorManager
+                = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        return sensor;
     }
     private boolean hasBarometer(){
         return false;
@@ -59,4 +82,15 @@ public class Pedestrian implements Sport{
         return false;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        prev = x;
+//        mList.add()
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
