@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 
 public class DataDeriveService extends Service {
 
+    private static final String TAG = "com.zmychou.paces.DataDeriveService";
     private int mNotificationId = 1;
     private int mRequestCode = 1;
     private Notification mNotification;
@@ -41,6 +44,7 @@ public class DataDeriveService extends Service {
     private State mPrevState;
     private ArrayList<LatLng> mLatLngs;
     private RunningActivity mBindActivity;
+    private PowerManager.WakeLock mWakeLock;
 
     //records
     private float mDistance;
@@ -51,16 +55,6 @@ public class DataDeriveService extends Service {
     private LatLng mPrevLatLng ;
     private RunningData mRunningData;
     private int mMiles ;
-
-    //Use to get the max rectangle that user had reach on the map
-    private double mRightLongitude;
-    private double mLeftLongitude;
-    private double mUpLatitude;
-    private double mDownLatitude;
-
-    //Flags
-    private boolean isFinish;
-    private boolean isRunning ;
 
     class MyBinder extends Binder{
         public DataDeriveService getService() {
@@ -84,7 +78,6 @@ public class DataDeriveService extends Service {
             }
             mPrevLatLng = latLng;
             mLatLngs.add(latLng);
-            setMaxRectangle(latLng);
             Log.e("DataDeriveService","++++++get data"+mLatLngs.size()+":::dstance"+mDistance);
 
         }
@@ -135,6 +128,10 @@ public class DataDeriveService extends Service {
         mRunningData.setTimestamp(System.currentTimeMillis());
         mRunningData.setSequenceNumber(mMiles);
         mLatLngs = new ArrayList<>();
+
+
+        mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
+                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,TAG);
         return new MyBinder();
     }
     public void registerBindActivty(RunningActivity activity) {
@@ -153,11 +150,13 @@ public class DataDeriveService extends Service {
     }
 
     public void start(State state) {
-        isRunning = true;
         mPrevState = state;
         mPerMileStartTime = System.currentTimeMillis();
         startLocation();
         updateNotification("Location start");
+        if (!mWakeLock.isHeld()) {
+            mWakeLock.acquire();
+        }
     }
 
     /**
@@ -165,11 +164,13 @@ public class DataDeriveService extends Service {
      * @param state
      */
     public void pause(State state) {
-        isRunning = false;
         mPrevState = state;
         mTimeAccumulate += (System.currentTimeMillis() - mPerMileStartTime);
         stopLocation();
         updateNotification("Location pause");
+        if (mWakeLock.isHeld()) {
+            mWakeLock.release();
+        }
     }
 
     /**
@@ -177,8 +178,10 @@ public class DataDeriveService extends Service {
      */
     public void stop() {
         stopForeground(true);
-        isFinish = false;
         showSaveFileAlertDialog();
+        if (mWakeLock.isHeld()) {
+            mWakeLock.release();
+        }
     }
 
     /**
@@ -279,38 +282,6 @@ public class DataDeriveService extends Service {
         return sb.toString();
     }
 
-    /**
-     * Start position of the user's sport records
-     * @param latLng A LatLng object include latitude and longitude
-     */
-    public void setStartPosition(LatLng latLng) {
-        mPrevLatLng = latLng;
-        mLeftLongitude = latLng.longitude;
-        mRightLongitude = latLng.longitude;
-        mUpLatitude = latLng.latitude;
-        mDownLatitude = latLng.latitude;
-    }
-
-    /**
-     * Set the max rectangle that contains all the latitude and longitude data ,which make up
-     * the trace of the user movement
-     * @param latLng
-     */
-    public void setMaxRectangle(LatLng latLng) {
-        setMaxRectangle(latLng.latitude,latLng.longitude);
-    }
-    /**
-     * Set the max rectangle that contains all the latitude and longitude data ,which make up
-     * the trace of the user movement
-     * @param lat latitude
-     * @param lng longitude
-     */
-    public void setMaxRectangle(double lat,double lng) {
-        mLeftLongitude = mLeftLongitude > lat ? mLeftLongitude : lat;
-        mRightLongitude = mRightLongitude > lat ? mRightLongitude : lat;
-        mUpLatitude = mUpLatitude > lng ? mUpLatitude : lng;
-        mDownLatitude = mDownLatitude > lng ? mDownLatitude : lng;
-    }
 
     /**
      * Save the previous state for restore the bind client to the right state
@@ -364,13 +335,11 @@ public class DataDeriveService extends Service {
         mLocationClient.setLocationListener(mLocationRecordListener);
     }
     public void startLocation(){
-        isRunning = true;
         if (mLocationClient != null) {
             mLocationClient.startLocation();
         }
     }
     public void stopLocation(){
-        isRunning = false;
         if (mLocationClient != null) {
             mLocationClient.stopLocation();
         }
@@ -379,7 +348,6 @@ public class DataDeriveService extends Service {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        isFinish = true;
         Log.e("DataDeriveService",this.toString()+"-----My job done!");
     }
 }

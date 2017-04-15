@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
         JsonFileParser parser = new JsonFileParser();
         parser.parser(this,"tmp_run_trace_20170411-180131.json");
-        Log.e("separate line", "------------------------------");
-        for (LatLng ll : parser.parserLatLngArray(this,"tmp_run_trace_20170411-180131.json")) {
-            Log.e("latitude", ll.latitude+"");
-        }
+//        Log.e("separate line", "------------------------------");
+//        for (LatLng ll : parser.parserLatLngArray(this,"tmp_run_trace_20170411-180131.json")) {
+//            Log.e("latitude", ll.latitude+"");
+//        }
     }
 }

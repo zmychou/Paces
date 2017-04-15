@@ -8,7 +8,7 @@
     <com.amap.api.maps.MapView
         android:id="@+id/mv_details_record"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/tv_tmp"
         android:layout_width="wrap_content"

@@ -13,20 +13,21 @@ import java.util.ArrayList;
 
 public class JsonFileParser {
 	protected File openFile(Context context,String fileName) {
+        String[] ss = fileName.split("/");
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			File root = Environment.getExternalStorageDirectory();
 			File path = new File(root,"Paces/file/json");
 			if (!path.exists()){
 				path.mkdirs();
 			}
-			return new File(path,fileName);
+			return new File(path,ss[ss.length-1]);
 		}
 		Toast.makeText(context, R.string.external_device_invalid, Toast.LENGTH_SHORT).show();
 		return null;
 	}
     //"tmp_run_trace_20170411-180131.json"
 
-    public ArrayList<ArrayList<LatLng>> parserLatLngArrrays(Context context,String... fileNames) {
+    public ArrayList<ArrayList<LatLng>> parserLatLngArrays(Context context,String... fileNames) {
         ArrayList<ArrayList<LatLng>> ll = new ArrayList<>();
         for (String fileName : fileNames) {
             ll.add(parserLatLngArray(context,fileName));
@@ -42,7 +43,6 @@ public class JsonFileParser {
             jr.beginObject();
             while (jr.hasNext()) {
                 switch (jr.nextName()) {
-
                     case "latlngs":
                         list =  parserArray(jr);
                         break;
