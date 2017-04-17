@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.amap.api.services.weather.WeatherSearch;
 import com.zmychou.paces.R;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
@@ -51,6 +52,8 @@ public class HomePage extends Fragment {
                 startActivity(new Intent(mOwingActivity,PedestrianActivity.class));
             }
         });
+
+        WeatherSearch weatherSearch = new WeatherSearch(mOwingActivity);
     }
 
 }
