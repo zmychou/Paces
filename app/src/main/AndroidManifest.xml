@@ -52,7 +52,7 @@
         <activity
             android:name=".running.RunningActivity"
             android:launchMode="singleInstance" />
-        <activity android:name=".pedestrian.PedestrianACtivity" />
+        <activity android:name=".pedestrian.PedestrianActivity" />
 
         <service android:name="com.amap.api.location.APSService" />
         <service

@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.zmychou.paces.R;
+import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
-import com.zmychou.paces.running.RunningActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +38,7 @@ public class HomePage extends Fragment {
         mOwingActivity = getActivity();
         mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
 
+
         mSummarize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +48,7 @@ public class HomePage extends Fragment {
         mOwingActivity.findViewById(R.id.user_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mOwingActivity,RunningActivity.class));
+                startActivity(new Intent(mOwingActivity,PedestrianActivity.class));
             }
         });
     }

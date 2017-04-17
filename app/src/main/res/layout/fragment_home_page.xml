@@ -207,24 +207,11 @@
                 android:layout_marginBottom="5dp"
                 android:textColor="@color/colorWhite"/>
 
-            <CalendarView
-                android:id="@+id/calender"
-                android:layoutDirection="locale"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/summarize"
-                android:background="@color/colorLightBlack"
-                android:weekDayTextAppearance="@style/calenderTextAppearance"
-                android:dateTextAppearance="@style/calenderTextAppearance"/>
             <ImageView android:layout_height="100dp"
-                android:layout_below="@id/calender"
-            android:layout_width="match_parent"
-            android:background="@color/colorWhite"
-            android:layout_alignParentBottom="true"/>
-
+                android:layout_below="@id/user_info_bgimg"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
     </ScrollView>
-
 </FrameLayout>
