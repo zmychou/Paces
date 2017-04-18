@@ -1,4 +1,4 @@
-package com.zmychou.paces.network;
+package com.zmychou.paces.weather;
 
 import android.util.JsonReader;
 import android.util.Log;

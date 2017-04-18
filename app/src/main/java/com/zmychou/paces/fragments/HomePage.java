@@ -12,13 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.services.weather.LocalWeatherForecastResult;
-import com.amap.api.services.weather.LocalWeatherLive;
-import com.amap.api.services.weather.LocalWeatherLiveResult;
 import com.zmychou.paces.R;
-import com.zmychou.paces.network.WeatherListener;
-import com.zmychou.paces.network.WeatherResult;
-import com.zmychou.paces.network.WeatherSearch;
+import com.zmychou.paces.weather.WeatherListener;
+import com.zmychou.paces.weather.WeatherResult;
+import com.zmychou.paces.weather.WeatherSearch;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
 
@@ -51,12 +48,6 @@ public class HomePage extends Fragment implements WeatherListener {
             @Override
             public void onClick(View v) {
                 mOwingActivity.startActivity(new Intent(mOwingActivity, RunningRecordsActivity.class));
-            }
-        });
-        mOwingActivity.findViewById(R.id.user_img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mOwingActivity,PedestrianActivity.class));
             }
         });
 
