@@ -5,11 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.fragments.HomePage;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.network.WeatherSearch;
 
 /**
  * Home page activity.Display some info about the user and its activity history.
@@ -25,14 +24,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment homePage = new HomePage();
-        fragmentTransaction.replace(R.id.fragment_holder,homePage);
+        fragmentTransaction.replace(R.id.fragment_holder, homePage);
         fragmentTransaction.commit();
 
         JsonFileParser parser = new JsonFileParser();
-        parser.parser(this,"tmp_run_trace_20170411-180131.json");
-//        Log.e("separate line", "------------------------------");
-//        for (LatLng ll : parser.parserLatLngArray(this,"tmp_run_trace_20170411-180131.json")) {
-//            Log.e("latitude", ll.latitude+"");
-//        }
+        parser.parser(this, "tmp_run_trace_20170411-180131.json");
+
+        new WeatherSearch().searchLiveWeather("beijing");
     }
 }

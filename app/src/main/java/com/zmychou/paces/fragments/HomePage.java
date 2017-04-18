@@ -9,16 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.amap.api.services.weather.WeatherSearch;
+import com.amap.api.services.weather.LocalWeatherForecastResult;
+import com.amap.api.services.weather.LocalWeatherLive;
+import com.amap.api.services.weather.LocalWeatherLiveResult;
 import com.zmychou.paces.R;
+import com.zmychou.paces.network.WeatherListener;
+import com.zmychou.paces.network.WeatherResult;
+import com.zmychou.paces.network.WeatherSearch;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePage extends Fragment {
+public class HomePage extends Fragment implements WeatherListener {
 
     private ImageView mSummarize;
     private Activity mOwingActivity;
@@ -53,7 +60,30 @@ public class HomePage extends Fragment {
             }
         });
 
-        WeatherSearch weatherSearch = new WeatherSearch(mOwingActivity);
+        showWeather("qinhuangdao");
     }
 
+    private void showWeather(String city) {
+        WeatherSearch weatherSearch = new WeatherSearch();
+        weatherSearch.registerWeatherListener(this);
+        city = city == null ? "beijing" : city;
+        weatherSearch.searchLiveWeather(city);
+    }
+
+    @Override
+    public void onWeatherSearchResult(WeatherResult result, String state) {
+        if (WeatherResult.STATE_OK.equals(state)) {
+            TextView location = (TextView) mOwingActivity.findViewById(R.id.tv_weather_location);
+            TextView weather = (TextView) mOwingActivity.findViewById(R.id.tv_weather);
+            TextView temperature = (TextView) mOwingActivity.findViewById(R.id.tv_temperature);
+            TextView aqi = (TextView) mOwingActivity.findViewById(R.id.tv_PM2_5);
+            location.setText(result.getCity());
+            weather.setText(result.getWeather());
+            temperature.setText(result.getTemperature()+"°C");
+            aqi.setText(result.getPm2_5());
+        }else {
+            Toast.makeText(mOwingActivity, "天气信息获取失败", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }

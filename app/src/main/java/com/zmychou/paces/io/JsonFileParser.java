@@ -25,7 +25,6 @@ public class JsonFileParser {
 		Toast.makeText(context, R.string.external_device_invalid, Toast.LENGTH_SHORT).show();
 		return null;
 	}
-    //"tmp_run_trace_20170411-180131.json"
 
     public ArrayList<ArrayList<LatLng>> parserLatLngArrays(Context context,String... fileNames) {
         ArrayList<ArrayList<LatLng>> ll = new ArrayList<>();

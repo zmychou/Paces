@@ -27,7 +27,7 @@
 
             <TextView
                 android:textColor="@color/colorWhite"
-                android:id="@+id/weather_location"
+                android:id="@+id/tv_weather_location"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/weather_location_ph"
@@ -41,7 +41,7 @@
 
             <TextView
                 android:textColor="@color/colorWhite"
-                android:id="@+id/weather"
+                android:id="@+id/tv_weather"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/weather_location_ph"
@@ -55,7 +55,7 @@
 
             <TextView
                 android:textColor="@color/colorWhite"
-                android:id="@+id/temperature"
+                android:id="@+id/tv_temperature"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/weather_location_ph"
@@ -81,7 +81,7 @@
 
             <TextView
                 android:textColor="@color/colorWhite"
-                android:id="@+id/PM2.5"
+                android:id="@+id/tv_PM2.5"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/weather_location_ph"
