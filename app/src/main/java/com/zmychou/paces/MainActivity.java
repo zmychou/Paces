@@ -9,11 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.zmychou.paces.fragments.HomePage;
-import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.fragments.HomePageFragment;
+import com.zmychou.paces.fragments.MorePageFragment;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningActivity;
-import com.zmychou.paces.weather.WeatherSearch;
 
 /**
  * Home page activity.Display some info about the user and its activity history.
@@ -26,27 +25,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment homePage = new HomePage();
+        final Fragment homePage = new HomePageFragment();
+        final Fragment morePage = new MorePageFragment();
         fragmentTransaction.replace(R.id.fragment_holder, homePage);
         fragmentTransaction.commit();
-//
-//        JsonFileParser parser = new JsonFileParser();
-//        parser.parser(this, "tmp_run_trace_20170411-180131.json");
 
         ImageView running = (ImageView) findViewById(R.id.iv_main_running);
         ImageView pedestrian = (ImageView) findViewById(R.id.iv_main_pedestrian);
+        ImageView more = (ImageView) findViewById(R.id.iv_main_more);
+        ImageView home = (ImageView) findViewById(R.id.iv_main_home);
+//        ImageView pedestrian = (ImageView) findViewById(R.id.iv_main_pedestrian);
         running.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,RunningActivity.class));
             }
         });
+
         pedestrian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,PedestrianActivity.class));
+            }
+        });
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_holder,morePage)
+                        .commit();
+            }
+        });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_holder, homePage)
+                        .commit();
             }
         });
     }

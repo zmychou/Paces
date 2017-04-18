@@ -3,11 +3,34 @@
     xmlns:v7ns = "http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.zmychou.paces.fragments.MorePageFragment">
 
-    <!--<android.support.v7.widget.ReRecyclerView-->
-        <!--v7ns:id="@+id/recycle"-->
-        <!--v7ns:layout_width="match_parent"-->
-        <!--v7ns:layout_height="wrap_content" />-->
+
+    <com.zmychou.paces.customview.ItemView
+        android:background="@color/colorWhiteDark"
+        android:id="@+id/itv_profile"
+        v7ns:item_name="My name"
+        v7ns:src="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.zmychou.paces.customview.ItemView
+        android:background="@color/colorWhiteDark"
+        android:layout_marginTop="5dp"
+        android:id="@+id/itv_settings"
+        v7ns:item_name="Settings"
+        android:layout_below="@id/itv_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <com.zmychou.paces.customview.ItemView
+        android:background="@color/colorWhiteDark"
+        android:layout_marginTop="5dp"
+        v7ns:item_name="About"
+        android:layout_below="@id/itv_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

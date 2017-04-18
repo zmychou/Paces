@@ -22,11 +22,11 @@ import com.zmychou.paces.running.RunningRecordsActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePage extends Fragment implements WeatherListener {
+public class HomePageFragment extends Fragment implements WeatherListener {
 
     private ImageView mSummarize;
     private Activity mOwingActivity;
-    public HomePage() {
+    public HomePageFragment() {
         // Required empty public constructor
     }
 

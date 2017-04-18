@@ -28,6 +28,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.io.RunningDataJsonFileWriter;
+import com.zmychou.paces.pedestrian.Pedestrian;
 import com.zmychou.paces.profile.ProfileActivity;
 
 import java.util.ArrayList;
@@ -38,22 +39,31 @@ public class DataDeriveService extends Service {
     private int mNotificationId = 1;
     private int mRequestCode = 1;
     private Notification mNotification;
+
     private AMapLocationListener mLocationRecordListener;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
-    private State mPrevState;
     private ArrayList<LatLng> mLatLngs;
     private RunningActivity mBindActivity;
     private PowerManager.WakeLock mWakeLock;
 
+    private State mPrevState;
+
     //records
+    //per mile distance
     private float mDistance;
     private long mPerMileStartTime;
+    private int mSteps;
     //Use to save how long have running before pause
     private long mTimeAccumulate;
     private long mTotalTime;
     private LatLng mPrevLatLng ;
+
+    private float velocity;
+
     private RunningData mRunningData;
+    private Pedestrian mPedestrian;
+    //total miles
     private int mMiles ;
 
     class MyBinder extends Binder{
@@ -66,6 +76,8 @@ public class DataDeriveService extends Service {
         @Override
         public void onLocationChanged(AMapLocation location) {
             updateNotificationElapse++;
+            velocity = location.getSpeed();
+            mSteps = mPedestrian.getStepCount();
             updateUi();
             if (updateNotificationElapse > 5) {
                 updateNotification("have run:"+mDistance+"meter");
@@ -129,12 +141,14 @@ public class DataDeriveService extends Service {
         mRunningData.setSequenceNumber(mMiles);
         mLatLngs = new ArrayList<>();
 
-
         mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,TAG);
+        mPedestrian = new Pedestrian();
+        mPedestrian.start(this);
+        mPedestrian.pause();
         return new MyBinder();
     }
-    public void registerBindActivty(RunningActivity activity) {
+    public void registerBindActivity(RunningActivity activity) {
         mBindActivity = activity;
     }
 
@@ -153,6 +167,7 @@ public class DataDeriveService extends Service {
         mPrevState = state;
         mPerMileStartTime = System.currentTimeMillis();
         startLocation();
+        mPedestrian.restart();
         updateNotification("Location start");
         if (!mWakeLock.isHeld()) {
             mWakeLock.acquire();
@@ -167,6 +182,7 @@ public class DataDeriveService extends Service {
         mPrevState = state;
         mTimeAccumulate += (System.currentTimeMillis() - mPerMileStartTime);
         stopLocation();
+        mPedestrian.pause();
         updateNotification("Location pause");
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
@@ -182,6 +198,7 @@ public class DataDeriveService extends Service {
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
         }
+        mPedestrian.stop();
     }
 
     /**
@@ -226,8 +243,8 @@ public class DataDeriveService extends Service {
         mRunningData.setStartTime(mPerMileStartTime);
         mRunningData.setDuration((mTimeAccumulate += (currentTime - mPerMileStartTime)));
         mRunningData.setSequenceNumber(++mMiles);
-//                mRunningData.setSteps();
-//                mRunningData.setCalories();
+        mRunningData.setSteps(mPedestrian.getStepCount() - mSteps);
+        mRunningData.setCalories(calculateCalories());
         SaveDataWorker worker = new SaveDataWorker();
         worker.execute(mRunningData);
 
@@ -249,16 +266,16 @@ public class DataDeriveService extends Service {
             //Total distance
             String distance = mMiles+"."+(((int)mDistance));
             mBindActivity.updateUi(distance, formatDuration(), getVelocity(),
-                    calculateCalories(),233+"");
+                    calculateCalories()+"",mSteps+"");
         }
     }
 
     private String getVelocity() {
-        return 10.5+"";
+        return ((int)(velocity * 3.6) * 10 / 10)+"";
     }
-    private String calculateCalories() {
-        // TODO: 17-4-12  a stub to calculate calories
-        return 123+"";
+
+    private int calculateCalories() {
+        return (int)(mMiles + mDistance) * getUserWeight();
     }
 
     private String formatDuration() {
@@ -275,11 +292,16 @@ public class DataDeriveService extends Service {
         }
         sb.append(minutesInHour);
         sb.append(":");
-        if (totalSeconds < 10) {
+        if (secondsInMinute < 10) {
             sb.append("0");
         }
         sb.append(secondsInMinute);
         return sb.toString();
+    }
+
+    public int getUserWeight() {
+        //get from user settings
+        return 55;
     }
 
 

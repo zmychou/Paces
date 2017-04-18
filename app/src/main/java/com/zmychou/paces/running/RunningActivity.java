@@ -247,7 +247,7 @@ public class RunningActivity extends AppCompatActivity
         else {
             mRunningState = new PreparationState();
         }
-        runningService.registerBindActivty(this);
+        runningService.registerBindActivity(this);
 
     }
 

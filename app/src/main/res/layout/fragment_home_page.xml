@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zmychou.paces.fragments.HomePage">
+    tools:context="com.zmychou.paces.fragments.HomePageFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,18 +15,16 @@
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:paddingTop="0dp"
-            android:background="@color/colorWhite"
             tools:context="com.zmychou.paces.MainActivity">
 
 
             <ImageView
+                android:background="@color/colorWhiteDark"
                 android:id="@+id/weather_bg_img"
                 android:layout_height="110dp"
-                android:background="@color/colorLightBlack"
                 android:layout_width="match_parent"/>
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/tv_weather_location"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -40,7 +38,6 @@
 
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/tv_weather"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -54,7 +51,6 @@
 
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/tv_temperature"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -67,7 +63,6 @@
                 android:layout_marginTop="46dp" />
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="PM 2.5:"
@@ -80,7 +75,6 @@
 
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/tv_PM2.5"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -97,7 +91,7 @@
                 android:layout_height="60dp"
                 android:layout_width="match_parent"
                 android:layout_below="@id/weather_bg_img"
-                android:background="@color/colorLightBlack"
+                android:background="@color/colorWhiteDark"
                 />
 
             <ImageView
@@ -110,7 +104,6 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:src="@mipmap/ic_launcher"/>
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/nickname"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -122,7 +115,6 @@
                 android:layout_marginStart="106dp"
                 android:layout_marginTop="8dp" />
             <TextView
-                android:textColor="@color/colorWhite"
                 android:id="@+id/user_id"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -139,7 +131,7 @@
                 android:layout_height="100dp"
                 android:layout_width="match_parent"
                 android:layout_below="@id/user_info_bgimg"
-                android:background="@color/colorLightBlack"
+                android:background="@color/colorWhiteDark"
                 android:layout_marginTop="10dp"/>
             <TextView
                 android:layout_height="wrap_content"
@@ -147,17 +139,26 @@
                 android:text="我的活动"
                 android:layout_alignTop="@id/summarize"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/colorWhite"/>
+                android:layout_marginTop="5dp"/>
+
             <TextView
+                android:id="@+id/tv_home_total_distance"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="125"
+                android:text="0"
                 android:layout_alignTop="@id/summarize"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="22dp"
-                android:textSize="45sp"
-                android:textColor="@color/colorWhite"/>
+                android:textSize="45sp"/>
+
+            <TextView
+                android:text="km"
+                android:layout_alignBottom="@id/tv_home_total_distance"
+                android:layout_alignRight="@id/tv_home_total_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="-50dp"
+                android:textSize="30sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -166,7 +167,7 @@
                 android:layout_alignBottom="@id/summarize"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="5dp"
-                android:textColor="@color/colorWhite"/>
+                />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -175,17 +176,15 @@
                 android:layout_alignTop="@id/summarize"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="5dp"
-                android:textSize="20sp"
-                android:textColor="@color/colorWhite"/>
+                android:textSize="20sp"/>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="20"
+                android:text="duration"
                 android:layout_alignRight="@id/summarize"
                 android:layout_alignTop="@id/summarize"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="30dp"
-                android:textColor="@color/colorWhite"/>
+                android:layout_marginTop="30dp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -195,8 +194,7 @@
                 android:layout_alignBottom="@id/summarize"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="25dp"
-                android:textSize="20sp"
-                android:textColor="@color/colorWhite"/>
+                android:textSize="20sp"/>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -204,8 +202,7 @@
                 android:layout_alignRight="@id/summarize"
                 android:layout_alignBottom="@id/summarize"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="5dp"
-                android:textColor="@color/colorWhite"/>
+                android:layout_marginBottom="5dp"/>
 
             <ImageView android:layout_height="100dp"
                 android:layout_below="@id/user_info_bgimg"

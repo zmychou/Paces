@@ -9,7 +9,7 @@
     </style>
 
     <style name="calenderTextAppearance">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorWhiteLight</item>
         <item name="android:textSize">20sp</item>
     </style>
 

@@ -104,13 +104,8 @@ public class Pedestrian implements SensorEventListener {
     private int mCounter;
 
     public void start(Context context){
-        state[AXIS_X] = STATE_UP;
-        state[AXIS_Y] = STATE_UP;
-        state[AXIS_Z] = STATE_UP;
 
-        mStartTimestamp = System.currentTimeMillis();
-//        mUpperThreshold[AXIS_X] = 15f;
-//        mLowerThreshold[AXIS_X] = -10f;
+        init();
         mSensor = hasAccelerator(context);
         if (mSensor == null) {
             Toast.makeText(context, "Device don't ship any accelerometer", Toast.LENGTH_SHORT)
@@ -128,12 +123,21 @@ public class Pedestrian implements SensorEventListener {
     public void restart(){
         mSensorManager.registerListener(this,mSensor,SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
     }
+
+    private void init() {
+        state[AXIS_X] = STATE_UP;
+        state[AXIS_Y] = STATE_UP;
+        state[AXIS_Z] = STATE_UP;
+        mStartTimestamp = System.currentTimeMillis();
+    }
     public int getStepCount(){
         return mSteps[AXIS_TOTAL];
     }
     public int getIntensify(){
         return 0;
     }
+
+
     private Sensor hasAccelerator(Context context){
         mSensorManager
                 = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -172,6 +176,10 @@ public class Pedestrian implements SensorEventListener {
 
     }
 
+    /**
+     * Calculate the steps on x axis
+     * @param x The sensor value of x axis
+     */
     private void xAxis(float x) {
         job(x, AXIS_X);
     }
@@ -181,6 +189,7 @@ public class Pedestrian implements SensorEventListener {
     private void zAxis(float z) {
         job(z, AXIS_Z);
     }
+
 
     private void job(float value, byte whichAxis) {
 
@@ -250,13 +259,17 @@ public class Pedestrian implements SensorEventListener {
         xAxis(event.values[AXIS_X]);
         yAxis(event.values[AXIS_Y]);
         zAxis(event.values[AXIS_Z]);
-        tmp = (mSteps[AXIS_X] + mSteps[AXIS_Y] + mSteps[AXIS_Z]) / 3;
+
+        tmp = max(max(mSteps[0], mSteps[1]), mSteps[2]);
         if (tmp > mSteps[AXIS_TOTAL]) {
             if (mDataChangeListener != null) {
+                //a hook
                 mDataChangeListener.onUpdateSteps();
             }
             mSteps[AXIS_TOTAL] = tmp;
-            mActivity.setSteps(mSteps[AXIS_TOTAL]);
+            if (mActivity != null) {
+                mActivity.setSteps(mSteps[AXIS_TOTAL]);
+            }
         }
     }
 
@@ -265,6 +278,22 @@ public class Pedestrian implements SensorEventListener {
 
     }
 
+    private int min(int i, int j) {
+        return i > j ? j : i;
+    }
+
+    private int max(int i, int j) {
+        return i < j ? j : i;
+    }
+
+    /**
+     * 二人为公
+     * @param values
+     * @return
+     */
+    private int middle(int[] values ) {
+        return max(min(values[0], values[1]), min(values[1], values[2]));
+    }
     public void registerActivity(PedestrianActivity activity) {
         mActivity = activity;
     }
