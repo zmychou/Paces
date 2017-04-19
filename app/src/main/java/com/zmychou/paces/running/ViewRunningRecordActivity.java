@@ -71,9 +71,10 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
             LatLng center = new LatLng((mUpLatitude + mDownLatitude) / 2,
                     (mRightLongitude + mLeftLongitude) / 2);
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBoundsRect(
                     new LatLngBounds(new LatLng(mUpLatitude,mRightLongitude),
-                            new LatLng(mDownLatitude,mRightLongitude)),0));
+                            new LatLng(mDownLatitude,mRightLongitude)),1,1,1,1));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(center));
         }
     }

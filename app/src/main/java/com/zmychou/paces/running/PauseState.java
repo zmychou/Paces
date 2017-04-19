@@ -32,7 +32,7 @@ public class PauseState implements State {
         activity.changeState(OnRunningState.getInstance());
         activity.main.setText("Pause");
         activity.main.setBackgroundResource(R.drawable.btn_orange_roundness);
-        activity.runningService.start(this);
+        activity.runningService.restart(this);
     }
 
     @Override

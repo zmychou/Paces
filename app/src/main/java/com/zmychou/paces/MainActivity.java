@@ -1,11 +1,15 @@
 package com.zmychou.paces;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,6 +17,9 @@ import com.zmychou.paces.fragments.HomePageFragment;
 import com.zmychou.paces.fragments.MorePageFragment;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Home page activity.Display some info about the user and its activity history.
@@ -68,5 +75,14 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             }
         });
+        detectSensorType();
+    }
+
+    public void detectSensorType() {
+        SensorManager sMgr = ( SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensors = sMgr.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor sensor : sensors) {
+            Log.e("sensor type :",sensor.getName());
+        }
     }
 }

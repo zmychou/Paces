@@ -47,15 +47,30 @@ public class DataDeriveService extends Service {
     private RunningActivity mBindActivity;
     private PowerManager.WakeLock mWakeLock;
 
+    /**
+     * Use to restore the activity when user leave the running activity but don't stop running and
+     * then come back later
+     */
     private State mPrevState;
 
     //records
     //per mile distance
     private float mDistance;
     private long mPerMileStartTime;
+
+    /**
+     * Total steps from start running till now
+     */
     private int mSteps;
-    //Use to save how long have running before pause
+
+    /**
+     * Use to save how long have running before pause
+     */
     private long mTimeAccumulate;
+
+    /**
+     * Total milliseconds from start running till now
+     */
     private long mTotalTime;
     private LatLng mPrevLatLng ;
 
@@ -135,17 +150,6 @@ public class DataDeriveService extends Service {
     public IBinder onBind(Intent intent) {
         Log.e("DataDeriveService","----------------some one bind me");
         setupClient();
-        showNotification();
-        mRunningData = RunningData.getInstance();
-        mRunningData.setTimestamp(System.currentTimeMillis());
-        mRunningData.setSequenceNumber(mMiles);
-        mLatLngs = new ArrayList<>();
-
-        mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
-                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,TAG);
-        mPedestrian = new Pedestrian();
-        mPedestrian.start(this);
-        mPedestrian.pause();
         return new MyBinder();
     }
     public void registerBindActivity(RunningActivity activity) {
@@ -164,11 +168,30 @@ public class DataDeriveService extends Service {
     }
 
     public void start(State state) {
+        showNotification();
+        mPedestrian = new Pedestrian();
+        mPedestrian.start(this);
+        mRunningData = RunningData.getInstance();
+        mRunningData.setTimestamp(System.currentTimeMillis());
+        mRunningData.setSequenceNumber(mMiles);
+        mLatLngs = new ArrayList<>();
+        mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
+                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,TAG);
         mPrevState = state;
         mPerMileStartTime = System.currentTimeMillis();
         startLocation();
-        mPedestrian.restart();
         updateNotification("Location start");
+        if (!mWakeLock.isHeld()) {
+            mWakeLock.acquire();
+        }
+    }
+
+    public void restart(State state) {
+        mPrevState = state;
+        mPerMileStartTime = System.currentTimeMillis();
+        startLocation();
+        updateNotification("Location start");
+        mPedestrian.restart();
         if (!mWakeLock.isHeld()) {
             mWakeLock.acquire();
         }
@@ -193,12 +216,7 @@ public class DataDeriveService extends Service {
      * After user stop running ,the last stage of the service
      */
     public void stop() {
-        stopForeground(true);
         showSaveFileAlertDialog();
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        }
-        mPedestrian.stop();
     }
 
     /**
@@ -216,15 +234,24 @@ public class DataDeriveService extends Service {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        stopForeground(true);
+                        long timestamp = mRunningData.getTimestamp();
                         saveRunningDate(mDistance, System.currentTimeMillis());
                         stopLocation();
                         if (mLocationClient != null) {
                             mLocationClient.unRegisterLocationListener(mLocationRecordListener);
                         }
                         //Do some cleaning job,then stopSelf
-                        mBindActivity.startActivity(new Intent(mBindActivity, ProfileActivity.class));
+                        Intent intent = new Intent(mBindActivity, ViewRunningRecordActivity.class);
+                        intent.putExtra(RunningRecordsAdapter.TIME_STAMP,timestamp+"");
+                        mBindActivity.startActivity(intent);
                         mBindActivity.finish();
                         DataDeriveService.this.stopSelf();
+
+                        if (mWakeLock.isHeld()) {
+                            mWakeLock.release();
+                        }
+                        mPedestrian.stop();
                     }
                 }).create();
                 dialog.show();
@@ -248,7 +275,6 @@ public class DataDeriveService extends Service {
         SaveDataWorker worker = new SaveDataWorker();
         worker.execute(mRunningData);
 
-        //Reset
         mTotalTime += mTimeAccumulate;
         mLatLngs = new ArrayList<>();
         mDistance = 0;
@@ -275,7 +301,7 @@ public class DataDeriveService extends Service {
     }
 
     private int calculateCalories() {
-        return (int)(mMiles + mDistance) * getUserWeight();
+        return (int)(mMiles + mDistance / 1000) * getUserWeight();
     }
 
     private String formatDuration() {

@@ -22,13 +22,6 @@ import java.util.ArrayList;
  * description:
  * </pre>
  */
- 
- /*
- * 关于计步器的一些设想:
- * 1. 分离重力,计算重力在三个轴向上的值,估算书当前手机的姿态,例如如果是走路看手机,x轴的重力分量会很小
- * 2. 对不同姿态,赋予不同的轴向的值不同的权重
- * 3. 对明确制定的场合,如跑步,制定专门的赛选方案
- */
 public class Pedestrian implements SensorEventListener {
 
     private SensorManager mSensorManager;

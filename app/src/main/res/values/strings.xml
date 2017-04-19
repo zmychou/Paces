@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Paces</string>
 
-    //MainActivity
-    <string name="weather_location_ph">未知</string>
+    <!--fragment home-->
+    <string name="weather_location_ph">--</string>
+    <string name="home_my_activity">My Activity</string>
+    <string name="home_total_distance">Distance</string>
+    <string name="home_duration_time">duration</string>
+    <string name="home_running_times">total</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -16,4 +20,8 @@
     <string name="save_success">File saved</string>
     <string name="external_device_invalid">External storage unavailable</string>
     <string name="failed_to_save">Failed to save file</string>
+
+    <!--GPS states-->
+    <string name="gps_tracking">GPS Tracking</string>
+    <string name="gps_tracked">GPS Tracked</string>
 </resources>

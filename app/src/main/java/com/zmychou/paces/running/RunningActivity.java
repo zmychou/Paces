@@ -56,6 +56,7 @@ public class RunningActivity extends AppCompatActivity
     private TextView mVelocity;
     private TextView mCalories;
     private TextView mSteps;
+    private TextView mGpsState;
     Button main;
     Button slave;
     public void changeState(State state){
@@ -80,6 +81,7 @@ public class RunningActivity extends AppCompatActivity
         mVelocity = (TextView) findViewById(R.id.btn_running_activity_velocity);
         mCalories = (TextView) findViewById(R.id.btn_running_activity_calories);
         mSteps = (TextView) findViewById(R.id.btn_running_activity_steps);
+        mGpsState = (TextView) findViewById(R.id.tv_gps_state);
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,10 +275,11 @@ public class RunningActivity extends AppCompatActivity
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
                 mSatellites = aMapLocation.getSatellites();
-                if (mSatellites > 0)
+                if (mSatellites > 2) {
+                    changeGpsState();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                            new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude()),18));
-                else {
+                            new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 18));
+                }else {
                     Log.e("Running:Location type:",aMapLocation.getLocationType()+"-"+aMapLocation.getErrorCode());
                 }
                 Log.e("Running:",this.getClass()+"Satellite:"+mSatellites);
@@ -291,5 +294,10 @@ public class RunningActivity extends AppCompatActivity
         clientOption.setGpsFirst(true);
         locationClient.setLocationOption(clientOption);
         locationClient.setLocationListener(locationListener);
+    }
+
+    public void changeGpsState() {
+        mGpsState.setText(R.string.gps_tracked);
+        mGpsState.setTextColor(getResources().getColor(R.color.colorGreenLight));
     }
 }

@@ -110,4 +110,26 @@ public class RunningEntryUtils implements BaseColumns{
                 null,
                 null );
     }
+
+    public float getTotalDistance() {
+        Cursor cursor = sDatabase.query(TABLE_NAME,
+                new String[]{"sum("+DISTANCE+")"},
+                null,null,null,null,null);
+        cursor.moveToFirst();
+        return cursor.getFloat(cursor.getColumnIndex("sum("+DISTANCE+")"));
+    }
+
+    public int getTotalTimes() {
+        Cursor cursor = sDatabase.query(
+                TABLE_NAME,
+                new String[]{TIME_STAMP},
+                null,
+                null,
+                TIME_STAMP,
+                null,
+                null );
+        return cursor.getCount();
+    }
+
+//    public
 }

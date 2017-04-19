@@ -29,4 +29,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorTransparent">#00fc0808</color>
+    <color name="colorBlur">#4a011e9f</color>
 </resources>

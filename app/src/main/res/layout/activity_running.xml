@@ -12,6 +12,15 @@
         android:layout_height="250dp"/>
 
     <TextView
+        android:id="@+id/tv_gps_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlur"
+        android:text="@string/gps_tracking"
+        android:textColor="@color/colorOrangeDark"
+        android:gravity="center_horizontal"/>
+
+    <TextView
         android:id="@+id/btn_running_activity_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zmychou.paces.R;
+import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResult;
 import com.zmychou.paces.weather.WeatherSearch;
@@ -25,6 +26,8 @@ import com.zmychou.paces.running.RunningRecordsActivity;
 public class HomePageFragment extends Fragment implements WeatherListener {
 
     private ImageView mSummarize;
+    private TextView mDistance;
+    private TextView mTimes;
     private Activity mOwingActivity;
     public HomePageFragment() {
         // Required empty public constructor
@@ -42,16 +45,21 @@ public class HomePageFragment extends Fragment implements WeatherListener {
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
         mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
+        mDistance = (TextView) mOwingActivity.findViewById(R.id.tv_home_total_distance);
+        mTimes = (TextView) mOwingActivity.findViewById(R.id.tv_home_times);
 
-
+        RunningEntryUtils utils = new RunningEntryUtils(mOwingActivity);
+        mDistance.setText((utils.getTotalDistance() / 1000)+"");
+        mTimes.setText(utils.getTotalTimes()+"");
         mSummarize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOwingActivity.startActivity(new Intent(mOwingActivity, RunningRecordsActivity.class));
             }
         });
-
         showWeather("qinhuangdao");
+
+
     }
 
     private void showWeather(String city) {
