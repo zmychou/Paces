@@ -119,6 +119,7 @@ public class Pedestrian implements SensorEventListener {
                     .show();
             return;
         }
+//        mSensorManager.registerListener()
         mSensorManager.registerListener(this,mSensor,SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
     }
     public void pause(){

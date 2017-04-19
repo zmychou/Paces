@@ -76,10 +76,12 @@ public class HomePageFragment extends Fragment implements WeatherListener {
             TextView weather = (TextView) mOwingActivity.findViewById(R.id.tv_weather);
             TextView temperature = (TextView) mOwingActivity.findViewById(R.id.tv_temperature);
             TextView aqi = (TextView) mOwingActivity.findViewById(R.id.tv_PM2_5);
-            location.setText(result.getCity());
-            weather.setText(result.getWeather());
-            temperature.setText(result.getTemperature()+"°C");
-            aqi.setText(result.getPm2_5());
+            if (location != null && weather != null && temperature != null && aqi != null) {
+                location.setText(result.getCity());
+                weather.setText(result.getWeather());
+                temperature.setText(result.getTemperature() + "°C");
+                aqi.setText(result.getPm2_5());
+            }
         }else {
             Toast.makeText(mOwingActivity, "天气信息获取失败", Toast.LENGTH_SHORT).show();
         }

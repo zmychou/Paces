@@ -15,6 +15,8 @@ import android.widget.ImageView;
 
 import com.zmychou.paces.fragments.HomePageFragment;
 import com.zmychou.paces.fragments.MorePageFragment;
+import com.zmychou.paces.music.AudioListActivity;
+import com.zmychou.paces.music.AudioPlaybackModel;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningActivity;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView pedestrian = (ImageView) findViewById(R.id.iv_main_pedestrian);
         ImageView more = (ImageView) findViewById(R.id.iv_main_more);
         ImageView home = (ImageView) findViewById(R.id.iv_main_home);
-//        ImageView pedestrian = (ImageView) findViewById(R.id.iv_main_pedestrian);
+        ImageView music = (ImageView) findViewById(R.id.iv_main_music);
         running.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,PedestrianActivity.class));
+            }
+        });
+
+        music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,AudioListActivity.class));
             }
         });
 
@@ -76,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         detectSensorType();
+        AudioPlaybackModel.getAudios(this);
     }
 
     public void detectSensorType() {
