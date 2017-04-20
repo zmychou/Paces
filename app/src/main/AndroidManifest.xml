@@ -61,7 +61,12 @@
             android:exported="true" />
 
         <activity android:name=".running.ViewRunningRecordActivity" />
-        <activity android:name=".music.AudioListActivity"></activity>
+        <activity android:name=".music.AudioListActivity" />
+
+        <service
+            android:name=".music.AudioPlaybackService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

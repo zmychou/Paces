@@ -7,7 +7,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
+
+import java.io.IOException;
 
 /**
  * <pre>
@@ -21,21 +22,53 @@ import android.util.Log;
  * </pre>
  */
 
-public class AudioPlaybackModel {
+public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener {
 
-    private AudioManager mAudioManager;
     private MediaPlayer mMediaPlayer;
-    public void start() {}
+    private static AudioPlaybackModel instance = new AudioPlaybackModel();
 
-    public void pause() {}
+    private boolean isPause = false;
 
-    public void restart() {}
+    private AudioPlaybackModel() {}
+    public static AudioPlaybackModel getInstance() {
+        return instance;
+    }
+    public void start( String uri) {
+        mMediaPlayer.reset();
+        try {
+            mMediaPlayer.setDataSource(uri);
+            mMediaPlayer.prepareAsync();
+        } catch (IOException e)  {
+            //Toast.makeText(context, "无法播放该歌曲", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-    public void stop() {}
+    public void pause() {
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
+            isPause = true;
+        }
+    }
 
-    public void next() {}
+    public void restart() {
+        if (isPause) {
+            mMediaPlayer.start();
+        }
+    }
 
-    public void prev() {}
+    public void stop() {
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
+        }
+    }
+
+    public void next(String uri) {
+        start(uri);
+    }
+
+    public void prev(String uri) {
+        start(uri);
+    }
 
     public static Cursor getAudios(Context context) {
         ContentResolver resolver = context.getContentResolver();
@@ -47,27 +80,20 @@ public class AudioPlaybackModel {
         };
         String whereClause = MediaStore.Audio.Media.IS_MUSIC+"=?";
         String[] args = {"1"}; // 1 is true
-        Cursor audioCursor = resolver.query(audioUri,columns,whereClause,args,null);
-        if (audioCursor != null) {
-            for ( int i = 0; i < audioCursor.getCount(); i++ ) {
-                audioCursor.moveToPosition(i);
-                StringBuffer sb = new StringBuffer();
-                for ( int j = 0; j < audioCursor.getColumnCount(); j++ ) {
-                    sb.append(audioCursor.getString(j)+":");
-                }
-                Log.e("media", sb.toString());
 
-            }
-        }
-        return audioCursor;
+        return resolver.query(audioUri,columns,whereClause,args,null);
     }
 
-    public void init(Context context) {
-        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    public void init() {
+        if (mMediaPlayer != null)
+            return;
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//        mMediaPlayer.setDataSource();
-//        mMediaPlayer.prepareAsync();
-//        player.set
+        mMediaPlayer.setOnPreparedListener(this);
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer player) {
+        player.start();
     }
 }
