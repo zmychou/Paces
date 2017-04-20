@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         detectSensorType();
-        AudioPlaybackModel.getAudios(this);
+        AudioPlaybackModel.getInstance().getAudios(this);
     }
 
     public void detectSensorType() {

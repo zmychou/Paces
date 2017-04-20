@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.zmychou.paces.R;
 
+import java.util.ArrayList;
+
 /**
  * <pre>
  * Package    :com.zmychou.paces.music
@@ -26,8 +28,12 @@ import com.zmychou.paces.R;
 public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.AudioItemHolder> {
 
     private Cursor mCursor;
+    private ArrayList<String> mAudionList;
     public AudioListAdapter(Cursor cursor) {
         mCursor = cursor;
+        mAudionList = new ArrayList<>();
+
+//        mCursor.get
     }
     @Override
     public AudioItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +49,7 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.Audi
         holder.setSlave(mCursor.getString(mCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 +"-"+mCursor.getString(mCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
         holder.setUri(mCursor.getString(mCursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+        holder.setIndex(position);
     }
 
     @Override
@@ -53,9 +60,12 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.Audi
     class AudioItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public static final String TAG = "com.zmychou.paces.music.AudioItemHolder";
+        public static final String INDEX = "com.zmychou.paces.music.INDEX";
+        public static final String URI = "com.zmychou.paces.music.URI";
         private TextView main;
         private TextView slave;
         private String uri;
+        private int index;
         public AudioItemHolder(View view) {
             super(view);
             main = (TextView) view.findViewById(R.id.tv_audio_item_main);
@@ -63,6 +73,7 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.Audi
 //            uri = (TextView) view.findViewById(R.id.tv_audio_item_uri);
             main.setOnClickListener(this);
             slave.setOnClickListener(this);
+            view.setOnClickListener(this);
         }
 
         public void setMain(String main) {
@@ -89,19 +100,28 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.Audi
             return uri;
         }
 
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.tv_audio_item_main:
+//            switch (v.getId()) {
+//                case R.id.tv_audio_item_main:
 
 //                    break;
-                case R.id.tv_audio_item_slave:
+//                case R.id.tv_audio_item_slave:
                     Intent intent = new Intent(v.getContext(), AudioPlaybackService.class);
-                    intent.putExtra(TAG, getUri());
+                    intent.putExtra(URI, getUri());
+            intent.putExtra(INDEX, getIndex());
                     v.getContext().startService(intent);
-                    break;
-                default:break;
-            }
+//                    break;
+//                default:break;
+//            }
         }
     }
 

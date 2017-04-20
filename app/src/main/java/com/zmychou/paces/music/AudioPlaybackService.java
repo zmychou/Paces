@@ -14,11 +14,15 @@ public class AudioPlaybackService extends Service {
 
     private static PlayBackWorker sWorker ;
 
+    static {
+        sWorker = new PlayBackWorker();
+        sWorker.start();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        sWorker = new PlayBackWorker();
-        sWorker.start();
+
     }
 
     public AudioPlaybackService() {
@@ -30,19 +34,17 @@ public class AudioPlaybackService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flag, int id) {
-        String uri = intent.getStringExtra(AudioListAdapter.AudioItemHolder.TAG);
-
+        String uri = intent.getStringExtra(AudioListAdapter.AudioItemHolder.URI);
+        int pos = intent.getIntExtra(AudioListAdapter.AudioItemHolder.INDEX,0);
         Handler handler = sWorker.getHandler();
-        Message msg = new Message();
+        Message msg = Message.obtain();
         msg.obj = uri;
+        msg.arg1 = pos;
         handler.sendMessage(msg);
         return id;
     }
 
-//    class
-
-
-    class PlayBackWorker extends Thread {
+    static class PlayBackWorker extends Thread {
         Handler mHandler;
 
         public Handler getHandler() {
@@ -58,8 +60,8 @@ public class AudioPlaybackService extends Service {
                     AudioPlaybackModel model = AudioPlaybackModel.getInstance();
                     model.init();
                     String uri = (String)msg.obj;
-                    Log.e("where am i",Thread.currentThread().getName());
-                    model.start(uri);
+                    int position = msg.arg1;
+                    model.start(uri, position);
                 }
             };
             Looper.loop();
