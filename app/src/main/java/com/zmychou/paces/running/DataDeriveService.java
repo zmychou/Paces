@@ -90,14 +90,14 @@ public class DataDeriveService extends Service {
         private int updateNotificationElapse ;
         @Override
         public void onLocationChanged(AMapLocation location) {
-            updateNotificationElapse++;
+//            updateNotificationElapse++;
             velocity = location.getSpeed();
-            mSteps = mPedestrian.getStepCount();
+            mSteps = mPedestrian.getRunningSteps();
             updateUi();
-            if (updateNotificationElapse > 5) {
-                updateNotification("have run:"+mDistance+"meter");
-                updateNotificationElapse = 0;
-            }
+//            if (updateNotificationElapse > 5) {
+//                updateNotification("have run:"+mDistance+"meter");
+//                updateNotificationElapse = 0;
+//            }
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             mDistance += AMapUtils.calculateLineDistance(mPrevLatLng,latLng);
             if (mDistance > 1000) {
@@ -169,8 +169,12 @@ public class DataDeriveService extends Service {
 
     public void start(State state) {
         showNotification();
+        //Pedestrian
         mPedestrian = new Pedestrian();
         mPedestrian.start(this);
+
+        //Running
+        //set running data
         mRunningData = RunningData.getInstance();
         mRunningData.setTimestamp(System.currentTimeMillis());
         mRunningData.setSequenceNumber(mMiles);
@@ -179,6 +183,7 @@ public class DataDeriveService extends Service {
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,TAG);
         mPrevState = state;
         mPerMileStartTime = System.currentTimeMillis();
+
         startLocation();
         updateNotification("Location start");
         if (!mWakeLock.isHeld()) {

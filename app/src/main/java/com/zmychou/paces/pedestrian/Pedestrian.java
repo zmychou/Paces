@@ -97,7 +97,6 @@ public class Pedestrian implements SensorEventListener {
      * else we compare with mLowerThreshold
      */
     private byte[] state = new byte[3];
-
     private static final byte STATE_UP = 0x01;
     private static final byte STATE_DOWN = 0x02;
 
@@ -110,6 +109,7 @@ public class Pedestrian implements SensorEventListener {
 
     private int mCounter;
 
+    private int mWatchDogCounter = 200;
     public void start(Context context){
 
         init();
@@ -138,8 +138,13 @@ public class Pedestrian implements SensorEventListener {
         state[AXIS_Z] = STATE_UP;
         mStartTimestamp = System.currentTimeMillis();
     }
+
     public int getStepCount(){
         return mSteps[AXIS_TOTAL];
+    }
+
+    public int getRunningSteps() {
+        return mSteps[AXIS_TOTAL] / 2;
     }
     public int getIntensify(){
         return 0;
@@ -207,21 +212,14 @@ public class Pedestrian implements SensorEventListener {
                 mCounter++;
                 mSteps[whichAxis]++;
                 mMinPoints[whichAxis][getPointer(whichAxis)] = mMinPoint[whichAxis];
-                Log.e("debug",whichAxis+"min++"+mMinPoint[AXIS_X]);
                 mMinPoint[whichAxis] = mLowerThreshold[whichAxis];
-
-                Log.e("debug",whichAxis+"debug+x+"+mSteps[AXIS_TOTAL]);
-
                 state[whichAxis] = STATE_DOWN;
                 calculateAverage(whichAxis);
-                Log.e("debug",whichAxis+"threshold+x+"+mUpperThreshold[whichAxis]);
-                Log.e("debug",whichAxis+"threshold+x+"+mLowerThreshold[whichAxis]);
             }
         } else if (state[whichAxis] == STATE_DOWN) {
             setMaxPoint(value, whichAxis);
             if (value < mLowerThreshold[whichAxis]) {
                 mMaxPoints[whichAxis][getPointer(whichAxis)] = mMaxPoint[whichAxis];
-                Log.e("debug",whichAxis+"max++"+mMaxPoint[AXIS_X]);
                 mMaxPoint[whichAxis] = mUpperThreshold[whichAxis];
                 state[whichAxis] = STATE_UP;
             }
@@ -242,14 +240,23 @@ public class Pedestrian implements SensorEventListener {
         return mPointer[axis] %= 10;
     }
 
+    /**
+     *
+     * @param axis
+     */
     private void calculateAverage(byte axis) {
+        mCounter++;
         if (mCounter > 10) {
-            for (int i=0; i<10 ;i++) {
+            for (int i = 0; i < 10; i++) {
                 mUpperThreshold[axis] += mMaxPoints[axis][i];
                 mLowerThreshold[axis] += mMinPoints[axis][i];
             }
             mUpperThreshold[axis] /= 10;
+            float tmp = mUpperThreshold[axis] > 0 ? 0.9f : 1.1f;
+            mUpperThreshold[axis] *= tmp; //90%
             mLowerThreshold[axis] /= 10;
+            tmp = mLowerThreshold[axis] > 0 ? 1.1f : 0.9f;
+            mLowerThreshold[axis] *= tmp;
             mCounter = 0;
         }
     }
@@ -257,6 +264,8 @@ public class Pedestrian implements SensorEventListener {
     int tmp;
     @Override
     public void onSensorChanged(SensorEvent event) {
+        watchDog();
+        //one minute count, update step rate
         if (mDataChangeListener != null) {
             if (event.timestamp - mStartTimestamp > ONE_MINUTE) {
                 mStartTimestamp = event.timestamp;
@@ -264,20 +273,41 @@ public class Pedestrian implements SensorEventListener {
                 mStartSteps = mSteps[AXIS_TOTAL];
             }
         }
+
         xAxis(event.values[AXIS_X]);
         yAxis(event.values[AXIS_Y]);
         zAxis(event.values[AXIS_Z]);
+        /**
+         * 接下来需要解决静止后几步问题
 
-        tmp = max(max(mSteps[0], mSteps[1]), mSteps[2]);
+         */
+        tmp = mSteps[maxAbsoluteAxis(mUpperThreshold, mLowerThreshold)];//maxSum(mSteps);//max(max(mSteps[0], mSteps[1]), mSteps[2]);
         if (tmp > mSteps[AXIS_TOTAL]) {
+            mWatchDogCounter = 60;
             if (mDataChangeListener != null) {
                 //a hook
                 mDataChangeListener.onUpdateSteps();
             }
             mSteps[AXIS_TOTAL] = tmp;
+            mSteps[AXIS_X] = tmp;
+            mSteps[AXIS_Y] = tmp;
+            mSteps[AXIS_Z] = tmp;
             if (mActivity != null) {
                 mActivity.setSteps(mSteps[AXIS_TOTAL]);
             }
+        }
+    }
+
+    private void watchDog() {
+        mWatchDogCounter--;
+        if (mWatchDogCounter < 0) {
+            mUpperThreshold[AXIS_X] = -10;
+            mUpperThreshold[AXIS_Y] = -10;
+            mUpperThreshold[AXIS_Z] = -10;
+            mLowerThreshold[AXIS_X] = 10;
+            mLowerThreshold[AXIS_Y] = 10;
+            mLowerThreshold[AXIS_Z] = 10;
+            mWatchDogCounter = 60;
         }
     }
 
@@ -294,13 +324,26 @@ public class Pedestrian implements SensorEventListener {
         return i < j ? j : i;
     }
 
+    private int maxSum(int[] values ) {
+        return (max(values[0], values[1]) + max(values[1], values[2])) / 2;
+    }
+
     /**
-     * 二人为公
-     * @param values
+     * the axis which mUpperThreshold-mLowerThreshold 's absolute value is max
      * @return
      */
-    private int middle(int[] values ) {
-        return max(min(values[0], values[1]), min(values[1], values[2]));
+    private byte maxAbsoluteAxis(float[] up, float[] low) {
+        float x = up[AXIS_X] - low[AXIS_X];
+        float y = up[AXIS_Y] - low[AXIS_Y];
+        float z = up[AXIS_Z] - low[AXIS_Z];
+        if (x > y && x > z) {
+            return AXIS_X;
+        }else if (y > x && y > z) {
+            return AXIS_Y;
+        }else {
+            return AXIS_Z;
+        }
+
     }
     public void registerActivity(PedestrianActivity activity) {
         mActivity = activity;

@@ -97,11 +97,6 @@ public class RunningActivity extends AppCompatActivity
             public void onClick(View v) {
                 runningService.stop();
                 unbindService(RunningActivity.this);
-
-//                if (runningService != null) {
-////                    runningService
-//                }
-//                RunningActivity.this.finish();
             }
         });
 

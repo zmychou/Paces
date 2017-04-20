@@ -15,6 +15,10 @@ public class AudioPlaybackService extends Service {
     private static PlayBackWorker sWorker ;
 
     static {
+
+        //We must initialize this worker thread and start it when the class loaded,
+        //or we may fail to initiate the handler and cause a NullPointerException
+        // because the worker thread can not  get the chance to execute
         sWorker = new PlayBackWorker();
         sWorker.start();
     }

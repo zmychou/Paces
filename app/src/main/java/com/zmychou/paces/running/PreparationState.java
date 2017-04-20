@@ -30,6 +30,7 @@ public class PreparationState implements State {
         activity.main.setText("Pause");
         activity.main.setBackgroundResource(R.drawable.btn_orange_roundness);
         activity.changeState(OnRunningState.getInstance());
+//        activity.runningService.
         activity.runningService.start(this);
     }
 

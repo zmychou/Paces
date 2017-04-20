@@ -52,8 +52,8 @@ public class WeatherSearch extends AsyncTask<String,Void,WeatherResult>{
     }
 
     @Override
-    protected WeatherResult doInBackground(String... citys) {
-        mInputStream = requestWeather(citys[0]);
+    protected WeatherResult doInBackground(String... cities) {
+        mInputStream = requestWeather(cities[0]);
         WeatherResultParser parser = new WeatherResultParser();
         WeatherResult result = parser.getWeatherResult(mInputStream);
         return result;
