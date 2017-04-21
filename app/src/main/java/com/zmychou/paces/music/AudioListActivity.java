@@ -6,26 +6,33 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.TextView;
 
 import com.zmychou.paces.DividerItemDecoration;
 import com.zmychou.paces.R;
 
-public class AudioListActivity extends AppCompatActivity implements View.OnClickListener{
+public class AudioListActivity extends AppCompatActivity implements
+        View.OnClickListener, Observable{
 
+    private TextView mCurrentSong;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_list);
 
+        mCurrentSong = (TextView) findViewById(R.id.tv_audio_list_current_song);
         findViewById(R.id.btn_audio_list_play).setOnClickListener(this);
         findViewById(R.id.btn_audio_list_next).setOnClickListener(this);
 
+        AudioListAdapter adapter
+                = new AudioListAdapter(AudioPlaybackModel.getInstance().getAudios(this));
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_audio_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(new AudioListAdapter(AudioPlaybackModel.getInstance().getAudios(this)));
+        recyclerView.setAdapter(adapter);
 
-
+        AudioPlaybackModel.getInstance().registerForNotify(this);
     }
 
     @Override
@@ -36,17 +43,28 @@ public class AudioListActivity extends AppCompatActivity implements View.OnClick
 //        v.getContext().startService(intent);
         switch (v.getId()) {
             case R.id.btn_audio_list_next:
-                AudioPlaybackModel.getInstance().next();
+                sendCommand(AudioPlaybackService.CMD_NEXT);
                 break;
             case R.id.btn_audio_list_play:
                 AudioPlaybackModel model = AudioPlaybackModel.getInstance();
                 if (model.isPause()) {
-                    model.restart();
+                    sendCommand(AudioPlaybackService.CMD_RESTART);
                 }else {
-                    model.pause();
+                    sendCommand(AudioPlaybackService.CMD_PAUSE);
                 }
                 break;
             default:break;
         }
+    }
+
+    private void sendCommand(int command) {
+        Intent intent = new Intent(this,AudioPlaybackService.class);
+        intent.putExtra(AudioPlaybackService.EXTRA_COMMAND, command);
+        startService(intent);
+    }
+
+    @Override
+    public void onSongChanged(String name) {
+        mCurrentSong.setText(name);
     }
 }

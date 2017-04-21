@@ -12,6 +12,19 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class AudioPlaybackService extends Service {
 
+    /**
+     * Commands
+     */
+    public static final String EXTRA_COMMAND = "com.zmychou.paces.EXTRA_COMMAND";
+    public static final int CMD_START = 0x01;
+    public static final int CMD_RESTART = 0x02;
+    public static final int CMD_PAUSE = 0x04;
+    public static final int CMD_STOP = 0x08;
+    public static final int CMD_NEXT = 0x10;
+    public static final int CMD_PREV = 0x20;
+
+//    public static final byte START = 0x01;
+
     private static PlayBackWorker sWorker ;
 
     static {
@@ -20,6 +33,7 @@ public class AudioPlaybackService extends Service {
         //or we may fail to initiate the handler and cause a NullPointerException
         // because the worker thread can not  get the chance to execute
         sWorker = new PlayBackWorker();
+        sWorker.setPriority(Thread.MAX_PRIORITY);
         sWorker.start();
     }
 
@@ -38,13 +52,37 @@ public class AudioPlaybackService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flag, int id) {
-        String uri = intent.getStringExtra(AudioListAdapter.AudioItemHolder.URI);
-        int pos = intent.getIntExtra(AudioListAdapter.AudioItemHolder.INDEX,0);
+        final int command = intent.getIntExtra(EXTRA_COMMAND, 0xff);
         Handler handler = sWorker.getHandler();
         Message msg = Message.obtain();
+        if (command != 0xff) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    switch (command) {
+                        case CMD_NEXT:
+                            AudioPlaybackModel.getInstance().next();
+                            break;
+                        case CMD_PAUSE:
+                            AudioPlaybackModel.getInstance().pause();
+                            break;
+                        case CMD_RESTART:
+                            AudioPlaybackModel.getInstance().restart();
+                            break;
+                        default:break;
+                    }
+                }
+            });
+            return 1;
+        }
+        String uri = intent.getStringExtra(AudioListAdapter.AudioItemHolder.URI);
+        int pos = intent.getIntExtra(AudioListAdapter.AudioItemHolder.INDEX,0);
+
         msg.obj = uri;
         msg.arg1 = pos;
-        handler.sendMessage(msg);
+        if (handler != null) {
+            handler.sendMessage(msg);
+        }
         return id;
     }
 
@@ -58,6 +96,7 @@ public class AudioPlaybackService extends Service {
         @Override
         public void run() {
             Looper.prepare();
+
             mHandler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
@@ -68,6 +107,7 @@ public class AudioPlaybackService extends Service {
                     model.start(uri, position);
                 }
             };
+            this.setPriority(Thread.NORM_PRIORITY);
             Looper.loop();
         }
     }

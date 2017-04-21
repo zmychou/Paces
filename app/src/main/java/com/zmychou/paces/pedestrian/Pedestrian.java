@@ -109,7 +109,12 @@ public class Pedestrian implements SensorEventListener {
 
     private int mCounter;
 
-    private int mWatchDogCounter = 200;
+    private int mWatchDogCounter;
+    private static final int WATCH_DOG_COUNT = 60;
+    private long mIgnorePeriodicStart;
+    private static final long IGNORE_PERIODIC = 1000 * 3; //3 seconds
+    private float mAccuracy = 3;
+
     public void start(Context context){
 
         init();
@@ -137,6 +142,7 @@ public class Pedestrian implements SensorEventListener {
         state[AXIS_Y] = STATE_UP;
         state[AXIS_Z] = STATE_UP;
         mStartTimestamp = System.currentTimeMillis();
+        getAccuracyFormSettings();
     }
 
     public int getStepCount(){
@@ -209,7 +215,7 @@ public class Pedestrian implements SensorEventListener {
         if (state[whichAxis] == STATE_UP) {
             setMinPoint(value, whichAxis);
             if (value > mUpperThreshold[whichAxis]) {
-                mCounter++;
+//                mCounter++;
                 mSteps[whichAxis]++;
                 mMinPoints[whichAxis][getPointer(whichAxis)] = mMinPoint[whichAxis];
                 mMinPoint[whichAxis] = mLowerThreshold[whichAxis];
@@ -264,7 +270,8 @@ public class Pedestrian implements SensorEventListener {
     int tmp;
     @Override
     public void onSensorChanged(SensorEvent event) {
-        watchDog();
+
+        watchDog(event.timestamp);
         //one minute count, update step rate
         if (mDataChangeListener != null) {
             if (event.timestamp - mStartTimestamp > ONE_MINUTE) {
@@ -281,12 +288,23 @@ public class Pedestrian implements SensorEventListener {
          * 接下来需要解决静止后几步问题
 
          */
-        tmp = mSteps[maxAbsoluteAxis(mUpperThreshold, mLowerThreshold)];//maxSum(mSteps);//max(max(mSteps[0], mSteps[1]), mSteps[2]);
+        if (event.timestamp - mIgnorePeriodicStart < IGNORE_PERIODIC) {
+            return;
+        }
+        float[] values = differAbsoluteValues(mMaxPoint, mMinPoint);
+        if (maxAbsolute(values) < mAccuracy) {
+            mSteps[AXIS_TOTAL] = tmp;
+            mSteps[AXIS_X] = tmp;
+            mSteps[AXIS_Y] = tmp;
+            mSteps[AXIS_Z] = tmp;
+            return;
+        }
+        tmp = mSteps[maxAbsoluteAxis(differAbsoluteValues(mUpperThreshold, mLowerThreshold))];//maxSum(mSteps);//max(max(mSteps[0], mSteps[1]), mSteps[2]);
         if (tmp > mSteps[AXIS_TOTAL]) {
-            mWatchDogCounter = 60;
+            mWatchDogCounter = WATCH_DOG_COUNT;
             if (mDataChangeListener != null) {
                 //a hook
-                mDataChangeListener.onUpdateSteps();
+                mDataChangeListener.onUpdateSteps(tmp);
             }
             mSteps[AXIS_TOTAL] = tmp;
             mSteps[AXIS_X] = tmp;
@@ -298,7 +316,7 @@ public class Pedestrian implements SensorEventListener {
         }
     }
 
-    private void watchDog() {
+    private void watchDog(long timestamp) {
         mWatchDogCounter--;
         if (mWatchDogCounter < 0) {
             mUpperThreshold[AXIS_X] = -10;
@@ -307,8 +325,13 @@ public class Pedestrian implements SensorEventListener {
             mLowerThreshold[AXIS_X] = 10;
             mLowerThreshold[AXIS_Y] = 10;
             mLowerThreshold[AXIS_Z] = 10;
-            mWatchDogCounter = 60;
+            mWatchDogCounter = WATCH_DOG_COUNT;
+            mIgnorePeriodicStart = timestamp;
         }
+    }
+
+    private void getAccuracyFormSettings() {
+        // TODO: 17-4-21 set the mAccuracy value,from the use settings
     }
 
     @Override
@@ -316,34 +339,33 @@ public class Pedestrian implements SensorEventListener {
 
     }
 
-    private int min(int i, int j) {
-        return i > j ? j : i;
+    private float maxAbsolute(float[] values) {
+        float tmp = values[AXIS_X] > values[AXIS_Y] ? values[AXIS_X] : values[AXIS_Y];
+        return tmp > values[AXIS_Z] ? tmp : values[AXIS_Z];
     }
 
-    private int max(int i, int j) {
-        return i < j ? j : i;
-    }
-
-    private int maxSum(int[] values ) {
-        return (max(values[0], values[1]) + max(values[1], values[2])) / 2;
-    }
 
     /**
      * the axis which mUpperThreshold-mLowerThreshold 's absolute value is max
      * @return
      */
-    private byte maxAbsoluteAxis(float[] up, float[] low) {
-        float x = up[AXIS_X] - low[AXIS_X];
-        float y = up[AXIS_Y] - low[AXIS_Y];
-        float z = up[AXIS_Z] - low[AXIS_Z];
-        if (x > y && x > z) {
+    private byte maxAbsoluteAxis(float[] values) {
+
+        if (values[AXIS_X] > values[AXIS_Y] && values[AXIS_X] > values[AXIS_Z]) {
             return AXIS_X;
-        }else if (y > x && y > z) {
+        }else if (values[AXIS_Y] > values[AXIS_X] && values[AXIS_Y] > values[AXIS_Z]) {
             return AXIS_Y;
         }else {
             return AXIS_Z;
         }
+    }
 
+    private float[] differAbsoluteValues(float[] up, float[] low) {
+        float[] values = new float[3];
+        values[AXIS_X] = up[AXIS_X] - low[AXIS_X];
+        values[AXIS_Y] = up[AXIS_Y] - low[AXIS_Y];
+        values[AXIS_Z] = up[AXIS_Z] - low[AXIS_Z];
+        return values;
     }
     public void registerActivity(PedestrianActivity activity) {
         mActivity = activity;

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -31,12 +32,13 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.pedestrian.DataChangeListener;
 import com.zmychou.paces.profile.ProfileActivity;
 
 import java.util.ArrayList;
 
 public class RunningActivity extends AppCompatActivity
-        implements ServiceConnection {
+        implements ServiceConnection, DataChangeListener{
 
 
     AMap mMap;
@@ -245,7 +247,6 @@ public class RunningActivity extends AppCompatActivity
             mRunningState = new PreparationState();
         }
         runningService.registerBindActivity(this);
-
     }
 
     @Override
@@ -294,5 +295,15 @@ public class RunningActivity extends AppCompatActivity
     public void changeGpsState() {
         mGpsState.setText(R.string.gps_tracked);
         mGpsState.setTextColor(getResources().getColor(R.color.colorGreenLight));
+    }
+
+    @Override
+    public void onUpdateStepRate(int steps) {
+
+    }
+
+    @Override
+    public void onUpdateSteps(int steps) {
+        mSteps.setText(steps+"");
     }
 }

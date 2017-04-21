@@ -92,7 +92,7 @@ public class DataDeriveService extends Service {
         public void onLocationChanged(AMapLocation location) {
 //            updateNotificationElapse++;
             velocity = location.getSpeed();
-            mSteps = mPedestrian.getRunningSteps();
+            mSteps = mPedestrian.getStepCount();
             updateUi();
 //            if (updateNotificationElapse > 5) {
 //                updateNotification("have run:"+mDistance+"meter");

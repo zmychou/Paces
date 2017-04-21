@@ -16,6 +16,6 @@ public interface DataChangeListener {
 
     void onUpdateStepRate(int steps);
 
-    void onUpdateSteps();
+    void onUpdateSteps(int tmp);
 
 }

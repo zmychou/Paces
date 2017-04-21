@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * <pre>
@@ -25,16 +28,28 @@ import java.util.ArrayList;
  */
 
 public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener, Subject {
 
     private MediaPlayer mMediaPlayer;
-    private ArrayList<String> mPlayList;
+    private ArrayList<AudionInfo> mPlayList;
+    private ArrayList<Observable> mRegistrants;
     private int mCurrentPosition;
     private static AudioPlaybackModel instance = new AudioPlaybackModel();
 
     private boolean mIsPause = false;
 
-    private AudioPlaybackModel() {}
+    class AudionInfo {
+        public String path;
+        public String title;
+
+        public AudionInfo(String path, String title) {
+            this.path = path;
+            this.title = title;
+        }
+    }
+    private AudioPlaybackModel() {
+        mRegistrants = new ArrayList<>();
+    }
     public static AudioPlaybackModel getInstance() {
         return instance;
     }
@@ -44,6 +59,7 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
         try {
             mMediaPlayer.setDataSource(uri);
             mMediaPlayer.prepareAsync();
+            notifyRegistrant(mPlayList.get(mCurrentPosition).title);
             Log.e("where am i",Thread.currentThread().getName());
         } catch (IOException e)  {
             //Toast.makeText(context, "无法播放该歌曲", Toast.LENGTH_SHORT).show();
@@ -77,6 +93,7 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     public void next() {
         String uri = getNext();
         start(uri, mCurrentPosition);
+        mIsPause = false;
     }
 
     public void prev() {
@@ -99,7 +116,9 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
         mPlayList = new ArrayList<>();
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
-            mPlayList.add(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+            mPlayList.add(new AudionInfo(
+                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),
+                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))));
         }
         return cursor;
     }
@@ -126,13 +145,37 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     private String getNext() {
         mCurrentPosition++;
         mCurrentPosition %= mPlayList.size();
-        return mPlayList.get(mCurrentPosition);
+        return mPlayList.get(mCurrentPosition).path;
     }
     private String getPrev() {
         mCurrentPosition--;
         if (mCurrentPosition < 0)
         mCurrentPosition = mPlayList.size() - 1;
-        return mPlayList.get(mCurrentPosition);
+        return mPlayList.get(mCurrentPosition).path;
     }
 
+    private void notifyRegistrant(final String name) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        for (final Observable observer : mRegistrants) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    observer.onSongChanged(name);
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void registerForNotify(Observable o) {
+        if (!mRegistrants.contains(o))
+            mRegistrants.add(o);
+    }
+
+    @Override
+    public void unregisterForNotify(Observable o) {
+        if (!mRegistrants.contains(o))
+            mRegistrants.remove(o);
+    }
 }
