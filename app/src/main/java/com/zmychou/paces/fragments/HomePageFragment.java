@@ -2,7 +2,9 @@ package com.zmychou.paces.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 
 import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResult;
 import com.zmychou.paces.weather.WeatherSearch;
@@ -59,7 +63,14 @@ public class HomePageFragment extends Fragment implements WeatherListener {
         });
         showWeather("qinhuangdao");
 
-
+        SharedPreferences preferences = mOwingActivity.getSharedPreferences(
+                LoginActivity.TAG, Context.MODE_PRIVATE);
+        String userName = preferences.getString(UserInfoEntryUtil.NICK_NAME,"用户");
+        String userId = preferences.getString(UserInfoEntryUtil._ID, "--");
+        TextView name = (TextView) mOwingActivity.findViewById(R.id.nickname);
+        TextView id = (TextView) mOwingActivity.findViewById(R.id.user_id);
+        name.setText(userName);
+        id.setText(userId);
     }
 
     private void showWeather(String city) {

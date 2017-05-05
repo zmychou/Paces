@@ -24,4 +24,12 @@
     <!--GPS states-->
     <string name="gps_tracking">GPS Tracking</string>
     <string name="gps_tracked">GPS Tracked</string>
+
+    <!--login activity-->
+    <string name="auto_login_next_time">下次自动登录?</string>
+    <string name="login_confirm">登录</string>
+    <string name="login_signup">免费注册</string>
+
+    <!--activity SignupActivity-->
+    <string name="user_agreement">我同意用户协议</string>
 </resources>

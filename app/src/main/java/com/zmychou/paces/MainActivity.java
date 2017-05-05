@@ -2,6 +2,7 @@ package com.zmychou.paces;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.fragments.HomePageFragment;
 import com.zmychou.paces.fragments.MorePageFragment;
 import com.zmychou.paces.music.AudioListActivity;
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         });
         detectSensorType();
         AudioPlaybackModel.getInstance().getAudios(this);
+
     }
 
     public void detectSensorType() {

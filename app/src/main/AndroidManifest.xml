@@ -40,13 +40,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/NoTitleBarTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/NoTitleBarTheme"></activity>
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".running.RunningRecordsActivity" />
         <activity
@@ -66,7 +60,17 @@
         <service
             android:name=".music.AudioPlaybackService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".StartupActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".login.SignupActivity"></activity>
     </application>
 
 </manifest>
