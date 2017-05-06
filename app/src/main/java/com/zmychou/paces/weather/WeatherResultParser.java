@@ -1,7 +1,10 @@
 package com.zmychou.paces.weather;
 
+import android.app.Application;
+import android.content.Context;
 import android.util.JsonReader;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +31,9 @@ public class WeatherResultParser  {
 
     private WeatherResult parser(InputStream in) {
         WeatherResult result = null;
+        if (in == null) {
+            return null;
+        }
         JsonReader jr = new JsonReader(new InputStreamReader(in));
         try {
             jr.beginObject();

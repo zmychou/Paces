@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginCallback() {
+        Toast.makeText(this, "登录成功!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }

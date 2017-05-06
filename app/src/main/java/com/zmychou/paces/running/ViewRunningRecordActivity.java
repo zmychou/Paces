@@ -16,9 +16,15 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
+import com.zmychou.paces.database.server.RunningDataEntryUtil;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.network.JsonKey;
+import com.zmychou.paces.network.MsgTypeConstant;
+import com.zmychou.paces.network.UploadFileRequests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ViewRunningRecordActivity extends AppCompatActivity {
 
@@ -91,6 +97,14 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
 
         new PrepareDataTask().execute(timestamp);
 
+        UploadFileRequests upload = new UploadFileRequests();
+        upload.getRecords(this, timestamp);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(RunningDataEntryUtil.USER_ID, "zmychou");
+        map.put(RunningDataEntryUtil._ID, timestamp);
+        map.put(RunningDataEntryUtil.TIMESTAMP, timestamp);
+        map.put(JsonKey.MSG_TYPE, MsgTypeConstant.TYPE_UPLOAD_FILE+"");
+        upload.execute(map);
         ((TextView) findViewById(R.id.tv_tmp))
                 .setText(intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP));
     }

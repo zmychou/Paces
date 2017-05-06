@@ -58,4 +58,8 @@ public class ItemView extends LinearLayout {
     public void setImage(int res) {
         mImage.setImageResource(res);
     }
+
+    public ImageView getImage() {
+        return mImage;
+    }
 }

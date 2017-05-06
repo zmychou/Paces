@@ -21,6 +21,7 @@ public class StartupActivity extends AppCompatActivity {
         if ("--".equals(userId)) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+            return;
         }
 
         startActivity(new Intent(this, MainActivity.class));

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,18 +62,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                     break;
                                 case JsonKey.TEXT:
                                     msg = reader.nextString();
+                                    break;
                                 default:reader.skipValue();
                                     break;
                             }
-
                         }
                         reader.endObject();
                     } catch (IOException e) {
                     }
-
                     Toast.makeText(SignupActivity.this, msg, Toast.LENGTH_SHORT).show();
                     if (content == JsonKey.STATE_OK) {
                         startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                        SignupActivity.this.finish();
                     }
                 }
             };

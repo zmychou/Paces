@@ -2,7 +2,9 @@ package com.zmychou.paces.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +13,9 @@ import android.view.ViewGroup;
 
 import com.zmychou.paces.R;
 import com.zmychou.paces.customview.ItemView;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.login.LoginActivity;
+import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.profile.ProfileActivity;
 
 /**
@@ -39,12 +44,18 @@ public class MorePageFragment extends Fragment {
         ItemView settings = (ItemView) mHost.findViewById(R.id.itv_settings);
 //        ItemView about = (ItemView) mHost.findViewById(R.id.it);
 
-        settings.setOnClickListener(new View.OnClickListener() {
+        profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mHost.startActivity(new Intent(mHost, ProfileActivity.class));
             }
         });
+
+        SharedPreferences sp = mHost.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
+        ImageLoader.getOne()
+                .from(sp.getString(UserInfoEntryUtil.AVATAR, "holder"))
+                .into(profile.getImage())
+                .load();
 
     }
 }

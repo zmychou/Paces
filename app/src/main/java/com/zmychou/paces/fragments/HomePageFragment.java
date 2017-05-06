@@ -5,8 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.telecom.ConnectionService;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
+import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResult;
 import com.zmychou.paces.weather.WeatherSearch;
@@ -48,7 +53,7 @@ public class HomePageFragment extends Fragment implements WeatherListener {
     public void onActivityCreated(Bundle bundle){
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
-        mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
+        mSummarize = (ImageView) mOwingActivity.findViewById(R.id.user_img);
         mDistance = (TextView) mOwingActivity.findViewById(R.id.tv_home_total_distance);
         mTimes = (TextView) mOwingActivity.findViewById(R.id.tv_home_times);
 
@@ -61,7 +66,9 @@ public class HomePageFragment extends Fragment implements WeatherListener {
                 mOwingActivity.startActivity(new Intent(mOwingActivity, RunningRecordsActivity.class));
             }
         });
-        showWeather("qinhuangdao");
+        ConnectivityManager connManager
+                = (ConnectivityManager) mOwingActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
 
         SharedPreferences preferences = mOwingActivity.getSharedPreferences(
                 LoginActivity.TAG, Context.MODE_PRIVATE);
@@ -71,6 +78,16 @@ public class HomePageFragment extends Fragment implements WeatherListener {
         TextView id = (TextView) mOwingActivity.findViewById(R.id.user_id);
         name.setText(userName);
         id.setText(userId);
+        if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+            showWeather("qinhuangdao");
+            ImageLoader loader = new ImageLoader();
+            loader.from(preferences.getString(UserInfoEntryUtil.AVATAR, "holder"))
+                    .into(mSummarize)
+                    .load();
+        } else {
+            Toast.makeText(mOwingActivity, "网络链接错误!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void showWeather(String city) {

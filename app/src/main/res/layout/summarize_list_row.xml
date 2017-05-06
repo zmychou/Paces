@@ -14,8 +14,9 @@
         android:text="new user"
         android:layout_marginTop="12dp"
         android:textSize="20sp"/>
+
     <ImageView
-        android:id="@id/summarize_row_pic"
+        android:id="@+id/summarize_row_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignTop="@+id/imageView"
@@ -23,6 +24,15 @@
         android:layout_toStartOf="@+id/imageView"
         android:layout_marginRight="1dp"
         android:layout_marginEnd="1dp" />
+    <TextView
+        android:id="@+id/summarize_row_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/summarize_row_name"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp" />
     <ImageView
         android:layout_width="25dp"
         android:layout_height="50dp"

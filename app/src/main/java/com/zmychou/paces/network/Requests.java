@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -28,6 +29,11 @@ import java.util.Set;
 public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStream>{
 
     protected String mUrl = "http://10.42.0.1:8080/paces/MyServlet";
+    protected ArrayList<String> filePaths;
+
+    public void setFilePaths(ArrayList<String> filePaths) {
+        this.filePaths = filePaths;
+    }
 
     protected InputStream request(String forWhat) {
         try {
@@ -57,9 +63,17 @@ public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStre
             sb.append(map.get(key));
             sb.append("\",");
         }
-        sb.deleteCharAt(sb.length() - 1);
+        sb.append("\"files\":[");
+        sb.append(moreContent());
+        sb.append("]");
+//        sb.deleteCharAt(sb.length() - 1);
         sb.append("}");
+        Log.e("debug",sb.toString());
         return request(sb.toString());
+    }
+
+    protected String moreContent() {
+        return "[]";
     }
 
     @Override

@@ -20,11 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/profile_details_list"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/profile_summarize_list"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_profile_logout"
+        android:layout_alignParentBottom="true"
+        android:text="@string/logout"/>
 </RelativeLayout>

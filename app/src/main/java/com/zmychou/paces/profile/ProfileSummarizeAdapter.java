@@ -1,9 +1,8 @@
 package com.zmychou.paces.profile;
 
 import android.content.Context;
-import android.os.Environment;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zmychou.paces.R;
-import com.zmychou.paces.models.SummarizeProfile;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.login.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -25,11 +25,11 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
     private ArrayList<SummarizeProfile> itemList;
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView textView;
-        public ImageView imageView;
+        public TextView imageView;
         public MyViewHolder(View view){
             super(view);
             textView = (TextView) view.findViewById(R.id.summarize_row_name);
-            imageView = (ImageView) view.findViewById(R.id.summarize_row_pic);
+            imageView = (TextView) view.findViewById(R.id.summarize_row_value);
         }
 
         /**
@@ -38,15 +38,20 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
          *                an item.
          */
         public void setViewContent(SummarizeProfile content){
-            textView.setText(content.getName());
+            textView.setText(content.getKey());
+            imageView.setText(content.getValue());
         }
 
     }
-    public ProfileSummarizeAdapter(){
+    public ProfileSummarizeAdapter(Context context){
         itemList = new ArrayList<>();
-        itemList.add(new SummarizeProfile("周明阳"));
-        itemList.add(new SummarizeProfile("燕山大学"));
-        itemList.add(new SummarizeProfile("计算机"));
+        SharedPreferences sp = context.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
+        itemList.add(new SummarizeProfile("昵称", sp.getString(UserInfoEntryUtil.NICK_NAME, "未知")));
+        itemList.add(new SummarizeProfile("生日", sp.getString(UserInfoEntryUtil.BIRTHDAY, "未知")));
+        itemList.add(new SummarizeProfile("身高", sp.getString(UserInfoEntryUtil.HEIGHT, "未知")));
+        itemList.add(new SummarizeProfile("体重", sp.getString(UserInfoEntryUtil.WEIGHT, "未知")));
+        itemList.add(new SummarizeProfile("位置", sp.getString(UserInfoEntryUtil.LOCATION, "未知")));
+
     }
     @Override
     public int getItemCount(){

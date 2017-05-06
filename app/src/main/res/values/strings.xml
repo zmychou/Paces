@@ -32,4 +32,7 @@
 
     <!--activity SignupActivity-->
     <string name="user_agreement">我同意用户协议</string>
+
+    <!--activity-->
+    <string name="logout">退出登录</string>
 </resources>
