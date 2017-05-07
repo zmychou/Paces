@@ -111,6 +111,17 @@ public class RunningEntryUtils implements BaseColumns{
                 null );
     }
 
+    public Cursor getSummarize(String id){
+        return sDatabase.query(
+                TABLE_NAME,
+                new String[]{"sum("+DISTANCE+")",TIME_STAMP,"sum("+DURATION+")"},
+                TIME_STAMP + "=?",
+                new String[]{id},
+                TIME_STAMP,
+                null,
+                null );
+    }
+
     public float getTotalDistance() {
         Cursor cursor = sDatabase.query(TABLE_NAME,
                 new String[]{"sum("+DISTANCE+")"},

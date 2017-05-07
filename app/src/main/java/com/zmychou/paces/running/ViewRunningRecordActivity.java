@@ -1,12 +1,16 @@
 package com.zmychou.paces.running;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -19,10 +23,14 @@ import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.server.RunningDataEntryUtil;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.JsonKey;
 import com.zmychou.paces.network.MsgTypeConstant;
 import com.zmychou.paces.network.UploadFileRequests;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -97,16 +105,54 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
 
         new PrepareDataTask().execute(timestamp);
 
-        UploadFileRequests upload = new UploadFileRequests();
-        upload.getRecords(this, timestamp);
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put(RunningDataEntryUtil.USER_ID, "zmychou");
-        map.put(RunningDataEntryUtil._ID, timestamp);
-        map.put(RunningDataEntryUtil.TIMESTAMP, timestamp);
-        map.put(JsonKey.MSG_TYPE, MsgTypeConstant.TYPE_UPLOAD_FILE+"");
-        upload.execute(map);
+        uploadFile(this, timestamp);
+
         ((TextView) findViewById(R.id.tv_tmp))
                 .setText(intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP));
+    }
+
+    /**
+     * Upload the running record files to the server
+     * @param context the context
+     * @param id An timestamp which identify an specific running record
+     */
+    private void uploadFile(final Context context, String id) {
+        SharedPreferences sp = context.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
+
+        UploadFileRequests upload = new UploadFileRequests() {
+            @Override
+            protected void onPostExecute(InputStream inputStream) {
+                JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+                try {
+                    reader.beginObject();
+                    while (reader.hasNext()) {
+                        switch (reader.nextName()) {
+                            case JsonKey.TEXT:
+                                Toast.makeText(context, reader.nextString(), Toast.LENGTH_SHORT).show();
+                                break;
+                            default:reader.skipValue();
+                                break;
+                        }
+                    }
+                } catch (IOException e) {
+
+                }
+            }
+        };
+        Cursor cursor = new RunningEntryUtils(context).getSummarize(id);
+        cursor.moveToFirst();
+        upload.getRecords(this, id);
+        HashMap<String, String> map = new HashMap<>();
+        map.put(RunningDataEntryUtil.USER_ID, sp.getString(UserInfoEntryUtil._ID, "default"));
+        map.put(RunningDataEntryUtil._ID, id);
+        map.put(RunningDataEntryUtil.TIMESTAMP, id);
+        map.put("_distance", cursor.getFloat(cursor.getColumnIndex("sum("
+                + RunningEntryUtils.DISTANCE + ")")) +"");
+        map.put("_duration", cursor.getLong(cursor.getColumnIndex("sum("
+                + RunningEntryUtils.DURATION + ")")) + "");
+        map.put(JsonKey.MSG_TYPE, MsgTypeConstant.TYPE_UPLOAD_FILE+"");
+        upload.execute(map);
+
     }
 
     public Cursor getRecord(String timestamp) {
