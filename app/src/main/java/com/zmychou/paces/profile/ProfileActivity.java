@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.zmychou.paces.DividerItemDecoration;
+import com.zmychou.paces.MainActivity;
 import com.zmychou.paces.R;
 import com.zmychou.paces.login.LoginActivity;
 
@@ -25,12 +26,14 @@ import com.zmychou.paces.login.LoginActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    ProfileSummarizeAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        getSupportActionBar().setTitle("个人中心");
         RecyclerView list = (RecyclerView) findViewById(R.id.profile_summarize_list);
-        ProfileSummarizeAdapter adapter = new ProfileSummarizeAdapter(this);
+         adapter = new ProfileSummarizeAdapter(this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -45,9 +48,18 @@ public class ProfileActivity extends AppCompatActivity {
                         .edit()
                         .clear()
                         .commit();
-                startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(MainActivity.FLAG_EXTRA, MainActivity.FINISH_ACTIVITY);
+                startActivity(intent);
                 ProfileActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

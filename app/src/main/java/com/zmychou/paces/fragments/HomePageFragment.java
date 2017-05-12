@@ -23,6 +23,7 @@ import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.ImageLoader;
+import com.zmychou.paces.profile.ProfileActivity;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResult;
 import com.zmychou.paces.weather.WeatherSearch;
@@ -32,9 +33,10 @@ import com.zmychou.paces.running.RunningRecordsActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePageFragment extends Fragment implements WeatherListener {
+public class HomePageFragment extends Fragment implements WeatherListener , View.OnClickListener{
 
     private ImageView mSummarize;
+    private ImageView mUserPic;
     private TextView mDistance;
     private TextView mTimes;
     private Activity mOwingActivity;
@@ -53,7 +55,8 @@ public class HomePageFragment extends Fragment implements WeatherListener {
     public void onActivityCreated(Bundle bundle){
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
-        mSummarize = (ImageView) mOwingActivity.findViewById(R.id.user_img);
+        mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
+        mUserPic = (ImageView) mOwingActivity.findViewById(R.id.user_img);
         mDistance = (TextView) mOwingActivity.findViewById(R.id.tv_home_total_distance);
         mTimes = (TextView) mOwingActivity.findViewById(R.id.tv_home_times);
 
@@ -82,11 +85,13 @@ public class HomePageFragment extends Fragment implements WeatherListener {
             showWeather("qinhuangdao");
             ImageLoader loader = new ImageLoader();
             loader.from(preferences.getString(UserInfoEntryUtil.AVATAR, "holder"))
-                    .into(mSummarize)
+                    .into(mUserPic)
                     .load();
         } else {
             Toast.makeText(mOwingActivity, "网络链接错误!", Toast.LENGTH_SHORT).show();
         }
+
+        mUserPic.setOnClickListener(this);
 
     }
 
@@ -114,5 +119,15 @@ public class HomePageFragment extends Fragment implements WeatherListener {
             Toast.makeText(mOwingActivity, "天气信息获取失败", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_img:
+                startActivity(new Intent(mOwingActivity, ProfileActivity.class));
+                break;
+            default:break;
+        }
     }
 }

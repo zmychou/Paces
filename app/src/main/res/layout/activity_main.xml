@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"/>
 
         <LinearLayout
+            android:id="@+id/main_bottom_bar_icon"
             android:background="@color/colorWhiteDark"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -23,17 +24,17 @@
             <ImageView
                 android:id="@+id/iv_main_home"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_height="35dp"
+                android:src="@mipmap/homepage_fill"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
             <ImageView
-                android:id="@+id/iv_main_music"
+                android:id="@+id/iv_main_message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_height="35dp"
+                android:src="@mipmap/message"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -42,16 +43,7 @@
                 android:id="@+id/iv_main_running"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <ImageView
-                android:id="@+id/iv_main_pedestrian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/run"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -59,14 +51,80 @@
             <ImageView
                 android:id="@+id/iv_main_more"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_height="35dp"
+                android:src="@mipmap/manage"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_main_personal"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:src="@mipmap/user"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignBottom="@id/main_bottom_bar_icon"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="15dp" >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/iv_main_home_text"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:textColor="@color/colorBlueLight"
+            android:textSize="12sp"
+            android:text="主页"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:id="@+id/iv_main_message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:textColor="@color/colorBlueLight"
+            android:textSize="12sp"
+            android:text="消息"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"/>
+
+        <TextView
+            android:id="@+id/iv_main_more_text"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:textColor="@color/colorBlueLight"
+            android:textSize="12sp"
+            android:text="更多"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:id="@+id/iv_main_personal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:textColor="@color/colorBlueLight"
+            android:textSize="12sp"
+            android:text="个人"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
     </RelativeLayout>
 
 

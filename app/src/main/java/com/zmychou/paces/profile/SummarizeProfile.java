@@ -18,4 +18,9 @@ public class SummarizeProfile {
     public String getKey() {
         return key;
     }
+
+    public SummarizeProfile setValue(String value) {
+        this.value = value;
+        return this;
+    }
 }

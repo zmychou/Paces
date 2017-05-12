@@ -31,6 +31,7 @@
         android:layout_alignTop="@+id/summarize_row_name"
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView"
+        android:textSize="15sp"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp" />
     <ImageView

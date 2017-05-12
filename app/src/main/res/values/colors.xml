@@ -4,6 +4,7 @@
     <!--blue clan-->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorBlueLight">#1296db</color>
 
     <!--black clan-->
     <color name="colorBlack">#101010</color>
