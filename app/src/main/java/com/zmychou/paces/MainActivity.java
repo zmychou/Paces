@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.zmychou.paces.fragments.HomePageFragment;
+import com.zmychou.paces.fragments.MorePageFragment;
 import com.zmychou.paces.fragments.PersonalPageFragment;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.music.AudioListActivity;
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         final Fragment homePage = new HomePageFragment();
-        final Fragment morePage = new PersonalPageFragment();
+        final Fragment personalPage = new PersonalPageFragment();
+        final Fragment morePage = new MorePageFragment();
         fragmentTransaction.replace(R.id.fragment_holder, homePage);
         fragmentTransaction.commit();
 
@@ -74,7 +76,10 @@ public class MainActivity extends AppCompatActivity {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,PedestrianActivity.class));
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_holder,morePage)
+                        .commit();
+                changeBottomBar(MORE);
             }
         });
 
@@ -89,9 +94,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_holder,morePage)
+                        .replace(R.id.fragment_holder,personalPage)
                         .commit();
-
                 changeBottomBar(PERSONAL);
             }
         });

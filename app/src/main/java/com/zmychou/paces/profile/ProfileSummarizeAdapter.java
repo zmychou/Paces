@@ -3,7 +3,6 @@ package com.zmychou.paces.profile;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.JsonReader;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,16 +18,14 @@ import com.zmychou.paces.customview.DatePicker;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.JsonKey;
-import com.zmychou.paces.network.Requests;
 import com.zmychou.paces.network.UpdateUserInfoRequests;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import util.NetworkUtil;
+import com.zmychou.paces.util.NetworkUtil;
 
 /**
  * The adapter which connect the info summary of user profiles with the recyclerview.

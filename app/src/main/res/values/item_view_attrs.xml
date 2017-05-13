@@ -2,6 +2,6 @@
 <resources>
     <declare-styleable name="ItemView">
         <attr name="item_name" format="string" />
-        <attr name="src" format="reference"/>
+        <attr name="item_src" format="reference"/>
     </declare-styleable>
 </resources>

@@ -36,7 +36,7 @@ public class ItemView extends LinearLayout {
         TypedArray ta = context.getTheme().obtainStyledAttributes(attrs,R.styleable.ItemView,0,0);
         try {
             text = ta.getString(R.styleable.ItemView_item_name);
-            reference = ta.getResourceId(R.styleable.ItemView_src,0);
+            reference = ta.getResourceId(R.styleable.ItemView_item_src,0);
         } finally {
             ta.recycle();
         }

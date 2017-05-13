@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.zmychou.paces.R;
 import com.zmychou.paces.customview.ItemView;
+import com.zmychou.paces.customview.MoreItemView;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.ImageLoader;
@@ -41,8 +42,8 @@ public class PersonalPageFragment extends Fragment {
         mHost = getActivity();
 
         ItemView profile = (ItemView) mHost.findViewById(R.id.itv_profile);
-        ItemView settings = (ItemView) mHost.findViewById(R.id.itv_settings);
-//        ItemView about = (ItemView) mHost.findViewById(R.id.it);
+        MoreItemView settings = (MoreItemView) mHost.findViewById(R.id.itv_settings);
+        MoreItemView about = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_about);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -170,6 +171,7 @@ public class RunningActivity extends AppCompatActivity
     public boolean gpsReady(){
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "请打开GPS", Toast.LENGTH_SHORT).show();
             openGps();
             finish();
             return false;

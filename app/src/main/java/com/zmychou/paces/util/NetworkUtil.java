@@ -1,14 +1,13 @@
-package util;
+package com.zmychou.paces.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
 /**
  * <pre>
- * Package    :util
+ * Package    :com.zmychou.paces.util
  * Author     : zmychou
  * Create time:17-5-12
  * Last Modify:

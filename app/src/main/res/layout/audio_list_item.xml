@@ -5,18 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/iv_audio_item_img"
+        android:layout_width="35dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/music"
+        android:layout_height="35dp" />
     <TextView
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="45dp"
         android:layout_marginTop="8dp"
         android:id="@+id/tv_audio_item_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/iv_audio_item_img"
         android:textColor="@color/colorBlack"
         android:textSize="17sp"
         android:text="Audio name"/>
     <TextView
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="45dp"
         android:layout_below="@id/tv_audio_item_main"
+        android:layout_alignLeft="@id/iv_audio_item_img"
         android:id="@+id/tv_audio_item_slave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

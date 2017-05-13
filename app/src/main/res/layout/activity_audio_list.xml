@@ -19,7 +19,7 @@
         android:orientation="horizontal"
         android:background="@color/colorWhiteDark">
         <ImageView
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/placeholder"
             android:layout_width="50dp"
             android:layout_height="50dp" />
         <TextView
@@ -29,17 +29,18 @@
             android:text="听到下雨的声音"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
-        <Button
+        <ImageButton
             android:id="@+id/btn_audio_list_play"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="prev"/>
+            android:src="@mipmap/play"/>
 
-        <Button
+        <ImageButton
+            android:clickable="true"
+            android:background="@drawable/playback_start_pause"
             android:id="@+id/btn_audio_list_next"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="next"/>
+            android:layout_height="50dp" />
 
     </LinearLayout>
 </LinearLayout>
