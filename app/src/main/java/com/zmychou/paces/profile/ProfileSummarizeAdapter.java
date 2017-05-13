@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,17 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.customview.DatePicker;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
+import com.zmychou.paces.network.JsonKey;
+import com.zmychou.paces.network.Requests;
+import com.zmychou.paces.network.UpdateUserInfoRequests;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import util.NetworkUtil;
 
 /**
  * The adapter which connect the info summary of user profiles with the recyclerview.
@@ -58,7 +68,7 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                              builder = builder.setItems(R.array.height_array, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    clickHandler(dialog, which, 2);
+                                    clickHandler(dialog, which, 2,UserInfoEntryUtil.HEIGHT);
                                 }
                             });
                             break;
@@ -66,7 +76,7 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                             builder = builder.setItems(R.array.weight_array, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    clickHandler(dialog, which, 3);
+                                    clickHandler(dialog, which, 3,UserInfoEntryUtil.WEIGHT);
                                 }
                             });
                             break;
@@ -75,7 +85,7 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    clickHandler(dialog, which, 1);
+                                    clickHandler(dialog, which, 1,UserInfoEntryUtil.BIRTHDAY);
                                 }
                             });
                             break;
@@ -84,7 +94,7 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    clickHandler(dialog, which ,4);
+                                    clickHandler(dialog, which ,4, UserInfoEntryUtil.GENDER);
                                 }
                             });
                             break;
@@ -93,7 +103,7 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    clickHandler(dialog, which, 0);
+                                    clickHandler(dialog, which, 0, UserInfoEntryUtil.NICK_NAME);
                                 }
                             });
                             break;
@@ -107,7 +117,12 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                     alertDialog.show();
                 }
 
-                private void clickHandler(DialogInterface dialog, int which, int pos) {
+                private void clickHandler(final DialogInterface dialog, int which, int pos,
+                                          String type) {
+                    if (!NetworkUtil.networkConnectivity(mContext)) {
+                        dialog.dismiss();
+                        return;
+                    }
                     String[] res = null;
                     switch (pos) {
                         case 0:
@@ -126,26 +141,61 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                         case 2:
                             res = mContext.getResources().getStringArray(
                                     R.array.height_array);
-                            editor.putString(UserInfoEntryUtil.HEIGHT, res[which]);
+                            editor.putString(UserInfoEntryUtil.HEIGHT, res[which].split(" ")[0]);
                             break;
                         case 3:
                             res = mContext.getResources().getStringArray(
                                     R.array.weight_array);
-                            editor.putString(UserInfoEntryUtil.WEIGHT, res[which]);
+                            editor.putString(UserInfoEntryUtil.WEIGHT, res[which].split(" ")[0]);
                             break;
                         case 4:
                             res = mContext.getResources().getStringArray(R.array.gender_array);
-                            editor.putString(UserInfoEntryUtil.GENDER, res[which]);
                         default:break;
                     }
                     if (res != null) {
-                        itemList.add(pos, itemList.get(pos).setValue(res[which]));
+                        if ("男".equals(res[which])) {
+
+                            itemList.add(pos, itemList.get(pos).setValue(0 + ""));
+                            editor.putString(UserInfoEntryUtil.GENDER, 0 + "");
+                        } else if ("女".equals(res[which])) {
+
+                            itemList.add(pos, itemList.get(pos).setValue(1 + ""));
+                            editor.putString(UserInfoEntryUtil.GENDER, 1 + "");
+                        } else {
+                            itemList.add(pos, itemList.get(pos).setValue(res[which].split(" ")[0]));
+                        }
                     }
                     itemList.remove(pos + 1);
-                    editor.apply();
-                    ProfileSummarizeAdapter.this.notifyDataSetChanged();
-                    dialog.dismiss();
-                    Toast.makeText(mContext, "修改成功!", Toast.LENGTH_SHORT).show();
+                    UpdateUserInfoRequests request = new UpdateUserInfoRequests() {
+                        @Override
+                        protected void onPostExecute(InputStream inputStream) {
+                            JsonReader jr = new JsonReader(new InputStreamReader(inputStream));
+                            try {
+                                jr.beginObject();
+                                while (jr.hasNext()) {
+                                    switch (jr.nextName()) {
+                                        case JsonKey.MSG_STATE:
+                                            String state = jr.nextString();
+                                            if ("1".equals(state))  {
+
+                                                editor.apply();
+                                                ProfileSummarizeAdapter.this.notifyDataSetChanged();
+                                            }
+                                            break;
+                                        case JsonKey.TEXT:
+                                            Toast.makeText(mContext, jr.nextString(), Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                            break;
+                                        default:jr.skipValue();
+                                            break;
+                                    }
+                                }
+                            } catch (IOException e) {}
+
+                        }
+                    };
+                    SummarizeProfile profile = itemList.get(pos);
+                    request.update(mContext, type, profile.getValue());
                 }
             });
         }
@@ -167,9 +217,16 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
         SharedPreferences sp = context.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
         itemList.add(new SummarizeProfile("昵称", sp.getString(UserInfoEntryUtil.NICK_NAME, "未知")));
         itemList.add(new SummarizeProfile("生日", sp.getString(UserInfoEntryUtil.BIRTHDAY, "未知")));
-        itemList.add(new SummarizeProfile("身高", sp.getString(UserInfoEntryUtil.HEIGHT, "未知")));
-        itemList.add(new SummarizeProfile("体重", sp.getString(UserInfoEntryUtil.WEIGHT, "未知")));
-        itemList.add(new SummarizeProfile("性别", sp.getString(UserInfoEntryUtil.GENDER, "未知")));
+        itemList.add(new SummarizeProfile("身高", sp.getString(UserInfoEntryUtil.HEIGHT, "未知") + "cm"));
+        itemList.add(new SummarizeProfile("体重", sp.getString(UserInfoEntryUtil.WEIGHT, "未知") + "kg"));
+
+        String gender =  sp.getString(UserInfoEntryUtil.GENDER, "未知");
+        if ("1".equals(gender)) {
+            itemList.add(new SummarizeProfile("性别", "女"));
+        } else {
+
+            itemList.add(new SummarizeProfile("性别", "男"));
+        }
         itemList.add(new SummarizeProfile("位置", sp.getString(UserInfoEntryUtil.LOCATION, "未知")));
 
     }

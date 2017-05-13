@@ -31,4 +31,6 @@ public class MsgTypeConstant {
     public static final int TYPE_UPLOAD_FILE = 0x0b;
     public static final int TYPE_UPLOAD_IMG = 0x0c;
     public static final int TYPE_UPLOAD_MOMENT = 0x0d;
+    public static final int TYPE_DOWNLOAD_RECORD = 0x0e;
+    public static final int TYPE_UPDATE_USER_INFO = 0x0f;
 }
