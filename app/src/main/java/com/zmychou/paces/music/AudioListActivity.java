@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zmychou.paces.DividerItemDecoration;
@@ -16,6 +17,7 @@ public class AudioListActivity extends AppCompatActivity implements
         View.OnClickListener, Observable{
 
     private TextView mCurrentSong;
+    private ImageView play;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,8 @@ public class AudioListActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle("播放列表");
 
         mCurrentSong = (TextView) findViewById(R.id.tv_audio_list_current_song);
-        findViewById(R.id.btn_audio_list_play).setOnClickListener(this);
+        play = (ImageView) findViewById(R.id.btn_audio_list_play);
+        play.setOnClickListener(this);
         findViewById(R.id.btn_audio_list_next).setOnClickListener(this);
 
         AudioListAdapter adapter
@@ -53,6 +56,11 @@ public class AudioListActivity extends AppCompatActivity implements
                     sendCommand(AudioPlaybackService.CMD_RESTART);
                 }else {
                     sendCommand(AudioPlaybackService.CMD_PAUSE);
+                }
+                if (model.isPlaying()) {
+                    play.setImageResource(R.mipmap.play);
+                } else {
+                    play.setImageResource(R.mipmap.pause);
                 }
                 break;
             default:break;

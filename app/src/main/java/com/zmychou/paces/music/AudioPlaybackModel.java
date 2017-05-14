@@ -53,8 +53,19 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     public static AudioPlaybackModel getInstance() {
         return instance;
     }
+
+    public boolean isPlaying() {
+        if (mMediaPlayer == null) {
+            init();
+            return false;
+        }
+        return mMediaPlayer.isPlaying();
+    }
     public void start( String uri, int position) {
         mCurrentPosition = position;
+        if (mMediaPlayer == null) {
+            init();
+        }
         mMediaPlayer.reset();
         try {
             mMediaPlayer.setDataSource(uri);
@@ -67,6 +78,9 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     }
 
     public void pause() {
+        if (mMediaPlayer == null) {
+            init();
+        }
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
             mIsPause = true;

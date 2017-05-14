@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/user_fill"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/moment_item_avatar"/>
+
+    <TextView
+        android:id="@+id/moment_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_alignBottom="@id/moment_item_avatar"
+        android:layout_alignLeft="@id/moment_item_avatar"
+        android:text="2017-5-8 16:45"/>
+    <TextView
+        android:id="@+id/moment_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_alignTop="@id/moment_item_avatar"
+        android:layout_alignLeft="@id/moment_item_avatar"
+        android:textSize="20sp"
+        android:text="用户"/>
+    <TextView
+        android:id="@+id/moment_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/moment_item_avatar"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:text="内容"/>
+    <ImageView
+        android:id="@+id/moment_item_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/moment_item_content"
+        android:layout_margin="@dimen/activity_vertical_margin"/>
+    <ImageView
+        android:id="@+id/moment_item_praise"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@mipmap/praise"
+        android:layout_below="@id/moment_item_img"/>
+    <TextView
+        android:id="@+id/moment_item_praise_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获得23次赞"
+        android:layout_marginRight="35dp"
+        android:layout_alignRight="@id/moment_item_praise"
+        android:layout_alignBottom="@id/moment_item_praise"/>
+</RelativeLayout>

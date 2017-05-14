@@ -54,6 +54,9 @@ public class AudioPlaybackService extends Service {
     public int onStartCommand(Intent intent, int flag, int id) {
         final int command = intent.getIntExtra(EXTRA_COMMAND, 0xff);
         Handler handler = sWorker.getHandler();
+        if (handler == null) {
+            return 1;
+        }
         Message msg = Message.obtain();
         if (command != 0xff) {
             handler.post(new Runnable() {
