@@ -2,5 +2,9 @@
 <resources>
     <declare-styleable name="MomentItemView" >
         <attr name="moment_avatar" format="reference"/>
+        <attr name="moment_time" format="string"/>
+        <attr name="moment_userName" format="string"/>
+        <attr name="moment_img" format="reference"/>
+        <attr name="moment_praise" format="integer"/>
     </declare-styleable>
 </resources>

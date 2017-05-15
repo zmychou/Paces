@@ -122,6 +122,10 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
         UploadFileRequests upload = new UploadFileRequests() {
             @Override
             protected void onPostExecute(InputStream inputStream) {
+                if (inputStream == null) {
+                    Toast.makeText(context, "上传失败!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 try {
                     reader.beginObject();
