@@ -31,7 +31,7 @@ public class MomentAdapter extends RecyclerView.Adapter<MomentAdapter.MyViewHold
     }
     @Override
     public int getItemCount() {
-        return 3;// mItemList.size();
+        return 6;// mItemList.size();
     }
 
     @Override

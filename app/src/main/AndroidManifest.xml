@@ -71,7 +71,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.SignupActivity" />
-        <activity android:name=".profile.EditProfileActivity"></activity>
+        <activity android:name=".profile.EditProfileActivity" />
+        <activity android:name=".moment.PublishMomentActivity"></activity>
     </application>
 
 </manifest>

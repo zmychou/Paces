@@ -24,6 +24,7 @@ public class JsonKey {
     public static final String FILE_TYPE = "fileType";
     public static final String TEXT = "text";
     public static final String USER_ID = "userId";
+    public static final String CONTENT = "content";
 
     public static final String  MSG_STATE = "msgState";
     public static final int  STATE_OK = 0x01;

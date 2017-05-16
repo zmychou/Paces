@@ -99,8 +99,8 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
         mUserName.setText(name);
     }
 
-    public void setPublishTime(String tiem) {
-        mTime.setText(tiem);
+    public void setPublishTime(String item) {
+        mTime.setText(item);
     }
 
     public void setPraiseNum(int num) {

@@ -2,6 +2,7 @@ package com.zmychou.paces.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.zmychou.paces.DividerItemDecoration;
 import com.zmychou.paces.R;
+import com.zmychou.paces.moment.PublishMomentActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +40,14 @@ public class MessagePageFragment extends Fragment {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         mHostActivity = getActivity();
+
+        mHostActivity.findViewById(R.id.ib_fragment_message_editor)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(mHostActivity, PublishMomentActivity.class));
+                    }
+                });
 
         MomentAdapter adapter = new MomentAdapter();
         RecyclerView recyclerView =
