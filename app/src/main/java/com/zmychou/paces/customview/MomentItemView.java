@@ -33,6 +33,7 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
     private TextView mUserName;
     private TextView mTime;
     private TextView mPraiseNum;
+    private TextView mContent;
     private int mPraises;
     private boolean mIsPraise;
     private String mUserId;
@@ -65,7 +66,7 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
         mUserName = (TextView) findViewById(R.id.moment_item_name);
         mPraiseNum = (TextView) findViewById(R.id.moment_item_praise_num);
         mTime = (TextView) findViewById(R.id.moment_item_time);
-
+        mContent = (TextView) findViewById(R.id.moment_item_content);
         mPraise.setOnClickListener(this);
     }
 
@@ -118,6 +119,10 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
 
     public void setFriendId(String friendId) {
         mFriendId = friendId;
+    }
+
+    public void setContents(String content) {
+        mContent.setText(content);
     }
 
     public void changePraiseAmount(boolean add) {

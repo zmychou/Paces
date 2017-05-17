@@ -5,8 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zmychou.paces.customview.MomentItemView;
+import com.zmychou.paces.database.server.MomentEntryUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * <pre>
@@ -22,21 +26,42 @@ import java.util.ArrayList;
 
 public class MomentAdapter extends RecyclerView.Adapter<MomentAdapter.MyViewHolder> {
 
-    private ArrayList<MomentItemView> mItemList;
+    private ArrayList<HashMap<String, String>> mItemList;
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        private MomentItemView itemView;
         public MyViewHolder(View itemView) {
             super(itemView);
+            this.itemView = (MomentItemView) itemView;
         }
+        public MomentItemView getItemView() {
+            return itemView;
+        }
+    }
+
+    public void setItemList(ArrayList<HashMap<String, String>> list) {
+        mItemList = list;
+        notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
-        return 6;// mItemList.size();
+        if (mItemList == null) {
+            return 0;
+        }
+        return mItemList.size();
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+
+        MomentItemView itemView = holder.getItemView();
+        HashMap<String, String> item = mItemList.get(position);
+        itemView.setPraiseNum(Integer.parseInt(item.get(MomentEntryUtil.FAVOR)));
+        itemView.setUserName(item.get(MomentEntryUtil.USER_ID));
+        itemView.setContents(item.get(MomentEntryUtil.CONTENT));
+        itemView.setPublishTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                .format(new Date(Long.parseLong(item.get(MomentEntryUtil.PUBLIC_TIME)))));
     }
 
     @Override
