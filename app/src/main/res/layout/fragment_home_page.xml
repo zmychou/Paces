@@ -20,7 +20,7 @@
 
 
             <ImageView
-                android:background="@color/colorWhiteDark"
+                android:background="@color/colorGrayDark"
                 android:id="@+id/weather_bg_img"
                 android:layout_height="110dp"
                 android:layout_width="match_parent"/>
@@ -92,7 +92,7 @@
                 android:layout_height="60dp"
                 android:layout_width="match_parent"
                 android:layout_below="@id/weather_bg_img"
-                android:background="@color/colorWhiteDark"
+                android:background="@color/colorGrayDark"
                 />
 
             <ImageView
@@ -132,7 +132,7 @@
                 android:layout_height="100dp"
                 android:layout_width="match_parent"
                 android:layout_below="@id/user_info_bgimg"
-                android:background="@color/colorWhiteDark"
+                android:background="@color/colorGrayDark"
                 android:layout_marginTop="10dp"/>
             <TextView
                 android:layout_height="wrap_content"

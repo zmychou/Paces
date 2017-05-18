@@ -16,11 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="@color/colorGrayDark"
         myns:src="@mipmap/music"
         myns:text="音乐"
         />
 
     <com.zmychou.paces.customview.MoreItemView
+        android:background="@color/colorGrayDark"
         android:id="@+id/miv_fragment_more_pedestrian"
         android:layout_below="@id/miv_fragment_more_music"
         android:layout_width="match_parent"
@@ -31,6 +33,7 @@
         />
 
     <com.zmychou.paces.customview.MoreItemView
+        android:background="@color/colorGrayDark"
         android:id="@+id/miv_fragment_more_article"
         android:layout_below="@id/miv_fragment_more_pedestrian"
         android:layout_width="match_parent"
@@ -41,6 +44,7 @@
         />
 
     <com.zmychou.paces.customview.MoreItemView
+        android:background="@color/colorGrayDark"
         android:id="@+id/miv_fragment_more_chat"
         android:layout_below="@id/miv_fragment_more_article"
         android:layout_width="match_parent"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="音乐">
+        <CheckBoxPreference
+            android:key="cbp_settings_music_auto_play"
+            android:title="跑步自动播放音乐"/>
+        <CheckBoxPreference
+            android:key="cbp_settings_music_auto_stop"
+            android:title="音乐随跑步停止"/>
+    </PreferenceCategory>
+</PreferenceScreen>

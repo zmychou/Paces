@@ -14,7 +14,7 @@
         android:src="@mipmap/placeholder"/>
     <com.zmychou.paces.customview.ItemView
         android:layout_marginTop="5dp"
-        android:background="@color/colorWhiteDark"
+        android:background="@color/colorGrayDark"
         android:id="@+id/itv_profile"
         android:layout_below="@id/iv_personal_banner"
         v7ns:item_name="Account"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"/>
 
     <com.zmychou.paces.customview.MoreItemView
-        android:background="@color/colorWhiteDark"
+        android:background="@color/colorGrayDark"
         android:layout_marginTop="5dp"
         android:id="@+id/itv_settings"
         v7ns:text="Settings"
@@ -34,7 +34,7 @@
 
 
     <com.zmychou.paces.customview.MoreItemView
-        android:background="@color/colorWhiteDark"
+        android:background="@color/colorGrayDark"
         android:layout_marginTop="5dp"
         android:id="@+id/miv_fragment_personal_feedback"
         v7ns:text="Feedback"
@@ -45,7 +45,7 @@
 
     <com.zmychou.paces.customview.MoreItemView
         android:id="@+id/miv_fragment_personal_about"
-        android:background="@color/colorWhiteDark"
+        android:background="@color/colorGrayDark"
         android:layout_marginTop="5dp"
         v7ns:src="@mipmap/feedback"
         v7ns:text="About"

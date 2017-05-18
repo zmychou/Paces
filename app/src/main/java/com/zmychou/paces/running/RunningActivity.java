@@ -141,7 +141,8 @@ public class RunningActivity extends AppCompatActivity
             startService(intent);
             bindService(intent,this, Service.BIND_AUTO_CREATE);
 
-            setPolyline("tmp_run_trace_20170414-180527.json");
+
+            //setPolyline("tmp_run_trace_20170414-180527.json");
         }
     }
 

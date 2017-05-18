@@ -31,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        getSupportActionBar().setTitle("个人中心");
         RecyclerView list = (RecyclerView) findViewById(R.id.profile_summarize_list);
          adapter = new ProfileSummarizeAdapter(this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

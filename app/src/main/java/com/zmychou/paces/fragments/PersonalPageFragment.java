@@ -18,11 +18,13 @@ import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.settings.AboutActivity;
+import com.zmychou.paces.settings.SettingsActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PersonalPageFragment extends Fragment {
+public class PersonalPageFragment extends Fragment implements View.OnClickListener{
 
     private Activity mHost;
     public PersonalPageFragment() {
@@ -45,18 +47,33 @@ public class PersonalPageFragment extends Fragment {
         MoreItemView settings = (MoreItemView) mHost.findViewById(R.id.itv_settings);
         MoreItemView about = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_about);
 
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHost.startActivity(new Intent(mHost, ProfileActivity.class));
-            }
-        });
+        profile.setOnClickListener(this);
 
         SharedPreferences sp = mHost.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
         ImageLoader.getOne()
                 .from(sp.getString(UserInfoEntryUtil.AVATAR, "holder"))
                 .into(profile.getImage())
                 .load();
+
+        about.setOnClickListener(this);
+        settings.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.itv_profile:
+                startActivity(new Intent(mHost, ProfileActivity.class));
+                break;
+            case R.id.itv_settings:
+                startActivity(new Intent(mHost, SettingsActivity.class));
+                break;
+            case R.id.miv_fragment_personal_about:
+                startActivity(new Intent(mHost, AboutActivity.class));
+                break;
+            default:break;
+
+        }
 
     }
 }
