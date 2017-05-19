@@ -1,6 +1,11 @@
 package com.zmychou.paces.running;
 
+import android.content.Intent;
+import android.preference.PreferenceManager;
+
 import com.zmychou.paces.R;
+import com.zmychou.paces.music.AudioPlaybackService;
+import com.zmychou.paces.settings.SettingsActivity;
 
 /**
  * <pre>
@@ -33,6 +38,13 @@ public class PauseState implements State {
         activity.main.setText("Pause");
         activity.main.setBackgroundResource(R.drawable.btn_orange_roundness);
         activity.runningService.restart(this);
+        if (PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean(SettingsActivity.MUSIC_SYNCHRONIZE_WITH_RUNNING, false)) {
+
+            Intent intent = new Intent(activity, AudioPlaybackService.class);
+            intent.putExtra(AudioPlaybackService.EXTRA_COMMAND, AudioPlaybackService.CMD_RESTART);
+            activity.startService(intent);
+        }
     }
 
     @Override

@@ -7,7 +7,8 @@
             android:key="cbp_settings_music_auto_play"
             android:title="跑步自动播放音乐"/>
         <CheckBoxPreference
-            android:key="cbp_settings_music_auto_stop"
-            android:title="音乐随跑步停止"/>
+            android:key="cbp_settings_music_synchronize_with_running"
+            android:title="音乐与跑步同步"
+            />
     </PreferenceCategory>
 </PreferenceScreen>

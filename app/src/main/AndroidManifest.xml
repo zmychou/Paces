@@ -44,9 +44,9 @@
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".running.RunningRecordsActivity" />
         <activity
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name=".running.RunningActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".pedestrian.PedestrianActivity" />
 
         <service android:name="com.amap.api.location.APSService" />
@@ -75,7 +75,8 @@
         <activity android:name=".profile.EditProfileActivity" />
         <activity android:name=".moment.PublishMomentActivity" />
         <activity android:name=".settings.AboutActivity" />
-        <activity android:name=".settings.SettingsActivity"></activity>
+        <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".login.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

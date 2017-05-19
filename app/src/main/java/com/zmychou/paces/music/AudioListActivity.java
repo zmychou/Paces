@@ -22,9 +22,6 @@ public class AudioListActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_list);
-
-        getSupportActionBar().setTitle("播放列表");
-
         mCurrentSong = (TextView) findViewById(R.id.tv_audio_list_current_song);
         play = (ImageView) findViewById(R.id.btn_audio_list_play);
         play.setOnClickListener(this);

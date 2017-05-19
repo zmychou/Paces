@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zmychou.paces.MainActivity;
@@ -28,11 +29,14 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String TAG = "com.zmychou.paces.LoginActivity";
+    public static final String KEY_AUTO_LOGIN = "com.zmychou.paces.LoginActivity.AUTO_LOGIN";
     private EditText userName;
     private EditText password;
     private CheckBox autoLogin;
     private Button mLogin;
     private Button mSignup;
+    private TextView mVisitor;
+    private TextView mForgetPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +44,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         userName = (EditText) findViewById(R.id.et_login_username);
         password = (EditText) findViewById(R.id.et_login_password);
+        mForgetPassword = (TextView) findViewById(R.id.tv_login_forget_password);
+        mVisitor = (TextView) findViewById(R.id.tv_login_visitor);
         autoLogin = (CheckBox) findViewById(R.id.cb_login_auto_login);
         mLogin = (Button) findViewById(R.id.btn_login_confirm);
         mSignup = (Button) findViewById(R.id.btn_signup);
         mLogin.setOnClickListener(this);
         mSignup.setOnClickListener(this);
+        mForgetPassword.setOnClickListener(this);
+        mVisitor.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btn_login_confirm:
-                login();
+                login(true);
+                break;
+            case R.id.tv_login_forget_password:
+                break;
+            case R.id.tv_login_visitor:
+                login(false);
                 break;
             case R.id.btn_signup:
                 startActivity(new Intent(this, SignupActivity.class));
@@ -60,12 +73,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void loginCallback() {
-        Toast.makeText(this, "登录成功!", Toast.LENGTH_SHORT).show();
+    private void setAutoLogin(boolean autoLogin) {
+        SharedPreferences sp = getSharedPreferences(TAG, Context.MODE_PRIVATE)        ;
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(KEY_AUTO_LOGIN, autoLogin);
+    }
+
+    private void loginCallback(boolean log) {
+        if (!log) {
+            Toast.makeText(this, "登录成功!", Toast.LENGTH_SHORT).show();
+        }
         startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }
-    private boolean login() {
+    private boolean login(boolean log) {
+        if (!log) {
+            setAutoLogin(false);
+            loginCallback(log);
+        }
 
         Requests requests = new Requests() {
             @Override
@@ -108,8 +133,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString(UserInfoEntryUtil.WEIGHT,info[6]);
                 editor.putString(UserInfoEntryUtil.LEVEL,info[7]);
                 editor.putString(UserInfoEntryUtil.AVATAR,info[8]);
+                editor.putBoolean(KEY_AUTO_LOGIN, autoLogin.isChecked());
                 editor.apply();
-                loginCallback();
+                loginCallback(true);
             }
         };
         HashMap<String, String> map = new HashMap<>();

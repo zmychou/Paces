@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +35,10 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.music.AudioPlaybackService;
 import com.zmychou.paces.pedestrian.DataChangeListener;
 import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.settings.SettingsActivity;
 
 import java.util.ArrayList;
 
@@ -141,6 +145,12 @@ public class RunningActivity extends AppCompatActivity
             startService(intent);
             bindService(intent,this, Service.BIND_AUTO_CREATE);
 
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            if (sp.getBoolean(SettingsActivity.AUTO_PLAY_MUSIC_WHEN_RUNNING, false)) {
+
+                intent = new Intent(this,AudioPlaybackService.class);
+                startService(intent);
+            }
 
             //setPolyline("tmp_run_trace_20170414-180527.json");
         }

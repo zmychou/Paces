@@ -7,7 +7,16 @@
     android:orientation="vertical"
     tools:context="com.zmychou.paces.login.LoginActivity">
 
+    <ImageView
+        android:id="@+id/iv_login_activity_app_icon"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="100dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        />
     <EditText
+        android:layout_below="@id/iv_login_activity_app_icon"
         android:id="@+id/et_login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -38,5 +47,24 @@
         android:text="@string/login_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/tv_login_visitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_visitor"
+        android:textColor="@color/colorBlueLight"
+        android:layout_below="@id/btn_signup"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        />
+    <TextView
+        android:id="@+id/tv_login_forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_forget_password"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorBlueLight"
+        android:layout_below="@id/btn_signup"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         />
 </RelativeLayout>

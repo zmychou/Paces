@@ -4,8 +4,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.preference.PreferenceManager;
 
 import com.zmychou.paces.R;
+import com.zmychou.paces.music.AudioPlaybackService;
+import com.zmychou.paces.settings.SettingsActivity;
 
 /**
  * <pre>
@@ -23,6 +26,14 @@ public class PreparationState implements State {
     @Override
     public void handle(RunningActivity activity) {
         start(activity);
+        if (PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean(SettingsActivity.AUTO_PLAY_MUSIC_WHEN_RUNNING, false)
+                || PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean(SettingsActivity.MUSIC_SYNCHRONIZE_WITH_RUNNING, false)) {
+            Intent intent = new Intent(activity, AudioPlaybackService.class);
+            intent.putExtra(AudioPlaybackService.EXTRA_COMMAND, AudioPlaybackService.CMD_NEXT);
+            activity.startService(intent);
+        }
     }
 
     @Override
