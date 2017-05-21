@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/colorGrayDark"
-        myns:src="@mipmap/music"
+        myns:src="@drawable/music"
         myns:text="音乐"
         />
 
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        myns:src="@mipmap/pedestrian"
+        myns:src="@drawable/pedestrian"
         myns:text="计步"
         />
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        myns:src="@mipmap/categorize"
+        myns:src="@drawable/news"
         myns:text="文章"
         />
 
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        myns:src="@mipmap/send"
+        myns:src="@drawable/send"
         myns:text="沟通"
         />
 

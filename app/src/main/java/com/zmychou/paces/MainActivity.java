@@ -129,22 +129,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeBottomBar(int which) {
 
-        home.setImageResource(R.mipmap.homepage);
-        message.setImageResource(R.mipmap.message);
-        more.setImageResource(R.mipmap.manage);
-        personal.setImageResource(R.mipmap.user);
+        home.setImageResource(R.drawable.homepage);
+        message.setImageResource(R.drawable.message);
+        more.setImageResource(R.drawable.more);
+        personal.setImageResource(R.drawable.user);
         switch (which) {
             case HOME:
-                home.setImageResource(R.mipmap.homepage_fill);
+                home.setImageResource(R.drawable.homepage_fill);
                 break;
             case MESSAGE:
-                message.setImageResource(R.mipmap.message_fill);
+                message.setImageResource(R.drawable.message_fill);
                 break;
             case MORE:
-                more.setImageResource(R.mipmap.manage_fill);
+                more.setImageResource(R.drawable.more_fill);
                 break;
             case PERSONAL:
-                personal.setImageResource(R.mipmap.user_fill);
+                personal.setImageResource(R.drawable.user_fill);
                 break;
             default:break;
         }

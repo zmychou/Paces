@@ -18,7 +18,7 @@
         android:id="@+id/itv_profile"
         android:layout_below="@id/iv_personal_banner"
         v7ns:item_name="Account"
-        v7ns:item_src="@mipmap/user"
+        v7ns:item_src="@drawable/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -27,7 +27,7 @@
         android:layout_marginTop="5dp"
         android:id="@+id/itv_settings"
         v7ns:text="Settings"
-        v7ns:src="@mipmap/settings"
+        v7ns:src="@drawable/setup"
         android:layout_below="@id/itv_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -47,7 +47,7 @@
         android:id="@+id/miv_fragment_personal_about"
         android:background="@color/colorGrayDark"
         android:layout_marginTop="5dp"
-        v7ns:src="@mipmap/feedback"
+        v7ns:src="@drawable/info"
         v7ns:text="About"
         android:layout_below="@id/miv_fragment_personal_feedback"
         android:layout_width="match_parent"

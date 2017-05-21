@@ -11,11 +11,15 @@
         android:id="@+id/et_signup_username"
         android:layout_marginTop="20dp"
         android:hint="@string/signup_hint_username"
+
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:hint="@string/signup_hint_password"
         android:id="@+id/et_signup_password"
+
+        android:maxLines="1"
         android:layout_below="@id/et_signup_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -23,6 +27,7 @@
         android:hint="@string/signup_hint_password_check"
         android:id="@+id/et_signup_password_check"
         android:layout_below="@id/et_signup_password"
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -32,13 +37,13 @@
         android:text="@string/login_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         />
     <CheckBox
-        android:id="@+id/cb_signup_auto_login"
+        android:id="@+id/cb_signup_agreement"
         android:layout_below="@id/btn_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:checked="true"
         android:text="@string/user_agreement"/>
 </RelativeLayout>

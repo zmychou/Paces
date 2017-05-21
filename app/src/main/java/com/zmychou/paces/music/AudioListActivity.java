@@ -57,7 +57,7 @@ public class AudioListActivity extends AppCompatActivity implements
                 if (model.isPlaying()) {
                     play.setImageResource(R.mipmap.play);
                 } else {
-                    play.setImageResource(R.mipmap.pause);
+                    play.setImageResource(R.drawable.suspend);
                 }
                 break;
             default:break;

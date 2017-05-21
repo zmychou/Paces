@@ -17,11 +17,13 @@
         />
     <EditText
         android:layout_below="@id/iv_login_activity_app_icon"
+        android:maxLines="1"
         android:id="@+id/et_login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/et_login_password"
+        android:maxLines="1"
         android:layout_below="@id/et_login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

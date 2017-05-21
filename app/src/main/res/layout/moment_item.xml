@@ -7,7 +7,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:src="@mipmap/user_fill"
+        android:src="@drawable/user_fill"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:id="@+id/moment_item_avatar"/>
 

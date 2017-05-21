@@ -9,7 +9,7 @@
         android:id="@+id/iv_audio_item_img"
         android:layout_width="35dp"
         android:layout_marginTop="8dp"
-        android:src="@mipmap/music"
+        android:src="@drawable/music"
         android:layout_height="35dp" />
     <TextView
         android:layout_marginLeft="45dp"
@@ -18,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/iv_audio_item_img"
-        android:textColor="@color/colorBlack"
         android:textSize="17sp"
         android:text="Audio name"/>
     <TextView

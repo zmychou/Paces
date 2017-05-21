@@ -48,7 +48,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:src="@mipmap/ic_forward"
+        android:src="@drawable/forward"
         android:id="@+id/imageView" />
 
     <TextView
