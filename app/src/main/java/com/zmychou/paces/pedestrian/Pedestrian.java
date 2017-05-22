@@ -110,9 +110,9 @@ public class Pedestrian implements SensorEventListener {
     private int mCounter;
 
     private int mWatchDogCounter;
-    private static final int WATCH_DOG_COUNT = 60;
+    private static final int WATCH_DOG_COUNT = 50;
     private long mIgnorePeriodicStart;
-    private static final long IGNORE_PERIODIC = 1000 * 3; //3 seconds
+    private static final long IGNORE_PERIODIC = 1000 * 2; //3 seconds
     private float mAccuracy = 3;
 
     public void start(Context context){
@@ -316,6 +316,11 @@ public class Pedestrian implements SensorEventListener {
         }
     }
 
+    /**
+     * 看门狗程序.如果借鉴硬件看门狗电路思路,若果超过规定时间未设置 mWatchDogCounter ,则表明无法计步
+     * 此时调整计步阈值
+     * @param timestamp
+     */
     private void watchDog(long timestamp) {
         mWatchDogCounter--;
         if (mWatchDogCounter < 0) {

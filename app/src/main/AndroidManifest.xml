@@ -38,15 +38,12 @@
             android:name="com.amap.api.v2.apikey"
             android:value="c8e33a10f7f99bec793a8770a86faa08" />
 
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".running.RunningRecordsActivity" />
         <activity
             android:name=".running.RunningActivity"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:launchMode="singleInstance" />
         <activity android:name=".pedestrian.PedestrianActivity" />
 
         <service android:name="com.amap.api.location.APSService" />
@@ -76,7 +73,8 @@
         <activity android:name=".moment.PublishMomentActivity" />
         <activity android:name=".settings.AboutActivity" />
         <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".login.ChangePasswordActivity"></activity>
+        <activity android:name=".login.ChangePasswordActivity" />
+        <activity android:name=".settings.ArticleActivity"></activity>
     </application>
 
 </manifest>

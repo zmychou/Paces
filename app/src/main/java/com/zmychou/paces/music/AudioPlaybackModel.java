@@ -62,6 +62,11 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
         return mMediaPlayer.isPlaying();
     }
     public void start( String uri, int position) {
+        String threadName = Thread.currentThread().getName();
+        //Ensure we are use a worker thread to play music
+        if (!"music_thread".equals(threadName)) {
+            return;
+        }
         mCurrentPosition = position;
         if (mMediaPlayer == null) {
             init();

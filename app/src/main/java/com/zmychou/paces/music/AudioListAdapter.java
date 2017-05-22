@@ -115,10 +115,11 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.Audi
 
 //                    break;
 //                case R.id.tv_audio_item_slave:
-                    Intent intent = new Intent(v.getContext(), AudioPlaybackService.class);
-                    intent.putExtra(URI, getUri());
+            Intent intent = new Intent(v.getContext(), AudioPlaybackService.class);
+            intent.putExtra(URI, getUri());
             intent.putExtra(INDEX, getIndex());
-                    v.getContext().startService(intent);
+            intent.putExtra(AudioPlaybackService.EXTRA_COMMAND, 0xfe);
+            v.getContext().startService(intent);
 //                    break;
 //                default:break;
 //            }

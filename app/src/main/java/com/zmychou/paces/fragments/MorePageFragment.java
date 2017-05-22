@@ -14,6 +14,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.customview.MoreItemView;
 import com.zmychou.paces.music.AudioListActivity;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
+import com.zmychou.paces.settings.ArticleActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,6 +64,7 @@ public class MorePageFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(mHostActivity, AudioListActivity.class));
                 break;
             case R.id.miv_fragment_more_article:
+                startActivity(new Intent(mHostActivity, ArticleActivity.class));
                 break;
             case R.id.miv_fragment_more_chat:
                 break;

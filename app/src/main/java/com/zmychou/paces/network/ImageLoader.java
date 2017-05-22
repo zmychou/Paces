@@ -62,6 +62,9 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+        if (source == null) {
+            return;
+        }
         dest.setImageBitmap(source);
     }
 

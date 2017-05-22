@@ -23,6 +23,9 @@ public class AudioPlaybackService extends Service {
     public static final int CMD_NEXT = 0x10;
     public static final int CMD_PREV = 0x20;
 
+    private static final int CMD_CONTROL = 0xff;
+    private static final int CMD_INDEX = 0xfe;
+
 //    public static final byte START = 0x01;
 
     private static PlayBackWorker sWorker ;
@@ -34,6 +37,7 @@ public class AudioPlaybackService extends Service {
         // because the worker thread can not  get the chance to execute
         sWorker = new PlayBackWorker();
         sWorker.setPriority(Thread.MAX_PRIORITY);
+        sWorker.setName("music_thread");
         sWorker.start();
     }
 
@@ -53,12 +57,13 @@ public class AudioPlaybackService extends Service {
 
     public int onStartCommand(Intent intent, int flag, int id) {
         final int command = intent.getIntExtra(EXTRA_COMMAND, 0xff);
+        int pos = intent.getIntExtra(AudioListAdapter.AudioItemHolder.INDEX,0);
         Handler handler = sWorker.getHandler();
-        if (handler == null || command == 0xff) {
+        if (handler == null ||  command == 0xff) {
             return 1;
         }
         Message msg = Message.obtain();
-        if (command != 0xff) {
+        if (command != 0xff && command != CMD_INDEX) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -79,7 +84,6 @@ public class AudioPlaybackService extends Service {
             return 1;
         }
         String uri = intent.getStringExtra(AudioListAdapter.AudioItemHolder.URI);
-        int pos = intent.getIntExtra(AudioListAdapter.AudioItemHolder.INDEX,0);
 
         msg.obj = uri;
         msg.arg1 = pos;
