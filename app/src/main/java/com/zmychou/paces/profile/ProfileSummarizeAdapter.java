@@ -164,7 +164,17 @@ public class ProfileSummarizeAdapter extends RecyclerView.Adapter<RecyclerView.V
                     itemList.remove(pos + 1);
                     UpdateUserInfoRequests request = new UpdateUserInfoRequests() {
                         @Override
+                        protected void onPreExecute() {
+                            showWaitingDialog(mContext);
+                        }
+
+                        @Override
                         protected void onPostExecute(InputStream inputStream) {
+
+                            dismissWaitingDialog();
+                            if (inputStream == null) {
+                                return;
+                            }
                             JsonReader jr = new JsonReader(new InputStreamReader(inputStream));
                             try {
                                 jr.beginObject();

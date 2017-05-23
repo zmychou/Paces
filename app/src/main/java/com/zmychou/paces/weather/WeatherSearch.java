@@ -22,6 +22,15 @@ public class WeatherSearch extends AsyncTask<String,Void,WeatherResult>{
 
     private InputStream mInputStream;
     private WeatherListener mListener;
+    private InputStream requestWeatherFromMyServer() {
+        try {
+            return new URL("http://10.42.0.1:8080/Paces/weather_info/LiveWeather.json")
+                    .openStream();
+        } catch (MalformedURLException e) {
+
+        } catch (IOException e) {}
+        return null;
+    }
     public InputStream requestWeather(String city) {
 
         URL u ;

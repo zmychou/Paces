@@ -52,7 +52,13 @@ public class PublishMomentActivity extends AppCompatActivity {
         map.put(JsonKey.CONTENT, text);
         Requests requests = new Requests(){
             @Override
+            protected void onPreExecute() {
+                showWaitingDialog(PublishMomentActivity.this);
+            }
+
+            @Override
             protected void onPostExecute(InputStream inputStream) {
+                dismissWaitingDialog();
                 if (inputStream == null) {
                     Toast.makeText(PublishMomentActivity.this, "网络错误!", Toast.LENGTH_SHORT).show();
                     return;

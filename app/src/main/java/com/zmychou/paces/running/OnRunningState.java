@@ -35,7 +35,7 @@ public class OnRunningState implements State {
     @Override
     public void handle(RunningActivity activity) {
 
-        activity.main.setText("Continue");
+        activity.main.setText(R.string.running_continue);
 
         activity.main.setBackgroundResource(R.drawable.btn_green_roundness);
         activity.changeState(PauseState.getInstance());

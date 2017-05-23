@@ -3,6 +3,7 @@ package com.zmychou.paces.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -93,8 +94,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         Requests requests = new Requests() {
+
+            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this)
+                    .setView(R.layout.waiting_view)
+                    .create();
+            @Override
+            protected void onPreExecute() {
+                alertDialog.show();
+            }
+
             @Override
             protected void onPostExecute(InputStream inputStream) {
+
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 String content = null;
                 try {
@@ -112,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     reader.endObject();
                 } catch (IOException e) {
                 }
+                alertDialog.dismiss();
                 if (content == null) {
                     Toast.makeText(LoginActivity.this, "登录失败!", Toast.LENGTH_SHORT).show();
                     return;

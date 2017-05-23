@@ -1,9 +1,11 @@
 package com.zmychou.paces.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +32,19 @@ public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStre
 
     protected String mUrl = "http://10.42.0.1:8080/paces/MyServlet";
     protected ArrayList<String> filePaths;
+
+    protected AlertDialog mAlertDialog;
+
+    protected void showWaitingDialog(Context context) {
+        mAlertDialog = new AlertDialog.Builder(context)
+                .setView(R.layout.waiting_view)
+                .create();
+        mAlertDialog.show();
+    }
+
+    protected void dismissWaitingDialog() {
+        mAlertDialog.dismiss();
+    }
 
     public void setFilePaths(ArrayList<String> filePaths) {
         this.filePaths = filePaths;

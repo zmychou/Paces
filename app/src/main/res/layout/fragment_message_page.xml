@@ -12,6 +12,13 @@
         android:layout_width="match_parent"
         />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/pb_fragment_message_loading"
+        />
+
     <ImageButton
         android:id="@+id/ib_fragment_message_editor"
         android:layout_width="40dp"

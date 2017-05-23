@@ -71,6 +71,8 @@ public class MessagePageFragment extends Fragment {
         Requests requests = new Requests() {
             @Override
             protected void onPostExecute(InputStream inputStream) {
+                mHostActivity.findViewById(R.id.pb_fragment_message_loading)
+                        .setVisibility(View.INVISIBLE);
                 if (inputStream == null) {
                     Toast.makeText(mHostActivity, "网络错误", Toast.LENGTH_SHORT).show();
                     return;

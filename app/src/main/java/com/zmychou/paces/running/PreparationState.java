@@ -38,7 +38,7 @@ public class PreparationState implements State {
 
     @Override
     public void start(RunningActivity activity) {
-        activity.main.setText("Pause");
+        activity.main.setText(R.string.running_pause);
         activity.main.setBackgroundResource(R.drawable.btn_orange_roundness);
         activity.changeState(OnRunningState.getInstance());
 //        activity.runningService.

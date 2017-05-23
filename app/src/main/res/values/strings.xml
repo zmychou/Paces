@@ -1,29 +1,29 @@
 <resources>
-    <string name="app_name">Paces</string>
+    <string name="app_name">步烙</string>
 
     <!--fragment home-->
     <string name="weather_location_ph">--</string>
-    <string name="home_my_activity">My Activity</string>
-    <string name="home_total_distance">Distance</string>
-    <string name="home_duration_time">duration</string>
-    <string name="home_running_times">total</string>
+    <string name="home_my_activity">我的活动</string>
+    <string name="home_total_distance">距离</string>
+    <string name="home_duration_time">时长</string>
+    <string name="home_running_times">总次数</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--activity runningActivity-->
-    <string name="gps_not_ready">GPS is not ready,do you want to start now?</string>
-    <string name="start_anyway">Start anyway</string>
-    <string name="wait_gps">Wait</string>
+    <string name="gps_not_ready">GPS定位未成功,想在就开始吗?</string>
+    <string name="start_anyway">跑步</string>
+    <string name="wait_gps">等待</string>
 
     <!--File save info-->
-    <string name="save_success">File saved</string>
-    <string name="external_device_invalid">External storage unavailable</string>
-    <string name="failed_to_save">Failed to save file</string>
+    <string name="save_success">文件已保存</string>
+    <string name="external_device_invalid">外存不存在</string>
+    <string name="failed_to_save">保存失败</string>
 
     <!--GPS states-->
-    <string name="gps_tracking">GPS Tracking</string>
-    <string name="gps_tracked">GPS Tracked</string>
+    <string name="gps_tracking">GPS定位中</string>
+    <string name="gps_tracked">GPS定位成功</string>
 
     <!--login activity-->
     <string name="auto_login_next_time">下次自动登录?</string>
@@ -32,11 +32,37 @@
     <string name="login_visitor">以后登录</string>
     <string name="login_forget_password">忘记密码?</string>
 
+    <!--activity weather detail-->
+    <string name="weather_detail_humidity">相对湿度</string>
+    <string name="weather_detail_aqi">空气质量指数</string>
+    <string name="weather_detail_source">和风天气</string>
+    <string name="weather_detail_no_data">暂无数据</string>
+    <string name="weather_detail_major_pollutants">主要污染物</string>
+    <string name="weather_detail_sport">运动建议</string>
+    <string name="weather_detail_uv">紫外线</string>
+
+
     <!--activity SignupActivity-->
     <string name="user_agreement">我同意用户协议</string>
     <string name="signup_hint_username">输入用户名</string>
     <string name="signup_hint_password">输入密码</string>
     <string name="signup_hint_password_check">再输入一次密码</string>
+
+    <!--activity Running-->
+    <string name="running_distance">总距离:KM</string>
+    <string name="running_speed">速度(km/h)</string>
+    <string name="running_calories">卡路里(kCal)</string>
+    <string name="running_steps">步数</string>
+    <string name="running_start">开始</string>
+    <string name="running_stop">结束</string>
+    <string name="running_continue">继续</string>
+    <string name="running_pause">暂停</string>
+
+    <!--fragment personal-->
+    <string name="fragment_personal_about">关于</string>
+    <string name="fragment_personal_feedback">反馈</string>
+    <string name="fragment_personal_settings">设置</string>
+    <string name="fragment_personal_account">个人详情</string>
 
     <!--activity-->
     <string name="logout">退出登录</string>

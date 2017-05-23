@@ -74,7 +74,8 @@
         <activity android:name=".settings.AboutActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".login.ChangePasswordActivity" />
-        <activity android:name=".settings.ArticleActivity"></activity>
+        <activity android:name=".settings.ArticleActivity" />
+        <activity android:name=".weather.WeatherDetailsActivity"></activity>
     </application>
 
 </manifest>
