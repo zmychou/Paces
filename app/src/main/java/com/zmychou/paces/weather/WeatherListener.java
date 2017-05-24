@@ -1,5 +1,7 @@
 package com.zmychou.paces.weather;
 
+import java.util.HashMap;
+
 /**
  * <pre>
  * Package    :com.zmychou.paces.network
@@ -13,5 +15,5 @@ package com.zmychou.paces.weather;
  */
 
 public interface WeatherListener {
-    void onWeatherSearchResult(WeatherResult result, String state);
+    void onWeatherSearchResult(HashMap<String, String> result, String state);
 }

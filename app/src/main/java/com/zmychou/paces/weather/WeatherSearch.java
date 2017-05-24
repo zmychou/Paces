@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * <pre>
@@ -18,7 +19,7 @@ import java.net.URL;
  * description:
  * </pre>
  */
-public class WeatherSearch extends AsyncTask<String,Void,WeatherResult>{
+public class WeatherSearch extends AsyncTask<String,Void,HashMap<String, String>>{
 
     private InputStream mInputStream;
     private WeatherListener mListener;
@@ -61,20 +62,19 @@ public class WeatherSearch extends AsyncTask<String,Void,WeatherResult>{
     }
 
     @Override
-    protected WeatherResult doInBackground(String... cities) {
+    protected HashMap<String, String> doInBackground(String... cities) {
         mInputStream = requestWeather(cities[0]);
         WeatherResultParser parser = new WeatherResultParser();
-        WeatherResult result = parser.getWeatherResult(mInputStream);
+        HashMap<String, String> result = parser.getWeatherResult(mInputStream);
         return result;
     }
 
     @Override
-    protected void onPostExecute(WeatherResult result) {
+    protected void onPostExecute(HashMap<String, String> result) {
         super.onPostExecute(result);
         if (result != null
                 && mInputStream != null && mListener != null) {
-            mListener.onWeatherSearchResult(result,
-                    result.getState());
+            mListener.onWeatherSearchResult(result, result.get(WeatherResultParser.STATE));
         }
     }
 }

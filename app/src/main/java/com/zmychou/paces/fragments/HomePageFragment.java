@@ -24,11 +24,15 @@ import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.weather.WeatherDetailsActivity;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResult;
+import com.zmychou.paces.weather.WeatherResultParser;
 import com.zmychou.paces.weather.WeatherSearch;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +41,8 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
 
     private ImageView mSummarize;
     private ImageView mUserPic;
+    private ImageView mWeather;
+    private ImageView mUser;
     private TextView mDistance;
     private TextView mTimes;
     private Activity mOwingActivity;
@@ -56,6 +62,8 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         super.onActivityCreated(bundle);
         mOwingActivity = getActivity();
         mSummarize = (ImageView) mOwingActivity.findViewById(R.id.summarize);
+        mWeather = (ImageView) mOwingActivity.findViewById(R.id.weather_bg_img);
+        mUser = (ImageView) mOwingActivity.findViewById(R.id.user_info_bgimg);
         mUserPic = (ImageView) mOwingActivity.findViewById(R.id.user_img);
         mDistance = (TextView) mOwingActivity.findViewById(R.id.tv_home_total_distance);
         mTimes = (TextView) mOwingActivity.findViewById(R.id.tv_home_times);
@@ -92,6 +100,8 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         }
 
         mUserPic.setOnClickListener(this);
+        mWeather.setOnClickListener(this);
+        mUser.setOnClickListener(this);
 
     }
 
@@ -103,17 +113,17 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
     }
 
     @Override
-    public void onWeatherSearchResult(WeatherResult result, String state) {
-        if (WeatherResult.STATE_OK.equals(state)) {
+    public void onWeatherSearchResult(HashMap<String, String> result, String state) {
+        if (result.get(WeatherResultParser.STATE).equals(WeatherResultParser.STATE_OK)) {
             TextView location = (TextView) mOwingActivity.findViewById(R.id.tv_weather_location);
             TextView weather = (TextView) mOwingActivity.findViewById(R.id.tv_weather);
             TextView temperature = (TextView) mOwingActivity.findViewById(R.id.tv_temperature);
             TextView aqi = (TextView) mOwingActivity.findViewById(R.id.tv_PM2_5);
             if (location != null && weather != null && temperature != null && aqi != null) {
-                location.setText(result.getCity());
-                weather.setText(result.getWeather());
-                temperature.setText(result.getTemperature() + "°C");
-                aqi.setText(result.getPm2_5());
+                location.setText(result.get(WeatherResultParser.CITY));
+                weather.setText(result.get(WeatherResultParser.WEATHER));
+                temperature.setText(result.get(WeatherResultParser.TEMPERATURE) + "°C");
+                aqi.setText(result.get(WeatherResultParser.AQI));
             }
         }else {
             Toast.makeText(mOwingActivity, "天气信息获取失败", Toast.LENGTH_SHORT).show();
@@ -125,7 +135,11 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_img:
+            case R.id.user_info_bgimg:
                 startActivity(new Intent(mOwingActivity, ProfileActivity.class));
+                break;
+            case R.id.weather_bg_img:
+                startActivity(new Intent(mOwingActivity, WeatherDetailsActivity.class));
                 break;
             default:break;
         }

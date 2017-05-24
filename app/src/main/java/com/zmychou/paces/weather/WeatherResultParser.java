@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 /**
  * <pre>
@@ -25,12 +26,33 @@ import java.io.InputStreamReader;
 
 public class WeatherResultParser  {
 
-    public WeatherResult getWeatherResult(InputStream in) {
+    public static final String TEMPERATURE = "temperature";
+    public static final String CITY = "city";
+    public static final String WEATHER = "weather";
+    public static final String TIME = "time";
+    public static final String WIND = "wind";
+    public static final String WIND_SPEED = "windSpeed";
+    public static final String HUMIDITY = "humidity";
+    public static final String AQI = "aqi";
+    public static final String PM2_5 = "pm2.5";
+    public static final String PM10 = "pm10";
+    public static final String NO2 = "no2";
+    public static final String SO2 = "so2";
+    public static final String CO = "co";
+    public static final String O3 = "o3";
+    public static final String SPORT = "sport";
+    public static final String UV = "uv";
+    public static final String QLTY = "qlty";
+    public static final String STATE = "state";
+    public static final String STATE_OK = "ok";
+    public static final String STATE_ERROR = "error";
+
+    public HashMap<String, String> getWeatherResult(InputStream in) {
         return parser(in);
     }
 
-    private WeatherResult parser(InputStream in) {
-        WeatherResult result = null;
+    private HashMap<String, String> parser(InputStream in) {
+        HashMap<String, String> result = null;
         if (in == null) {
             return null;
         }
@@ -53,22 +75,26 @@ public class WeatherResultParser  {
 
         return result;
     }
-    private WeatherResult parserArray(JsonReader reader) {
-        WeatherResult result = new WeatherResult();
+    private HashMap<String, String> parserArray(JsonReader reader) {
+        HashMap<String, String> resultMap = new HashMap<>();
         try {
+            resultMap.put(STATE, STATE_OK);
             reader.beginArray();
             while (reader.hasNext()) {
                 reader.beginObject();
                 while (reader.hasNext()) {
                     switch (reader.nextName()) {
                         case "aqi":
-                            parserAqi(reader, result);
+                            parserAqi(reader, resultMap);
                             break;
                         case "basic":
-                            parserBasic(reader, result);
+                            parserBasic(reader, resultMap);
                             break;
                         case "now":
-                            parserNow(reader, result);
+                            parserNow(reader, resultMap);
+                            break;
+                        case "suggestion":
+                            parseSuggestion(reader, resultMap);
                             break;
                         default:
                             reader.skipValue();
@@ -79,12 +105,12 @@ public class WeatherResultParser  {
             }
             reader.endArray();
         } catch (IOException e) {
-            result.setState(WeatherResult.STATE_FAIL);
+            resultMap.put(STATE, STATE_ERROR);
         }
-        return result;
+        return resultMap;
     }
 
-    private void parserAqi(JsonReader reader, WeatherResult result) {
+    private void parserAqi(JsonReader reader, HashMap<String, String> result) {
         try {
             reader.beginObject();
             String name;
@@ -96,8 +122,28 @@ public class WeatherResultParser  {
                         while (reader.hasNext()) {
                             switch (reader.nextName()) {
                                 case "pm25":
-                                    result.setPm2_5(reader.nextString());
-                                    Log.e("PM2.5:",result.getPm2_5());
+                                    result.put(PM2_5, reader.nextString());
+                                    break;
+                                case "pm10":
+                                    result.put(PM10, reader.nextString());
+                                    break;
+                                case "aqi":
+                                    result.put(AQI, reader.nextString());
+                                    break;
+                                case "co":
+                                    result.put(CO, reader.nextString());
+                                    break;
+                                case "no2":
+                                    result.put(NO2, reader.nextString());
+                                    break;
+                                case "o3":
+                                    result.put(O3, reader.nextString());
+                                    break;
+                                case "qlty":
+                                    result.put(QLTY, reader.nextString());
+                                    break;
+                                case "so2":
+                                    result.put(SO2, reader.nextString());
                                     break;
                                 default:
                                     reader.skipValue();
@@ -113,12 +159,12 @@ public class WeatherResultParser  {
             }
             reader.endObject();
         } catch (IOException e) {
-            result.setState(WeatherResult.STATE_FAIL);
+            result.put(STATE, STATE_ERROR);
         }
     }
 
 
-    private void parserNow(JsonReader reader, WeatherResult result) {
+    private void parserNow(JsonReader reader, HashMap<String, String> result) {
         try {
             reader.beginObject();
             String name;
@@ -130,8 +176,7 @@ public class WeatherResultParser  {
                         while (reader.hasNext()) {
                             switch (reader.nextName()) {
                                 case "txt":
-                                    result.setWeather(reader.nextString());
-                                    Log.e("天气:",result.getWeather());
+                                    result.put(WEATHER, reader.nextString());
                                     break;
                                 default:
                                     reader.skipValue();
@@ -141,8 +186,26 @@ public class WeatherResultParser  {
                         reader.endObject();
                         break;
                     case "tmp":
-                        result.setTemperature(reader.nextString());
-                        Log.e("气温:",result.getTemperature());
+                        result.put(TEMPERATURE, reader.nextString());
+                        break;
+                    case "hum":
+                        result.put(HUMIDITY, reader.nextString());
+                        break;
+                    case "wind":
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            switch (reader.nextName()) {
+                                case "dir":
+                                    result.put(WIND, reader.nextString());
+                                    break;
+                                case "sc":
+                                    result.put(WIND_SPEED, reader.nextString());
+                                    break;
+                                default:reader.skipValue();
+                                    break;
+                            }
+                        }
+                        reader.endObject();
                         break;
                     default:
                         reader.skipValue();
@@ -151,11 +214,11 @@ public class WeatherResultParser  {
             }
             reader.endObject();
         } catch (IOException e) {
-            result.setState(WeatherResult.STATE_FAIL);
+            result.put(STATE, STATE_ERROR);
         }
     }
 
-    private void parserBasic(JsonReader reader, WeatherResult result) {
+    private void parserBasic(JsonReader reader, HashMap<String, String> result) {
         try {
             reader.beginObject();
             String name;
@@ -163,8 +226,20 @@ public class WeatherResultParser  {
                 name = reader.nextName();
                 switch (name) {
                     case "city":
-                        result.setCity(reader.nextString());
-                        Log.e("城市:",result.getCity());
+                        result.put(CITY, reader.nextString());
+                        break;
+                    case "update":
+                        reader.beginObject();
+                        while(reader.hasNext()) {
+                            switch (reader.nextName()) {
+                                case "loc":
+                                    result.put(TIME, reader.nextString());
+                                    break;
+                                default:reader.skipValue();
+                                    break;
+                            }
+                        }
+                        reader.endObject();
                         break;
                     default:
                         reader.skipValue();
@@ -173,7 +248,53 @@ public class WeatherResultParser  {
             }
             reader.endObject();
         } catch (IOException e) {
-            result.setState(WeatherResult.STATE_FAIL);
+            result.put(STATE, STATE_ERROR);
         }
+    }
+
+    private void parseSuggestion(JsonReader reader, HashMap<String, String> result) {
+        try {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                switch (reader.nextName()) {
+                    case "sport":
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            switch (reader.nextName()) {
+                                case "brf":
+                                    result.put(SPORT, reader.nextString());
+                                    break;
+                                case "txt":
+                                    result.put(SPORT, result.get(SPORT) + "," + reader.nextString());
+                                    break;
+                                default:reader.skipValue();
+                                    break;
+                            }
+                        }
+                        reader.endObject();
+                        break;
+                    case "uv":
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            switch (reader.nextName()) {
+                                case "brf":
+                                    result.put(UV, reader.nextString());
+                                    break;
+                                case "txt":
+                                    result.put(UV, result.get(UV) + "," + reader.nextString());
+                                    break;
+                                default:reader.skipValue();
+                                    break;
+                            }
+                        }
+                        reader.endObject();
+                        break;
+                    default:reader.skipValue();
+                        break;
+                }
+            }
+            reader.endObject();
+        }catch (IOException e) {}
+
     }
 }
