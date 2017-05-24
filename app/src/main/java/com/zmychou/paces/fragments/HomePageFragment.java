@@ -106,7 +106,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
     }
 
     private void showWeather(String city) {
-        WeatherSearch weatherSearch = new WeatherSearch();
+        WeatherSearch weatherSearch = new WeatherSearch(mOwingActivity);
         weatherSearch.registerWeatherListener(this);
         city = city == null ? "beijing" : city;
         weatherSearch.searchLiveWeather(city);

@@ -47,7 +47,7 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         mUV = (TextView) findViewById(R.id.tv_weather_detail_uv);
         mTime = (TextView) findViewById(R.id.tv_weather_detail_time);
 
-        WeatherSearch search = new WeatherSearch();
+        WeatherSearch search = new WeatherSearch(this);
         search.registerWeatherListener(this);
         search.execute("qinhuangdao");
     }

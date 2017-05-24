@@ -3,12 +3,17 @@
 
     <PreferenceCategory
         android:title="音乐">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="cbp_settings_music_auto_play"
             android:title="跑步自动播放音乐"/>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="cbp_settings_music_synchronize_with_running"
             android:title="音乐与跑步同步"
             />
+
     </PreferenceCategory>
+
+    <SwitchPreference
+        android:key="sp_settings_get_weather_info_from_server"
+        android:title="从服务器获取天气信息"/>
 </PreferenceScreen>

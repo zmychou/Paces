@@ -1,6 +1,13 @@
 package com.zmychou.paces.weather;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.zmychou.paces.settings.SettingsActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +30,13 @@ public class WeatherSearch extends AsyncTask<String,Void,HashMap<String, String>
 
     private InputStream mInputStream;
     private WeatherListener mListener;
+    private Activity mContext;
+    public WeatherSearch(Activity context) {
+        mContext = context;
+    }
     private InputStream requestWeatherFromMyServer() {
         try {
-            return new URL("http://10.42.0.1:8080/Paces/weather_info/LiveWeather.json")
+            return new URL("http://10.42.0.1:8080/paces/MyServlet")
                     .openStream();
         } catch (MalformedURLException e) {
 
@@ -63,7 +74,12 @@ public class WeatherSearch extends AsyncTask<String,Void,HashMap<String, String>
 
     @Override
     protected HashMap<String, String> doInBackground(String... cities) {
-        mInputStream = requestWeather(cities[0]);
+        if (PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getBoolean(SettingsActivity.WEATHER_INFO_SOURCE, false)) {
+            mInputStream = requestWeatherFromMyServer();
+        } else {
+            mInputStream = requestWeather(cities[0]);
+        }
         WeatherResultParser parser = new WeatherResultParser();
         HashMap<String, String> result = parser.getWeatherResult(mInputStream);
         return result;

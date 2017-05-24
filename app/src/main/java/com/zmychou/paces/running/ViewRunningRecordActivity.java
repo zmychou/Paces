@@ -155,6 +155,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
         map.put("_duration", cursor.getLong(cursor.getColumnIndex("sum("
                 + RunningEntryUtils.DURATION + ")")) + "");
         map.put(JsonKey.MSG_TYPE, MsgTypeConstant.TYPE_UPLOAD_FILE+"");
+        map.put("gggg","发生的咖啡还是代理发货时快递费");
         upload.execute(map);
 
     }
