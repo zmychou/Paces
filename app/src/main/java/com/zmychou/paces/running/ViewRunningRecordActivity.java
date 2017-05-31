@@ -4,11 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +26,11 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.PolylineOptions;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.server.RunningDataEntryUtil;
@@ -28,13 +41,14 @@ import com.zmychou.paces.network.JsonKey;
 import com.zmychou.paces.network.MsgTypeConstant;
 import com.zmychou.paces.network.UploadFileRequests;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ViewRunningRecordActivity extends AppCompatActivity {
+public class ViewRunningRecordActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     MapView mMapView;
     AMap mMap;
@@ -44,6 +58,26 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
     private double mLeftLongitude;
     private double mUpLatitude;
     private double mDownLatitude;
+    private String mTimestamp;
+    private String mDistance;
+
+    private IWXAPI mWeChatApi;
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.running_record_detail_upload:
+                uploadFile(this, mTimestamp);
+                break;
+            case R.id.running_record_detail_share:
+                shareToWeChatTimeLine();
+                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                break;
+            default:break;
+
+        }
+        return false;
+    }
 
     class PrepareDataTask extends AsyncTask<String,Void,ArrayList<ArrayList<LatLng>>> {
         @Override
@@ -96,19 +130,67 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_running_record);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_running_record_detail_toolbar);
+        toolbar.inflateMenu(R.menu.running_record_detail_menu);
+        toolbar.setOnMenuItemClickListener(this);
         Intent intent = getIntent();
-        String timestamp = intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP);
+        mTimestamp = intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP);
 
         mMapView = (MapView) findViewById(R.id.mv_details_record);
         mMapView.onCreate(savedInstanceState);
         mMap = mMapView.getMap();
 
-        new PrepareDataTask().execute(timestamp);
-
-        uploadFile(this, timestamp);
+        new PrepareDataTask().execute(mTimestamp);
 
         ((TextView) findViewById(R.id.tv_tmp))
                 .setText(intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP));
+        registerToWeChat();
+    }
+
+    private void registerToWeChat() {
+        String appId = "wx9e01519af9975a5f";
+
+        mWeChatApi = WXAPIFactory.createWXAPI(this, appId, true);
+        mWeChatApi.registerApp(appId);
+    }
+
+    private void shareToWeChatTimeLine() {
+        WXWebpageObject obj = new WXWebpageObject();
+        obj.webpageUrl = "http://www.bing.com/";
+
+        WXMediaMessage msg = new WXMediaMessage(obj);
+        msg.title = "我刚刚用步烙跑了" + mDistance + "KM,生命在于运动,一起来跑步吧!";
+        msg.description = "我刚刚用步烙跑了" + mDistance + "KM,生命在于运动,一起来跑步吧!";
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+        msg.thumbData = bmpToByteArray(thumb, true);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        mWeChatApi.sendReq(req);
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+
+    public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -150,12 +232,12 @@ public class ViewRunningRecordActivity extends AppCompatActivity {
         map.put(RunningDataEntryUtil.USER_ID, sp.getString(UserInfoEntryUtil._ID, "default"));
         map.put(RunningDataEntryUtil._ID, id);
         map.put(RunningDataEntryUtil.TIMESTAMP, id);
-        map.put("_distance", cursor.getFloat(cursor.getColumnIndex("sum("
-                + RunningEntryUtils.DISTANCE + ")")) +"");
+        mDistance = cursor.getFloat(cursor.getColumnIndex("sum("+ RunningEntryUtils.DISTANCE + ")")) +"";
+        map.put("_distance", mDistance);
+
         map.put("_duration", cursor.getLong(cursor.getColumnIndex("sum("
                 + RunningEntryUtils.DURATION + ")")) + "");
         map.put(JsonKey.MSG_TYPE, MsgTypeConstant.TYPE_UPLOAD_FILE+"");
-        map.put("gggg","发生的咖啡还是代理发货时快递费");
         upload.execute(map);
 
     }

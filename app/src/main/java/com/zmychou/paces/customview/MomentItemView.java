@@ -76,7 +76,7 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
 
     public void setAvatar(String url) {
         ImageLoader.getOne()
-                .from(url)
+                .from(url, false)
                 .into(mAvatar)
                 .load();
     }
@@ -87,7 +87,7 @@ public class MomentItemView extends LinearLayout implements View.OnClickListener
 
     public void setImage(String url) {
         ImageLoader.getOne()
-                .from(url)
+                .from(url, false)
                 .into(mAvatar)
                 .load();
     }

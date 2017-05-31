@@ -9,6 +9,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_article_toolbar"
+        app:navigationIcon="@mipmap/statistic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

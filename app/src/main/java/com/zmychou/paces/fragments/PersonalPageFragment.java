@@ -51,7 +51,7 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
 
         SharedPreferences sp = mHost.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
         ImageLoader.getOne()
-                .from(sp.getString(UserInfoEntryUtil.AVATAR, "holder"))
+                .from(sp.getString(UserInfoEntryUtil.AVATAR, "holder"), false)
                 .into(profile.getImage())
                 .load();
 

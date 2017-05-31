@@ -10,6 +10,7 @@ import com.zmychou.paces.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -50,11 +51,12 @@ public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStre
         this.filePaths = filePaths;
     }
 
-    protected InputStream request(String forWhat) {
+    protected InputStream request(String forWhat, HashMap<String,String> map) {
         try {
             URL url = new URL(mUrl);
-            URLConnection conn = url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
+            setHeaderHook(conn, map);
             OutputStream os = conn.getOutputStream();
             os.write(forWhat.getBytes());
             os.flush();
@@ -66,12 +68,17 @@ public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStre
         return null;
 
     }
+
+    protected void setHeaderHook(HttpURLConnection conn, HashMap<String, String> map) {
+
+    }
+
     public InputStream constructJson(HashMap<String, String> map) {
         StringBuilder sb = new StringBuilder();
         Set<String> keys = map.keySet();
         sb.append("{");
         for (String key : keys) {
-           sb.append("\"") ;
+            sb.append("\"") ;
             sb.append(key);
             sb.append("\":");
             sb.append("\"");
@@ -84,7 +91,7 @@ public class Requests extends AsyncTask<HashMap<String, String>, Void, InputStre
 //        sb.deleteCharAt(sb.length() - 1);
         sb.append("}");
         Log.e("debug",sb.toString());
-        return request(sb.toString());
+        return request(sb.toString(), map);
     }
 
     protected String moreContent() {

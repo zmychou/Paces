@@ -48,7 +48,7 @@ public class WeatherSearch extends AsyncTask<String,Void,HashMap<String, String>
         URL u ;
         try {
             u = new URL("https://free-api.heweather.com/v5/weather?city="+city
-                    +"&key=fff122ff73b5403aa6352f75b3dea57c");
+                    +"&key=79b8384813894376a6ec95ea81fa7a52");
             return u.openStream();
 //            byte[] buffer = new byte[1024];
 //            for (int i = 0; (i = inputStream.read(buffer,0,buffer.length)) > -1; ) {

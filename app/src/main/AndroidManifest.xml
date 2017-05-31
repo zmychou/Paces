@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zmychou.paces">
-
     <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
@@ -52,7 +51,13 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".running.ViewRunningRecordActivity" />
+        <activity android:name=".running.ViewRunningRecordActivity"
+            android:parentActivityName=".running.RunningRecordsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            </activity>
+
         <activity android:name=".music.AudioListActivity" />
 
         <service
@@ -74,8 +79,12 @@
         <activity android:name=".settings.AboutActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".login.ChangePasswordActivity" />
-        <activity android:name=".settings.ArticleActivity" />
-        <activity android:name=".weather.WeatherDetailsActivity"></activity>
+        <activity android:name=".settings.ArticleActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".running.RunningRecordsActivity"/>
+        </activity>
+        <activity android:name=".weather.WeatherDetailsActivity"/>
     </application>
 
 </manifest>

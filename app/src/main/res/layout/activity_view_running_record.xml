@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.zmychou.paces.running.ViewRunningRecordActivity">
 
+    <android.support.v7.widget.Toolbar
+        toolbar:title="@string/running_record_detail_title"
+        android:id="@+id/tb_running_record_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </android.support.v7.widget.Toolbar>
     <com.amap.api.maps.MapView
         android:id="@+id/mv_details_record"
+        android:layout_below="@id/tb_running_record_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/tv_tmp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/iv_running_record_detail_info_base"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        />
+
 </RelativeLayout>

@@ -32,6 +32,7 @@ import com.zmychou.paces.weather.WeatherSearch;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -91,10 +92,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         id.setText(userId);
         if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
             showWeather("qinhuangdao");
-            ImageLoader loader = new ImageLoader();
-            loader.from(preferences.getString(UserInfoEntryUtil.AVATAR, "holder"))
-                    .into(mUserPic)
-                    .load();
+            loadAvatar(preferences);
         } else {
             Toast.makeText(mOwingActivity, "网络链接错误!", Toast.LENGTH_SHORT).show();
         }
@@ -103,6 +101,19 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         mWeather.setOnClickListener(this);
         mUser.setOnClickListener(this);
 
+    }
+
+    private void loadAvatar(SharedPreferences sp) {
+        ImageLoader loader = new ImageLoader();
+        File file = new File(Environment.getExternalStorageDirectory(), "Paces/cache/avatar/paces");
+        if(!file.exists()) {
+            loader.from(sp.getString(UserInfoEntryUtil.AVATAR, "holder"), false);
+        } else {
+            loader.from("file://"+file.getPath(), true);
+        }
+
+        loader.into(mUserPic)
+                .load();
     }
 
     private void showWeather(String city) {

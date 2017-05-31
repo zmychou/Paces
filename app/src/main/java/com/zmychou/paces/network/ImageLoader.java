@@ -34,7 +34,11 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
     String url;
     Bitmap source;
     ImageView dest;
-    public ImageLoader from(String imgUrl) {
+    public ImageLoader from(String imgUrl, boolean local) {
+        if (local) {
+            url = imgUrl;
+            return this;
+        }
         url = "http://10.42.0.1:8080/" + imgUrl;
         return this;
     }

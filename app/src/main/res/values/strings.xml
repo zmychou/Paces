@@ -11,6 +11,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--activity running record detail-->
+    <string name="running_record_detail_title">跑步记录</string>
+    <string name="running_record_detail_menu_upload">上传</string>
+
     <!--activity runningActivity-->
     <string name="gps_not_ready">GPS定位未成功,想在就开始吗?</string>
     <string name="start_anyway">跑步</string>

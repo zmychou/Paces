@@ -17,7 +17,7 @@ public class ArticleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_article_toolbar);
         WebView webView = (WebView) findViewById(R.id.wv_article_webview);
         WebViewClient client = new WebViewClient();
-        webView.loadUrl("http://10.1.47.245:8080/Paces/Signin.html");
+        webView.loadUrl("http://www.bing.com/");
         setSupportActionBar(toolbar);
     }
 }

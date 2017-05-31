@@ -11,7 +11,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * <pre>
@@ -50,6 +52,13 @@ public class UploadFileRequests extends Requests {
         return sb.toString();
     }
 
+    @Override
+    protected void setHeaderHook(HttpURLConnection conn, HashMap<String, String> map) {
+        conn.setRequestProperty("msgType", MsgTypeConstant.TYPE_UPLOAD_FILE + "");
+        for (String key : map.keySet()) {
+            conn.setRequestProperty(key, map.get(key));
+        }
+    }
     public ArrayList<String> getRecords(Context context, String id) {
         RunningEntryUtils utils = new RunningEntryUtils(context);
         Cursor cursor = utils.getSpecificData(id);
