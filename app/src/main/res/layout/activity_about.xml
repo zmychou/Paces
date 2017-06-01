@@ -10,23 +10,34 @@
         android:id="@+id/iv_about_activity_app_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/run"
         android:layout_width="110dp"
         android:layout_height="110dp" />
     <TextView
+        android:gravity="center"
         android:id="@+id/tv_about_activity_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="作者:周明阳\n版本:V1.0"
+        android:text="周明阳\nzmychou@gmail.com\n 步烙 V1.0"
         android:layout_below="@id/iv_about_activity_app_icon"
         android:layout_centerHorizontal="true"/>
     <TextView
+        android:gravity="center"
         android:id="@+id/tv_about_activity_github"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="开源地址:"
+        android:text="开源地址:\nhttps://github.com/zmychou/Paces"
         android:layout_below="@id/tv_about_activity_author"
         android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btn_about_check_for_update"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/tv_about_activity_github"
+        android:layout_centerHorizontal="true"
+        android:text="检查更新"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     </RelativeLayout>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.zmychou.paces.running.RunningActivity">
 
     <android.support.v7.widget.Toolbar
+        android:background="@color/colorGrayDark"
         android:id="@+id/tb_running_toolbar"
+        toolbar:navigationIcon="@mipmap/left"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="跑步"/>
+
         <ImageView
             android:src="@drawable/forward"
             android:layout_width="35dp"

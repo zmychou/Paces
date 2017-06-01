@@ -167,7 +167,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
         mWeChatApi.sendReq(req);
     }
 

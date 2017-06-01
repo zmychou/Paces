@@ -106,6 +106,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected void onPostExecute(InputStream inputStream) {
 
+                if (inputStream == null) {
+                    return;
+                }
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 String content = null;
                 try {
