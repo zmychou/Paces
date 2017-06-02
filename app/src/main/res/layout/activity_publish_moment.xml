@@ -9,6 +9,8 @@
         android:id="@+id/et_publish_moment_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:minLines="6"
         android:gravity="start"
         android:background="@drawable/input_marquee"

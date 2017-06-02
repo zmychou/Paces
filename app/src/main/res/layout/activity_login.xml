@@ -51,6 +51,7 @@
         android:text="@string/auto_login_next_time"/>
 
     <Button
+        android:background="@drawable/btn_common"
         android:id="@+id/btn_login_confirm"
         android:layout_below="@id/cb_login_auto_login"
         android:text="@string/login_confirm"
@@ -60,10 +61,12 @@
         android:layout_height="wrap_content"
         />
     <Button
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:id="@+id/btn_signup"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_below="@id/btn_login_confirm"
+        android:background="@drawable/btn_common"
         android:text="@string/login_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

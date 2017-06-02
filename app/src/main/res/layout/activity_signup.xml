@@ -5,35 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.zmychou.paces.login.LoginActivity">
 
     <EditText
+        android:background="@drawable/input_marquee"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_height="50dp"
         android:id="@+id/et_signup_username"
         android:layout_marginTop="20dp"
         android:hint="@string/signup_hint_username"
 
         android:maxLines="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        />
     <EditText
+        android:background="@drawable/input_marquee"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_height="50dp"
         android:hint="@string/signup_hint_password"
         android:id="@+id/et_signup_password"
 
         android:maxLines="1"
         android:layout_below="@id/et_signup_username"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        />
     <EditText
+        android:background="@drawable/input_marquee"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_height="50dp"
         android:hint="@string/signup_hint_password_check"
         android:id="@+id/et_signup_password_check"
         android:layout_below="@id/et_signup_password"
         android:maxLines="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        />
 
     <Button
         android:id="@+id/btn_signup"
-        android:layout_below="@id/et_signup_password_check"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:background="@drawable/btn_common"
         android:text="@string/login_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +58,7 @@
         />
     <CheckBox
         android:id="@+id/cb_signup_agreement"
-        android:layout_below="@id/btn_signup"
+        android:layout_below="@id/et_signup_password_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
