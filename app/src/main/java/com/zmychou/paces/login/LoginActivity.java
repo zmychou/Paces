@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public static final String TAG = "com.zmychou.paces.LoginActivity";
     public static final String KEY_AUTO_LOGIN = "com.zmychou.paces.LoginActivity.AUTO_LOGIN";
+    public static final String HAS_LOGGED = "logged";
     private EditText userName;
     private EditText password;
     private CheckBox autoLogin;

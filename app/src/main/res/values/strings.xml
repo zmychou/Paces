@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">步烙</string>
+    <string name="app_slogan">健康生活每一天!</string>
 
     <!--dialog text-->
     <string name="dialog_confirm">确定</string>
@@ -43,6 +44,8 @@
     <string name="login_signup">免费注册</string>
     <string name="login_visitor">以后登录</string>
     <string name="login_forget_password">忘记密码?</string>
+    <string name="login_password_hint">密码</string>
+    <string name="login_username_hint">用户名</string>
 
     <!--activity weather detail-->
     <string name="weather_detail_humidity">相对湿度</string>

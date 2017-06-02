@@ -52,4 +52,12 @@
         android:text="检查更新"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/pb_about_activity_checking"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn_about_check_for_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     </RelativeLayout>

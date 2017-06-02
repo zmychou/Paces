@@ -14,6 +14,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.util.HashMap;
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
 
 
+    private ProgressBar mChecking;
     class CheckUpdateTask extends AsyncTask<Void, Void, HashMap<String, String>> {
         @Override
         protected HashMap<String, String> doInBackground(Void... params) {
@@ -78,6 +80,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected void onPostExecute(HashMap<String, String> map) {
+            mChecking.setVisibility(View.INVISIBLE);
             if (map == null) {
                 Toast.makeText(AboutActivity.this,
                         R.string.about_activity_network_error, Toast.LENGTH_SHORT).show();
@@ -125,6 +128,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         Button check = (Button) findViewById(R.id.btn_about_check_for_update);
         TextView author = (TextView) findViewById(R.id.tv_about_activity_author);
         TextView github = (TextView) findViewById(R.id.tv_about_activity_github);
+        mChecking = (ProgressBar) findViewById(R.id.pb_about_activity_checking);
         author.setOnClickListener(this);
         github.setOnClickListener(this);
         check.setOnClickListener(this);
@@ -154,6 +158,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_about_check_for_update:
                 new CheckUpdateTask().execute();
+                mChecking.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_about_activity_github:
                 createIntent(Intent.ACTION_VIEW,
