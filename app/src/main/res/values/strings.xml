@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">步烙</string>
 
+    <!--dialog text-->
+    <string name="dialog_confirm">确定</string>
+    <string name="dialog_cancel">取消</string>
     <!--fragment home-->
     <string name="weather_location_ph">--</string>
     <string name="home_my_activity">我的活动</string>
@@ -14,6 +17,11 @@
     <!--activity running record detail-->
     <string name="running_record_detail_title">跑步记录</string>
     <string name="running_record_detail_menu_upload">上传</string>
+
+    <!--activity about-->
+    <string name="about_activity_network_error" >网络错误</string>
+    <string name="about_activity_up_to_date" >已是最新版本</string>
+    <string name="about_activity_new_version">新版本</string>
 
     <!--activity runningActivity-->
     <string name="gps_not_ready">GPS定位未成功,想在就开始吗?</string>

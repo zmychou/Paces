@@ -46,8 +46,10 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
         ItemView profile = (ItemView) mHost.findViewById(R.id.itv_profile);
         MoreItemView settings = (MoreItemView) mHost.findViewById(R.id.itv_settings);
         MoreItemView about = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_about);
+        MoreItemView feedback = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_feedback);
 
         profile.setOnClickListener(this);
+        feedback.setOnClickListener(this);
 
         SharedPreferences sp = mHost.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
         ImageLoader.getOne()
@@ -70,6 +72,9 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.miv_fragment_personal_about:
                 startActivity(new Intent(mHost, AboutActivity.class));
+                break;
+            case R.id.miv_fragment_personal_feedback:
+                AboutActivity.sendMail(mHost);
                 break;
             default:break;
 

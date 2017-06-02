@@ -6,7 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.zmychou.paces.settings.AboutActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_activity_about_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@mipmap/left"
+        app:title="@string/fragment_personal_about"
+        android:background="@color/colorGrayDark"
+        >
+
+    </android.support.v7.widget.Toolbar>
+
     <ImageView
+        android:layout_below="@id/tb_activity_about_toolbar"
         android:id="@+id/iv_about_activity_app_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"

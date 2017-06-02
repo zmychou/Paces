@@ -18,6 +18,7 @@ import android.widget.Toast;
  */
 
 public class NetworkUtil {
+
     public static boolean networkConnectivity(Context context) {
         ConnectivityManager cm = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
