@@ -8,8 +8,10 @@
     tools:context=".running.RunningRecordsActivity">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_running_record_toolbar"
         android:background="@color/colorGrayDark"
         toolbar:navigationIcon="@mipmap/left"
+        toolbar:title="@string/running_records_activity_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -7,16 +7,24 @@
     android:orientation="vertical"
     tools:context="com.zmychou.paces.login.LoginActivity">
 
+    <android.support.v7.widget.Toolbar
+        app:title="@string/login_activity_title"
+        android:background="@color/colorGrayDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
     <ImageView
         android:id="@+id/iv_login_activity_app_icon"
         android:src="@drawable/run"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         />
     <EditText
         android:layout_below="@id/iv_login_activity_app_icon"
+        android:layout_marginTop="20dp"
         android:maxLines="1"
         android:background="@drawable/input_marquee"
         android:nextFocusDown="@+id/et_login_password"

@@ -133,6 +133,12 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_running_record_detail_toolbar);
         toolbar.inflateMenu(R.menu.running_record_detail_menu);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewRunningRecordActivity.this.finish();
+            }
+        });
         Intent intent = getIntent();
         mTimestamp = intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP);
 

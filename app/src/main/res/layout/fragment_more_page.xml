@@ -18,7 +18,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorGrayDark"
         myns:src="@drawable/music"
-        myns:text="音乐"
+        myns:text="@string/more_page_fragment_music"
         />
 
     <com.zmychou.paces.customview.MoreItemView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         myns:src="@drawable/pedestrian"
-        myns:text="计步"
+        myns:text="@string/more_page_fragment_pedometer"
         />
 
     <com.zmychou.paces.customview.MoreItemView
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         myns:src="@drawable/news"
-        myns:text="文章"
+        myns:text="@string/more_page_fragment_article"
         />
 
     <com.zmychou.paces.customview.MoreItemView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         myns:src="@drawable/send"
-        myns:text="沟通"
+        myns:text="@string/more_page_fragment_chat"
         />
 
 </RelativeLayout>

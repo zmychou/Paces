@@ -8,7 +8,9 @@
     tools:context="com.zmychou.paces.running.ViewRunningRecordActivity">
 
     <android.support.v7.widget.Toolbar
+        android:background="@color/colorGrayDark"
         toolbar:title="@string/running_record_detail_title"
+        toolbar:navigationIcon="@mipmap/left"
         android:id="@+id/tb_running_record_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp">

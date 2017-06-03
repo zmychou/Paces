@@ -3,6 +3,7 @@ package com.zmychou.paces.login;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_signup_activity_toolbar);
+        setSupportActionBar(toolbar);
 
         mUserName = (EditText) findViewById(R.id.et_signup_username);
         mPassword = (EditText) findViewById(R.id.et_signup_password);

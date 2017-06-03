@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.zmychou.paces.login.LoginActivity">
 
+    <android.support.v7.widget.Toolbar
+        app:navigationIcon="@mipmap/left"
+        app:title="@string/signup_activity_title"
+        android:id="@+id/tb_signup_activity_toolbar"
+        android:background="@color/colorGrayDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <EditText
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/tb_signup_activity_toolbar"
         android:background="@drawable/input_marquee"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,6 +31,8 @@
         android:layout_width="match_parent"
         />
     <EditText
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:background="@drawable/input_marquee"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -34,6 +45,8 @@
         android:layout_width="match_parent"
         />
     <EditText
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:background="@drawable/input_marquee"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -46,6 +59,8 @@
         />
 
     <Button
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:id="@+id/btn_signup"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
@@ -57,6 +72,8 @@
         android:enabled="false"
         />
     <CheckBox
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:id="@+id/cb_signup_agreement"
         android:layout_below="@id/et_signup_password_check"
         android:layout_width="wrap_content"

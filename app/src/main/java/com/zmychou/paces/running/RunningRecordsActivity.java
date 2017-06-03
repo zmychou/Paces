@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.zmychou.paces.DividerItemDecoration;
 import com.zmychou.paces.R;
@@ -20,6 +22,14 @@ public class RunningRecordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running_records);
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_running_record_toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RunningRecordsActivity.this.finish();
+            }
+        });
         SqliteHelper helper = new SqliteHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
         RunningEntryUtils utils = new RunningEntryUtils(this);

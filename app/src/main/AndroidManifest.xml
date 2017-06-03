@@ -73,17 +73,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.SignupActivity" />
+        <activity android:name=".login.SignupActivity"
+            android:parentActivityName=".login.LoginActivity"
+            >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity"/>
+        </activity>
         <activity android:name=".profile.EditProfileActivity" />
         <activity android:name=".moment.PublishMomentActivity" />
         <activity android:name=".settings.AboutActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".login.ChangePasswordActivity" />
-        <activity android:name=".settings.ArticleActivity"
-            android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".running.RunningRecordsActivity"/>
-        </activity>
+        <activity android:name=".settings.ArticleActivity"/>
         <activity android:name=".weather.WeatherDetailsActivity"/>
     </application>
 

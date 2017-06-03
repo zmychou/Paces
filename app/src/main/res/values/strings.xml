@@ -15,6 +15,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--ProfileActivity-->
+    <string name="profile_activity_title">个人详情</string>
+
     <!--activity running record detail-->
     <string name="running_record_detail_title">跑步记录</string>
     <string name="running_record_detail_menu_upload">上传</string>
@@ -38,7 +41,11 @@
     <string name="gps_tracking">GPS定位中</string>
     <string name="gps_tracked">GPS定位成功</string>
 
-    <!--login activity-->
+    <!--activity publish moment-->
+    <string name="publish_moment_activity_title">发表动态</string>
+
+    <!--LoginActivity-->
+    <string name="login_activity_title">请登录</string>
     <string name="auto_login_next_time">下次自动登录?</string>
     <string name="login_confirm">登录</string>
     <string name="login_signup">免费注册</string>
@@ -57,7 +64,8 @@
     <string name="weather_detail_uv">紫外线</string>
 
 
-    <!--activity SignupActivity-->
+    <!--SignupActivity-->
+    <string name="signup_activity_title">注册</string>
     <string name="user_agreement">我同意用户协议</string>
     <string name="signup_hint_username">输入用户名</string>
     <string name="signup_hint_password">输入密码</string>
@@ -79,8 +87,17 @@
     <string name="fragment_personal_settings">设置</string>
     <string name="fragment_personal_account">个人详情</string>
 
+    <!--MorePageFragment-->
+    <string name="more_page_fragment_article">跑步小知识</string>
+    <string name="more_page_fragment_music">音乐</string>
+    <string name="more_page_fragment_chat">畅聊</string>
+    <string name="more_page_fragment_pedometer">计步器</string>
+
     <!--activity-->
     <string name="logout">退出登录</string>
+
+    <!--RunningRecordsActivity-->
+    <string name="running_records_activity_title">跑步记录</string>
 
     <!--height array-->
     <array name="height_array">

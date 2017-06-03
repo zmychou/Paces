@@ -367,7 +367,7 @@ public class DataDeriveService extends Service {
         mNotification = new NotificationCompat.Builder(this)
                 .setContentTitle("Paces")
                 .setContentText("Notification")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.run)
                 .setContent(remote)
                 .setContentIntent(pi).build();
         this.startForeground(mNotificationId,mNotification);

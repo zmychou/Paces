@@ -9,7 +9,8 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_article_toolbar"
-        app:navigationIcon="@mipmap/statistic"
+        app:navigationIcon="@mipmap/close"
+        app:title="@string/more_page_fragment_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,5 +18,5 @@
     <WebView
         android:id="@+id/wv_article_webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>
