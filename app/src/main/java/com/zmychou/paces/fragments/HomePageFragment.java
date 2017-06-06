@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.telecom.ConnectionService;
+import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +35,18 @@ import com.zmychou.paces.weather.WeatherSearch;
 import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningRecordsActivity;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -147,7 +161,11 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         switch (v.getId()) {
             case R.id.user_img:
             case R.id.user_info_bgimg:
-                startActivity(new Intent(mOwingActivity, ProfileActivity.class));
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+//                startActivity(new Intent(mOwingActivity, ProfileActivity.class));
                 break;
             case R.id.weather_bg_img:
                 startActivity(new Intent(mOwingActivity, WeatherDetailsActivity.class));
@@ -155,4 +173,68 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
             default:break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                UpdateAvatarTask task = new UpdateAvatarTask();
+                task.execute(data.getData().getPath());
+                Log.e("result data:", data.getData().getEncodedPath());
+            }
+        }
+    }
+
+    class UpdateAvatarTask extends AsyncTask<String, Void, HashMap<String, String>> {
+        @Override
+        protected HashMap<String, String> doInBackground(String... params) {
+
+            InputStream in = updateAvatar(params[0]);
+            if (in == null) {
+                Log.e("result", "debug");
+                return null;
+            }
+            InputStreamReader isw = new InputStreamReader(in);
+
+            BufferedReader br = new BufferedReader(isw);
+            try {
+
+                Log.e("result",br.readLine());
+            } catch (IOException e) {}
+//            JsonReader jr = new JsonReader(new InputStreamReader(in));
+//            try {
+//                jr.beginObject();
+//            }
+            return null;
+        }
+
+        public InputStream updateAvatar(String filePath) {
+            try {
+                FileInputStream in = new FileInputStream(new File(filePath));
+                URL url = new URL("http://10.42.0.1:8080/paces/MyServlet");
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestProperty("_id", "zmychou");
+                conn.setRequestProperty("msgType", "17");
+                conn.setDoOutput(true);
+                OutputStream os = conn.getOutputStream();
+                OutputStreamWriter osw = new OutputStreamWriter(os);
+                BufferedWriter bw = new BufferedWriter(osw);
+
+                byte[] buff = new byte[1024];
+                for (int len = 0; (len = in.read(buff)) != -1; ) {
+                    os.write(buff, 0, len);
+                }
+                osw.flush();
+                osw.close();
+
+                return conn.getInputStream();
+            }catch(MalformedURLException e) {
+                Log.e("mal","debug");
+            }catch(IOException e) {
+                Log.e("ioe", e.toString());
+            }
+            return null;
+        }
+    }
+
 }

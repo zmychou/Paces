@@ -8,6 +8,7 @@
     tools:context=".running.RunningRecordsActivity">
 
     <android.support.v7.widget.Toolbar
+        android:elevation="4dp"
         android:id="@+id/tb_running_record_toolbar"
         android:background="@color/colorGrayDark"
         toolbar:navigationIcon="@mipmap/left"
