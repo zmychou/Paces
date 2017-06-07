@@ -97,6 +97,7 @@
 
             <ImageView
                 android:id="@+id/user_img"
+                android:foreground="@drawable/circular_stroke"
                 android:layout_height="80dp"
                 android:layout_width="80dp"
                 android:layout_alignBottom="@id/user_info_bgimg"

@@ -3,14 +3,18 @@ package com.zmychou.paces.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.telecom.ConnectionService;
 import android.util.JsonReader;
 import android.util.Log;
@@ -39,6 +43,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -153,19 +158,16 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         }else {
             Toast.makeText(mOwingActivity, "天气信息获取失败", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_img:
+                showSourceDialog();
+                break;
             case R.id.user_info_bgimg:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-//                startActivity(new Intent(mOwingActivity, ProfileActivity.class));
+                startActivity(new Intent(mOwingActivity, ProfileActivity.class));
                 break;
             case R.id.weather_bg_img:
                 startActivity(new Intent(mOwingActivity, WeatherDetailsActivity.class));
@@ -176,13 +178,62 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                UpdateAvatarTask task = new UpdateAvatarTask();
+        if (resultCode == Activity.RESULT_OK) {
+            UpdateAvatarTask task = new UpdateAvatarTask();
+            switch (requestCode) {
+                case 1:
                 task.execute(data.getData().getPath());
                 Log.e("result data:", data.getData().getEncodedPath());
+                    break;
+                case 2:
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap =null;
+                    if ((bitmap = (Bitmap) bundle.get("data")) != null) {
+                        File filePath = new File(Environment.getExternalStorageDirectory(), "Paces/tmp");
+                        if (!filePath.exists()) {
+                            filePath.mkdirs();
+                        }
+                        try {
+                            File file = File.createTempFile("tempFile", ".jpg", filePath);
+                            FileOutputStream out = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                            task.execute(file.getPath());
+
+                        } catch (IOException e) {}
+                    } else {
+                        Log.e("capture photo", "failed");
+                    }
+                        break;
+                default:break;
             }
+            return;
         }
+        Toast.makeText(mOwingActivity, R.string.cancel_operate, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showSourceDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(mOwingActivity)
+                .setItems(R.array.choose_avatar_from_array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        switch (which) {
+                            case 0:
+                                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, 2);
+                                break;
+                            case 1:
+                                intent.setAction(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                startActivityForResult(intent, 1);
+                                break;
+                            default:break;
+                        }
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     class UpdateAvatarTask extends AsyncTask<String, Void, HashMap<String, String>> {
