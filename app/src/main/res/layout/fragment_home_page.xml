@@ -97,7 +97,8 @@
 
             <ImageView
                 android:id="@+id/user_img"
-                android:foreground="@drawable/circular_stroke"
+                android:background="@drawable/circular_stroke"
+                android:padding="5dp"
                 android:layout_height="80dp"
                 android:layout_width="80dp"
                 android:layout_alignBottom="@id/user_info_bgimg"
@@ -211,12 +212,6 @@
                 android:layout_below="@id/user_info_bgimg"
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="true"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/summarize"
-                />
         </RelativeLayout>
     </ScrollView>
 </FrameLayout>

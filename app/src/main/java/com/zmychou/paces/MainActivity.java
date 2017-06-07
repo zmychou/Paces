@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.zmychou.paces.fragments.HomePageFragment;
 import com.zmychou.paces.fragments.MessagePageFragment;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private final int MESSAGE = 0x02;
     private final int MORE = 0x03;
     private final int PERSONAL = 0x04;
+
+    private boolean mShowedExitActivityWarning = false;
+    private long mLastPressBackButtonTime = 0;
 
     ImageView running;
     ImageView more;
@@ -117,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
 //        detectSensorType();
         AudioPlaybackModel.getInstance().getAudios(this);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - mLastPressBackButtonTime) / 1000 < 3) {
+            finish();
+        }
+        mLastPressBackButtonTime = currentTime;
+        Toast.makeText(this, R.string.exit_activity_warn, Toast.LENGTH_SHORT).show();
     }
 
     public void detectSensorType() {

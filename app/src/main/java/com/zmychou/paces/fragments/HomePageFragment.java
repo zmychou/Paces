@@ -187,7 +187,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
                     break;
                 case 2:
                     Bundle bundle = data.getExtras();
-                    Bitmap bitmap =null;
+                    Bitmap bitmap;
                     if ((bitmap = (Bitmap) bundle.get("data")) != null) {
                         File filePath = new File(Environment.getExternalStorageDirectory(), "Paces/tmp");
                         if (!filePath.exists()) {
@@ -264,7 +264,9 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
                 FileInputStream in = new FileInputStream(new File(filePath));
                 URL url = new URL("http://10.42.0.1:8080/paces/MyServlet");
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                conn.setRequestProperty("_id", "zmychou");
+                SharedPreferences sp = mOwingActivity.getSharedPreferences(
+                        LoginActivity.TAG, Context.MODE_PRIVATE );
+                conn.setRequestProperty("_id", sp.getString(UserInfoEntryUtil._ID, "unknown"));
                 conn.setRequestProperty("msgType", "17");
                 conn.setDoOutput(true);
                 OutputStream os = conn.getOutputStream();
