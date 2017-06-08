@@ -60,6 +60,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
     private double mDownLatitude;
     private String mTimestamp;
     private String mDistance;
+    private String mDuration;
 
     private IWXAPI mWeChatApi;
 
@@ -139,8 +140,15 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
                 ViewRunningRecordActivity.this.finish();
             }
         });
+        TextView duration = (TextView) findViewById(R.id.tv_view_running_record_activity_duration);
+        TextView distance = (TextView) findViewById(R.id.tv_view_running_record_activity_distance);
         Intent intent = getIntent();
+
         mTimestamp = intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP);
+        mDistance = intent.getStringExtra(RunningRecordsAdapter.EXTRA_DISTANCE);
+        mDuration = intent.getStringExtra(RunningRecordsAdapter.EXTRA_DURATION);
+        duration.setText(mDuration);
+        distance.setText(mDistance);
 
         mMapView = (MapView) findViewById(R.id.mv_details_record);
         mMapView.onCreate(savedInstanceState);
@@ -150,6 +158,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
 
         ((TextView) findViewById(R.id.tv_tmp))
                 .setText(intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP));
+
         registerToWeChat();
     }
 
@@ -167,7 +176,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
         WXMediaMessage msg = new WXMediaMessage(obj);
         msg.title = "我刚刚用步烙跑了" + mDistance + "KM,生命在于运动,一起来跑步吧!";
         msg.description = "我刚刚用步烙跑了" + mDistance + "KM,生命在于运动,一起来跑步吧!";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.run);
         msg.thumbData = bmpToByteArray(thumb, true);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();

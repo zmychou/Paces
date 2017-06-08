@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="translucent">#9f000000</color>
 
     <!--blue clan-->
     <color name="colorPrimary">#3F51B5</color>

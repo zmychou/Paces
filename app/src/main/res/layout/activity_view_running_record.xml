@@ -26,15 +26,67 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView
-
+        android:background="@color/translucent"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:id="@+id/iv_running_record_detail_info_base"
+        android:id="@+id/iv_view_running_record_info_base"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         />
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tv_view_running_record_activity_duration"
+        android:text="00:00:00"
+        android:layout_alignLeft="@id/iv_view_running_record_info_base"
+        android:textSize="30sp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_alignTop="@id/iv_view_running_record_info_base"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_view_running_record_activity_distance"
+        android:text="5.6"
+        android:layout_alignRight="@id/iv_view_running_record_info_base"
+        android:textSize="30sp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_alignTop="@id/iv_view_running_record_info_base"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/tv_view_running_record_activity_duration"
+        android:layout_alignLeft="@id/iv_view_running_record_info_base"
+        android:src="@drawable/run"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/iv_view_running_record_activity_duration_icon"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/running_duration"
+        android:layout_alignBottom="@id/iv_view_running_record_activity_duration_icon"
+        android:layout_alignLeft="@id/iv_view_running_record_activity_duration_icon"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:id="@+id/tv_view_running_record_activity_distance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/running_distance"
+        android:layout_alignBottom="@id/iv_view_running_record_activity_duration_icon"
+        android:layout_alignRight="@id/iv_view_running_record_info_base"
+        android:layout_marginLeft="20dp"
+        />
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/tv_view_running_record_activity_duration"
+        android:layout_alignRight="@id/tv_view_running_record_activity_distance_text"
+        android:src="@drawable/run"
+        android:layout_marginRight="70dp"
+        android:id="@+id/iv_view_running_record_activity_distance_icon"
+        />
 
 </RelativeLayout>

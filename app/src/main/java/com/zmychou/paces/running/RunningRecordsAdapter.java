@@ -30,6 +30,8 @@ import java.util.Date;
 public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAdapter.MyViewHolder> {
 
     public static final String TIME_STAMP = "com.zmychou.paces.TIME_STAMP";
+    public static final String EXTRA_DISTANCE = "com.zmychou.paces.DISTANCE";
+    public static final String EXTRA_DURATION = "com.zmychou.paces.DURATION";
     private Cursor mCursor;
     private Activity mActivity;
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -50,6 +52,8 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
                 public void onClick(View v) {
                     Intent intent = new Intent(mActivity,ViewRunningRecordActivity.class);
                     intent.putExtra(TIME_STAMP,timestamp.getText());
+                    intent.putExtra(EXTRA_DURATION,duration.getText());
+                    intent.putExtra(EXTRA_DISTANCE,distance.getText());
                     mActivity.startActivity(intent);
                 }
             });

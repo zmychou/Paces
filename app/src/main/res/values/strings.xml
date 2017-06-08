@@ -38,10 +38,6 @@
     <string name="about_activity_up_to_date">已是最新版本</string>
     <string name="about_activity_new_version">新版本</string>
 
-    <!--activity runningActivity-->
-    <string name="gps_not_ready">GPS定位未成功,想在就开始吗?</string>
-    <string name="start_anyway">跑步</string>
-    <string name="wait_gps">等待</string>
 
     <!--File save info-->
     <string name="save_success">文件已保存</string>
@@ -82,7 +78,11 @@
     <string name="signup_hint_password">输入密码</string>
     <string name="signup_hint_password_check">再输入一次密码</string>
 
-    <!--activity Running-->
+    <!--RunningActivity-->
+    <string name="running_duration">总耗时</string>
+    <string name="gps_not_ready">GPS定位未成功,想在就开始吗?</string>
+    <string name="start_anyway">跑步</string>
+    <string name="wait_gps">等待</string>
     <string name="running_distance">总距离:KM</string>
     <string name="running_speed">速度(km/h)</string>
     <string name="running_calories">卡路里(kCal)</string>
