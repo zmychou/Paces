@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v7.app.AlertDialog;
@@ -28,8 +27,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.io.RunningDataJsonFileWriter;
-import com.zmychou.paces.pedestrian.Pedestrian;
-import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.pedometer.Pedometer;
 
 import java.util.ArrayList;
 
@@ -77,7 +75,7 @@ public class DataDeriveService extends Service {
     private float velocity;
 
     private RunningData mRunningData;
-    private Pedestrian mPedestrian;
+    private Pedometer mPedometer;
     //total miles
     private int mMiles ;
 
@@ -92,7 +90,7 @@ public class DataDeriveService extends Service {
         public void onLocationChanged(AMapLocation location) {
 //            updateNotificationElapse++;
             velocity = location.getSpeed();
-            mSteps = mPedestrian.getStepCount();
+            mSteps = mPedometer.getStepCount();
             updateUi();
 //            if (updateNotificationElapse > 5) {
 //                updateNotification("have run:"+mDistance+"meter");
@@ -169,9 +167,9 @@ public class DataDeriveService extends Service {
 
     public void start(State state) {
         showNotification();
-        //Pedestrian
-        mPedestrian = new Pedestrian();
-        mPedestrian.start(this);
+        //Pedometer
+        mPedometer = new Pedometer();
+        mPedometer.start(this);
 
         //Running
         //set running data
@@ -196,7 +194,7 @@ public class DataDeriveService extends Service {
         mPerMileStartTime = System.currentTimeMillis();
         startLocation();
         updateNotification("Location start");
-        mPedestrian.restart();
+        mPedometer.restart();
         if (!mWakeLock.isHeld()) {
             mWakeLock.acquire();
         }
@@ -210,7 +208,7 @@ public class DataDeriveService extends Service {
         mPrevState = state;
         mTimeAccumulate += (System.currentTimeMillis() - mPerMileStartTime);
         stopLocation();
-        mPedestrian.pause();
+        mPedometer.pause();
         updateNotification("Location pause");
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
@@ -256,7 +254,7 @@ public class DataDeriveService extends Service {
                         if (mWakeLock.isHeld()) {
                             mWakeLock.release();
                         }
-                        mPedestrian.stop();
+                        mPedometer.stop();
                     }
                 }).create();
                 dialog.show();
@@ -275,7 +273,7 @@ public class DataDeriveService extends Service {
         mRunningData.setStartTime(mPerMileStartTime);
         mRunningData.setDuration((mTimeAccumulate += (currentTime - mPerMileStartTime)));
         mRunningData.setSequenceNumber(++mMiles);
-        mRunningData.setSteps(mPedestrian.getStepCount() - mSteps);
+        mRunningData.setSteps(mPedometer.getStepCount() - mSteps);
         mRunningData.setCalories(calculateCalories());
         SaveDataWorker worker = new SaveDataWorker();
         worker.execute(mRunningData);

@@ -1,12 +1,14 @@
 package com.zmychou.paces;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +21,7 @@ import com.zmychou.paces.fragments.MessagePageFragment;
 import com.zmychou.paces.fragments.MorePageFragment;
 import com.zmychou.paces.fragments.PersonalPageFragment;
 import com.zmychou.paces.login.LoginActivity;
-import com.zmychou.paces.music.AudioListActivity;
 import com.zmychou.paces.music.AudioPlaybackModel;
-import com.zmychou.paces.pedestrian.PedestrianActivity;
 import com.zmychou.paces.running.RunningActivity;
 
 import java.util.List;
@@ -125,12 +125,39 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        showExitActivityWarnDialog();
+    }
+
+    private void showExitActivityWarnToast() {
         long currentTime = System.currentTimeMillis();
         if ((currentTime - mLastPressBackButtonTime) / 1000 < 3) {
             finish();
+            return;
         }
         mLastPressBackButtonTime = currentTime;
         Toast.makeText(this, R.string.exit_activity_warn, Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void showExitActivityWarnDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.exit_activity_warning_dialog_title)
+                .setMessage(R.string.exit_activity_warning_dialog_message)
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.finish();
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     public void detectSensorType() {

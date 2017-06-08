@@ -26,6 +26,8 @@
 
     <!--MainActivity-->
     <string name="exit_activity_warn">再按一次退出应用</string>
+    <string name="exit_activity_warning_dialog_title">提示</string>
+    <string name="exit_activity_warning_dialog_message">确定退出应用吗?</string>
 
     <!--activity running record detail-->
     <string name="running_record_detail_title">跑步记录</string>

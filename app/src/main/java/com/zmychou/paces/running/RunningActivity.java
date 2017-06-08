@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -38,8 +36,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
 import com.zmychou.paces.io.JsonFileParser;
 import com.zmychou.paces.music.AudioPlaybackService;
-import com.zmychou.paces.pedestrian.DataChangeListener;
-import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.pedometer.DataChangeListener;
 import com.zmychou.paces.settings.SettingsActivity;
 
 import java.util.ArrayList;

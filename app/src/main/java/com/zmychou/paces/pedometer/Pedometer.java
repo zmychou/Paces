@@ -1,19 +1,17 @@
-package com.zmychou.paces.pedestrian;
+package com.zmychou.paces.pedometer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 /**
  * <pre>
- * Package    :com.zmychou.paces.pedestrian
+ * Package    :com.zmychou.paces.pedometer
  * Author     : zmychou
  * Create time:17-4-3
  * Last Modify:
@@ -29,11 +27,11 @@ import java.util.ArrayList;
  * 2. 对不同姿态,赋予不同的轴向的值不同的权重
  * 3. 对明确制定的场合,如跑步,制定专门的赛选方案
  */
-public class Pedestrian implements SensorEventListener {
+public class Pedometer implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private ArrayList<Float> mList = new ArrayList<>();
-    private PedestrianActivity mActivity;
+    private PedometerActivity mActivity;
     private Sensor mSensor;
 
     private long mStartTimestamp;
@@ -372,7 +370,7 @@ public class Pedestrian implements SensorEventListener {
         values[AXIS_Z] = up[AXIS_Z] - low[AXIS_Z];
         return values;
     }
-    public void registerActivity(PedestrianActivity activity) {
+    public void registerActivity(PedometerActivity activity) {
         mActivity = activity;
     }
 

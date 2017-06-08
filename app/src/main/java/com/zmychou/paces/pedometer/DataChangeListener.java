@@ -1,8 +1,8 @@
-package com.zmychou.paces.pedestrian;
+package com.zmychou.paces.pedometer;
 
 /**
  * <pre>
- * Package    :com.zmychou.paces.pedestrian
+ * Package    :com.zmychou.paces.pedometer
  * Author     : zmychou
  * Create time:17-4-17
  * Last Modify:

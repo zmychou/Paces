@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.zmychou.paces.R;
 import com.zmychou.paces.customview.MoreItemView;
 import com.zmychou.paces.music.AudioListActivity;
-import com.zmychou.paces.pedestrian.PedestrianActivity;
+import com.zmychou.paces.pedometer.PedometerActivity;
 import com.zmychou.paces.settings.ArticleActivity;
 
 /**
@@ -58,7 +58,7 @@ public class MorePageFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.miv_fragment_more_pedestrian:
-                startActivity(new Intent(mHostActivity, PedestrianActivity.class));
+                startActivity(new Intent(mHostActivity, PedometerActivity.class));
                 break;
             case R.id.miv_fragment_more_music:
                 startActivity(new Intent(mHostActivity, AudioListActivity.class));
