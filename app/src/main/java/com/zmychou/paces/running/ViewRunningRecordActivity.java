@@ -153,12 +153,7 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
         mMapView = (MapView) findViewById(R.id.mv_details_record);
         mMapView.onCreate(savedInstanceState);
         mMap = mMapView.getMap();
-
         new PrepareDataTask().execute(mTimestamp);
-
-        ((TextView) findViewById(R.id.tv_tmp))
-                .setText(intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP));
-
         registerToWeChat();
     }
 

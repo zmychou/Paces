@@ -21,10 +21,6 @@
         android:layout_below="@id/tb_running_record_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/tv_tmp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <ImageView
         android:background="@color/translucent"
         android:layout_width="match_parent"
@@ -75,9 +71,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/running_distance"
+
         android:layout_alignBottom="@id/iv_view_running_record_activity_duration_icon"
         android:layout_alignRight="@id/iv_view_running_record_info_base"
-        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
         />
     <ImageView
         android:layout_width="20dp"

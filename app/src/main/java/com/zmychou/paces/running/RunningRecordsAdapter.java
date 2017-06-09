@@ -14,6 +14,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningEntryUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -34,6 +35,8 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
     public static final String EXTRA_DURATION = "com.zmychou.paces.DURATION";
     private Cursor mCursor;
     private Activity mActivity;
+    private ArrayList<RunningRecords> mList;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView date;
@@ -79,6 +82,9 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
     public RunningRecordsAdapter(Cursor cursor) {
         mCursor = cursor;
     }
+    public RunningRecordsAdapter(ArrayList<RunningRecords> list) {
+        mList = list;
+    }
 
     public void registerActivity(Activity activity) {
         mActivity = activity;
@@ -96,13 +102,25 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        mCursor.moveToPosition(position);
-        String[] names = mCursor.getColumnNames();
-        for (String s : names)
-            Log.e("names",s);
-        long timestamp = mCursor.getLong(mCursor.getColumnIndex(RunningEntryUtils.TIME_STAMP));
-        float distance = mCursor.getFloat(mCursor.getColumnIndex("sum("+RunningEntryUtils.DISTANCE+")"));
-        long duration = mCursor.getLong(mCursor.getColumnIndex("sum("+RunningEntryUtils.DURATION+")"));
+        long timestamp = 0;
+        float distance = 0;
+        long duration  = 0;
+        if (mCursor != null) {
+            mCursor.moveToPosition(position);
+            String[] names = mCursor.getColumnNames();
+            for (String s : names)
+                Log.e("names", s);
+            timestamp = mCursor.getLong(mCursor.getColumnIndex(RunningEntryUtils.TIME_STAMP));
+            distance = mCursor.getFloat(mCursor.getColumnIndex("sum(" + RunningEntryUtils.DISTANCE + ")"));
+            duration = mCursor.getLong(mCursor.getColumnIndex("sum(" + RunningEntryUtils.DURATION + ")"));
+        } else {
+            RunningRecords record = mList.get(position);
+            try {
+                timestamp = Long.parseLong(record.getTimestamp());
+                distance = Float.parseFloat(record.getDistance());
+                duration = Long.parseLong(record.getDuration());
+            } catch (NumberFormatException e) {}
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
         holder.setDate(sdf.format(new Date(timestamp)));
         holder.setDistance((distance / 1000) + "");
@@ -112,7 +130,10 @@ public class RunningRecordsAdapter extends RecyclerView.Adapter<RunningRecordsAd
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        if (mCursor != null) {
+            return mCursor.getCount();
+        }
+        return mList.size();
     }
 
     private String formatDuration(long duration) {
