@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.View;
 
 import com.zmychou.paces.DividerItemDecoration;
@@ -134,6 +135,7 @@ public class RunningRecordsActivity extends AppCompatActivity {
                             break;
                         case "latLngFile":
                             records.setLatLngFile(reader.nextString());
+                            getFiles(records.getLatLngFile());
                             break;
                         default:reader.skipValue();
                             break;
@@ -144,6 +146,40 @@ public class RunningRecordsActivity extends AppCompatActivity {
             } catch (IOException e) {}
 
             return null;
+        }
+
+        private ArrayList<String> getFiles(String pathOffset) {
+            ArrayList<String> list = new ArrayList<>();
+            try {
+                URL url = new URL(NetworkConstant.SERVER_ADDR_BASE + pathOffset);
+                InputStream in = url.openStream();
+                JsonReader jr = new JsonReader(new InputStreamReader(in));
+                while (jr.hasNext()) {
+                    switch (jr.nextName()) {
+                        case "files":
+                            Log.e("show latlng file", jr.nextString());
+//                            jr.beginArray();
+//                            while (jr.hasNext()) {
+//                                Log.e("show latlng file", jr.)
+//                            }
+//                            jr.endArray();
+                            break;
+                        default:jr.skipValue();
+                            break;
+                    }
+                }
+
+            } catch (MalformedURLException e) {
+
+            } catch (IOException e) {}
+            return null;
+        }
+
+        private void saveFiles(JsonReader reader) {
+            try {
+                reader.beginObject();
+                reader.endObject();
+            } catch (IOException e) {}
         }
     }
 

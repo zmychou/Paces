@@ -208,10 +208,18 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="5dp"/>
 
-            <ImageView android:layout_height="100dp"
+            <ImageView
+                android:layout_height="100dp"
                 android:layout_below="@id/user_info_bgimg"
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="true"/>
+            <com.zmychou.paces.customview.CalenderView
+                android:background="@color/colorGrayDark"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_below="@id/summarize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
+
     </ScrollView>
 </FrameLayout>
