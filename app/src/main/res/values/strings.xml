@@ -110,6 +110,15 @@
     <!--RunningRecordsActivity-->
     <string name="running_records_activity_title">跑步记录</string>
 
+    <!--CalenderView-->
+    <string name="calender_view_sun">日</string>
+    <string name="calender_view_mon">一</string>
+    <string name="calender_view_tue">二</string>
+    <string name="calender_view_thu">四</string>
+    <string name="calender_view_wed">三</string>
+    <string name="calender_view_fri">五</string>
+    <string name="calender_view_sat">六</string>
+
     <!--height array-->
     <array name="height_array">
         <item>130 cm</item>

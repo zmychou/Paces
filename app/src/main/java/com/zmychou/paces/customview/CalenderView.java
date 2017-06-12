@@ -1,7 +1,9 @@
 package com.zmychou.paces.customview;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,18 +13,21 @@ import android.widget.Toast;
 import com.zmychou.paces.R;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ming on 17-6-11.
  */
 public class CalenderView extends LinearLayout implements View.OnClickListener {
 
-    private TextView[] mTextViews = new TextView[35];
+    private TextView[] mTextViews = new TextView[42];
+    private TextView mDate;
 
     private Calendar mCalender ;
 
     private void findViews() {
         mCalender = Calendar.getInstance();
+        mDate = (TextView) findViewById(R.id.tv_calender_view_title);
         mTextViews[0] = (TextView) findViewById(R.id.tv_calender_view_day_00);
         mTextViews[1] = (TextView) findViewById(R.id.tv_calender_view_day_01);
         mTextViews[2] = (TextView) findViewById(R.id.tv_calender_view_day_02);
@@ -58,14 +63,25 @@ public class CalenderView extends LinearLayout implements View.OnClickListener {
         mTextViews[32] = (TextView) findViewById(R.id.tv_calender_view_day_44);
         mTextViews[33] = (TextView) findViewById(R.id.tv_calender_view_day_45);
         mTextViews[34] = (TextView) findViewById(R.id.tv_calender_view_day_46);
+        mTextViews[35] = (TextView) findViewById(R.id.tv_calender_view_day_50);
+        mTextViews[36] = (TextView) findViewById(R.id.tv_calender_view_day_51);
+        mTextViews[37] = (TextView) findViewById(R.id.tv_calender_view_day_52);
+        mTextViews[38] = (TextView) findViewById(R.id.tv_calender_view_day_53);
+        mTextViews[39] = (TextView) findViewById(R.id.tv_calender_view_day_54);
+        mTextViews[40] = (TextView) findViewById(R.id.tv_calender_view_day_55);
+        mTextViews[41] = (TextView) findViewById(R.id.tv_calender_view_day_56);
 
         for (TextView tv : mTextViews) {
             tv.setOnClickListener(this);
         }
 
-        for (int i = 3; i< 32; i++) {
-            mTextViews[i].setText((i - 3) + "");
+        for (int i = 0; i < getMaximumDayOfCurrentMonth(); i++) {
+            mTextViews[getDayInFirstWeek() - 1 + i].setText(i + 1 + "");
         }
+
+        Date date = new Date(System.currentTimeMillis());
+        markDay(R.drawable.btn_red_roundness, date.getDate() + "");
+        markDays(R.drawable.btn_green_roundness, "1", "3", "6", "9");
     }
 
     public CalenderView(Context context, AttributeSet attrs) {
@@ -75,13 +91,31 @@ public class CalenderView extends LinearLayout implements View.OnClickListener {
         findViews();
     }
 
-    public void markDay(int day) {
+    public void markDay(@DrawableRes int shape, String day) {
 
+        mTextViews[getDayInFirstWeek() + Integer.parseInt(day) - 2].setBackgroundResource(shape);
+    }
+
+    public void markDays(@DrawableRes int shape, String... days) {
+        for (String day : days) {
+            markDay(shape, day);
+        }
+    }
+
+    public int getDayInFirstWeek() {
+        Date date = new Date(System.currentTimeMillis());
+        mCalender.setTime(date);
+        mDate.setText(date.getYear() + 1900 +"/"+ ((date.getMonth() + 1)));
+        mCalender.set(date.getYear() + 1900, date.getMonth(), 1);
+        return mCalender.get(Calendar.DAY_OF_WEEK);
+    }
+
+    private int getMaximumDayOfCurrentMonth() {
+        return mCalender.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(), mCalender.getActualMinimum(Calendar.DAY_OF_WEEK_IN_MONTH) + "",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), getMaximumDayOfCurrentMonth()+"",Toast.LENGTH_SHORT).show();
     }
 }

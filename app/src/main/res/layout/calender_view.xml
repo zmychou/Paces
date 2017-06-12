@@ -5,19 +5,22 @@
 
     <TextView
         android:id="@+id/tv_calender_view_title"
-        android:text="2017/6"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textSize="25sp"
+        android:text="2017/6"
         android:layout_alignBaseline="@+id/iv_calender_view_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:src="@drawable/run"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:src="@drawable/calender"
         android:id="@+id/iv_calender_view_icon"
         android:layout_alignParentRight="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:layout_width="@dimen/calender_view_day_size"
+        android:layout_height="@dimen/calender_view_day_size" />
     <LinearLayout
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:id="@+id/ll_calender_view_l1"
         android:layout_below="@id/iv_calender_view_icon"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -28,71 +31,71 @@
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="日"
+            android:text="@string/calender_view_sun"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="一"
+            android:text="@string/calender_view_mon"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="二"
+            android:text="@string/calender_view_tue"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="三"
+            android:text="@string/calender_view_wed"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="四"
+            android:text="@string/calender_view_thu"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="五"
+            android:text="@string/calender_view_fri"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:text="六"
+            android:text="@string/calender_view_sat"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -110,78 +113,70 @@
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_00"
-            android:text="日"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_01"
-            android:text="一"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_02"
-            android:text="二"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_03"
-            android:text="三"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_04"
-            android:text="四"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_05"
-            android:text="五"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:background="@drawable/calender_event"
             android:id="@+id/tv_calender_view_day_06"
-            android:text="31"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -199,78 +194,70 @@
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_10"
-            android:text="日"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_11"
-            android:text="一"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_12"
-            android:text="二"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_13"
-            android:text="三"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_14"
-            android:text="四"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_15"
-            android:text="五"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:background="@drawable/calender_event"
             android:id="@+id/tv_calender_view_day_16"
-            android:text="31"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -288,78 +275,70 @@
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_20"
-            android:text="日"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_21"
-            android:text="一"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_22"
-            android:text="二"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_23"
-            android:text="三"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_24"
-            android:text="四"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_25"
-            android:text="五"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:background="@drawable/calender_event"
             android:id="@+id/tv_calender_view_day_26"
-            android:text="31"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -377,78 +356,70 @@
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_30"
-            android:text="日"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_31"
-            android:text="一"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_32"
-            android:text="二"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_33"
-            android:text="三"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_34"
-            android:text="四"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_35"
-            android:text="五"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
-            android:background="@drawable/calender_event"
             android:id="@+id/tv_calender_view_day_36"
-            android:text="31"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -466,77 +437,151 @@
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_40"
-            android:text="日"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_41"
-            android:text="一"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_42"
-            android:text="二"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_43"
-            android:text="三"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_44"
-            android:text="四"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_45"
-            android:text="五"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="20dp"/>
         <TextView
             android:id="@+id/tv_calender_view_day_46"
-            android:text="31"
             android:textSize="20sp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/calender_view_day_size"
             android:gravity="center"
-            android:layout_height="40dp" />
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_calender_view_l7"
+        android:layout_below="@id/ll_calender_view_l6"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_50"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_51"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_52"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_53"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_54"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_55"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/tv_calender_view_day_56"
+            android:textSize="20sp"
+            android:layout_width="@dimen/calender_view_day_size"
+            android:gravity="center"
+            android:layout_height="@dimen/calender_view_day_size" />
         <View
             android:layout_weight="1"
             android:layout_width="0dp"
