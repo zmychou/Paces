@@ -87,6 +87,14 @@
                 android:layout_marginStart="200dp"
                 android:layout_marginTop="16dp" />
 
+            <ProgressBar
+                android:id="@+id/pb_home_page_fragment_load_weather"
+                android:visibility="invisible"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <ImageView
                 android:id="@+id/user_info_bgimg"
                 android:layout_height="60dp"
@@ -172,6 +180,7 @@
                 android:layout_marginBottom="5dp"
                 />
             <TextView
+                android:id="@+id/tv_home_page_fragment_duration"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="0"
@@ -214,6 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="true"/>
             <com.zmychou.paces.customview.CalenderView
+                android:id="@+id/cv_home_page_fragment_calender"
                 android:background="@color/colorGrayDark"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:layout_below="@id/summarize"

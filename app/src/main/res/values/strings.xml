@@ -5,11 +5,12 @@
     <!--dialog text-->
     <string name="dialog_confirm">确定</string>
     <string name="dialog_cancel">取消</string>
-    <!--fragment home-->
+    <!--HomePageFragment-->
     <array name="choose_avatar_from_array">
         <item>拍照</item>
         <item>相册</item>
     </array>
+    <string name="synchronize_title">正在同步数据...</string>
     <string name="choose_avatar_source_dialog_title">请选择...</string>
     <string name="weather_location_ph">--</string>
     <string name="home_my_activity">我的活动</string>

@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -59,7 +61,11 @@ public class MessagePageFragment extends Fragment {
                         startActivity(new Intent(mHostActivity, PublishMomentActivity.class));
                     }
                 });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
         final MomentAdapter adapter = new MomentAdapter();
         RecyclerView recyclerView =
@@ -85,7 +91,16 @@ public class MessagePageFragment extends Fragment {
                         list.add(getObject(jr));
                     }
                 } catch (IOException e) {}
+                Collections.sort(list, new Comparator<HashMap<String, String>>() {
+                    @Override
+                    public int compare(HashMap<String, String> lhs, HashMap<String, String> rhs) {
+
+                        return Long.parseLong(lhs.get(MomentEntryUtil.PUBLIC_TIME))
+                                > Long.parseLong(rhs.get(MomentEntryUtil.PUBLIC_TIME)) ? -1 : 1;
+                    }
+                });
                 adapter.setItemList(list);
+                adapter.notifyDataSetChanged();
             }
 
             private HashMap<String, String> getObject(JsonReader reader) {

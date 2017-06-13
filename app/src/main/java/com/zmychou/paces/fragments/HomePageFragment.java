@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,15 +21,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zmychou.paces.R;
+import com.zmychou.paces.customview.CalenderView;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.login.LoginActivity;
+import com.zmychou.paces.network.DownloadRecordTask;
 import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.profile.ProfileActivity;
+import com.zmychou.paces.running.RunningRecords;
 import com.zmychou.paces.weather.WeatherDetailsActivity;
 import com.zmychou.paces.weather.WeatherListener;
 import com.zmychou.paces.weather.WeatherResultParser;
@@ -48,6 +53,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -60,8 +68,12 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
     private ImageView mWeather;
     private ImageView mUser;
     private TextView mDistance;
+    private TextView mDuration;
     private TextView mTimes;
     private Activity mOwingActivity;
+    private CalenderView mCalender;
+    private ProgressBar mProgressBar;
+
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -83,10 +95,10 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         mUserPic = (ImageView) mOwingActivity.findViewById(R.id.user_img);
         mDistance = (TextView) mOwingActivity.findViewById(R.id.tv_home_total_distance);
         mTimes = (TextView) mOwingActivity.findViewById(R.id.tv_home_times);
+        mDuration = (TextView) mOwingActivity.findViewById(R.id.tv_home_page_fragment_duration);
+        mCalender = (CalenderView) mOwingActivity.findViewById(R.id.cv_home_page_fragment_calender);
+        mProgressBar = (ProgressBar) mOwingActivity.findViewById(R.id.pb_home_page_fragment_load_weather);
 
-        RunningEntryUtils utils = new RunningEntryUtils(mOwingActivity);
-        mDistance.setText((utils.getTotalDistance() / 1000)+"");
-        mTimes.setText(utils.getTotalTimes()+"");
 
         mSummarize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +131,63 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRunningHistory();
+    }
+
+    private void setRunningHistory() {
+        RunningEntryUtils utils = new RunningEntryUtils(mOwingActivity);
+        Cursor cursor = utils.getAllSummarize();
+        if (!cursor.moveToFirst()) {
+            final AlertDialog dialog = new AlertDialog.Builder(mOwingActivity)
+                    .setView(R.layout.waiting_view)
+                    .setTitle(R.string.synchronize_title)
+                    .create();
+            dialog.show();
+            DownloadRecordTask task = new DownloadRecordTask(mOwingActivity) {
+                @Override
+                protected void onPostExecute(ArrayList<RunningRecords> runningRecordses) {
+                    setRunningHistory();
+                    dialog.dismiss();
+                }
+            };
+            task.execute();
+            return;
+        }
+        mDistance.setText((utils.getTotalDistance() / 1000)+"");
+        mTimes.setText(utils.getTotalTimes()+"");
+        long duration = utils.getTotalDuration();
+        duration /= 1000;
+        long hour = duration / 3600;
+        long minute = duration % 3600 /60;
+        long second = duration % 60;
+        StringBuilder sb = new StringBuilder();
+        sb.append(hour > 9 ? hour : "0" + hour);
+        sb.append(":");
+        sb.append(minute > 9 ? minute : "0" + minute);
+        sb.append(":");
+        sb.append(second > 9 ? second : "0" + second);
+        mDuration.setText(sb.toString());
+        ArrayList<String>  timestamps = new ArrayList<>();
+        do {
+            timestamps.add(cursor.getString(cursor.getColumnIndex(RunningEntryUtils.TIME_STAMP)));
+
+
+        } while (cursor.moveToNext());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd");
+        Date date = new Date();
+        for (String timestamp : timestamps) {
+            date.setTime(Long.parseLong(timestamp));
+            String day = sdf.format(date);
+            Log.e("home fragmentl", day);
+            mCalender.markDay(R.drawable.btn_green_roundness, day);
+        }
+
+    }
+
     private void loadAvatar(SharedPreferences sp) {
         ImageLoader loader = new ImageLoader();
         File file = new File(Environment.getExternalStorageDirectory(), "Paces/cache/avatar/paces");
@@ -133,6 +202,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
     }
 
     private void showWeather(String city) {
+        mProgressBar.setVisibility(View.VISIBLE);
         WeatherSearch weatherSearch = new WeatherSearch(mOwingActivity);
         weatherSearch.registerWeatherListener(this);
         city = city == null ? "beijing" : city;
@@ -141,6 +211,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
 
     @Override
     public void onWeatherSearchResult(HashMap<String, String> result, String state) {
+        mProgressBar.setVisibility(View.INVISIBLE);
         if (result.get(WeatherResultParser.STATE).equals(WeatherResultParser.STATE_OK)) {
             TextView location = (TextView) mOwingActivity.findViewById(R.id.tv_weather_location);
             TextView weather = (TextView) mOwingActivity.findViewById(R.id.tv_weather);

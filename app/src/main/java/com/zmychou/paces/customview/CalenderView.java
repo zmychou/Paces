@@ -81,7 +81,7 @@ public class CalenderView extends LinearLayout implements View.OnClickListener {
 
         Date date = new Date(System.currentTimeMillis());
         markDay(R.drawable.btn_red_roundness, date.getDate() + "");
-        markDays(R.drawable.btn_green_roundness, "1", "3", "6", "9");
+//        markDays(R.drawable.btn_green_roundness, "1", "3", "6", "9");
     }
 
     public CalenderView(Context context, AttributeSet attrs) {

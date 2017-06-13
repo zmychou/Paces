@@ -130,6 +130,14 @@ public class RunningEntryUtils implements BaseColumns{
         return cursor.getFloat(cursor.getColumnIndex("sum("+DISTANCE+")"));
     }
 
+    public long getTotalDuration() {
+        Cursor cursor = sDatabase.query(TABLE_NAME,
+                new String[]{"sum("+DURATION+")"},
+                null,null,null,null,null);
+        cursor.moveToFirst();
+        return cursor.getLong(cursor.getColumnIndex("sum("+DURATION+")"));
+    }
+
     public int getTotalTimes() {
         Cursor cursor = sDatabase.query(
                 TABLE_NAME,
