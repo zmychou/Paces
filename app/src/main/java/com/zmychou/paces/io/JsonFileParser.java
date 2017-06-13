@@ -104,7 +104,7 @@ public class JsonFileParser {
         }
 		return null;
 	}
-    public ArrayList<LatLng> parserArray(JsonReader reader) {
+    public static ArrayList<LatLng> parserArray(JsonReader reader) {
         ArrayList<LatLng> list = new ArrayList<>();
         try {
             reader.beginArray();
@@ -119,7 +119,7 @@ public class JsonFileParser {
         } catch (IOException e) {}
         return list;
     }
-    public LatLng parserLatLng(JsonReader reader) {
+    public static LatLng parserLatLng(JsonReader reader) {
         try {
             reader.beginObject();
             double lat = 0;

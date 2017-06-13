@@ -87,6 +87,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         RunningEntryUtils utils = new RunningEntryUtils(mOwingActivity);
         mDistance.setText((utils.getTotalDistance() / 1000)+"");
         mTimes.setText(utils.getTotalTimes()+"");
+
         mSummarize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

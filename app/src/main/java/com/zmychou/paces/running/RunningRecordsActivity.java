@@ -18,9 +18,12 @@ import android.view.View;
 import com.zmychou.paces.DividerItemDecoration;
 import com.zmychou.paces.R;
 import com.zmychou.paces.constant.NetworkConstant;
+import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
 import com.zmychou.paces.database.SqliteHelper;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.io.RunningDataJsonFileWriter;
 import com.zmychou.paces.login.LoginActivity;
 
 import java.io.BufferedWriter;
@@ -154,20 +157,18 @@ public class RunningRecordsActivity extends AppCompatActivity {
                 URL url = new URL(NetworkConstant.SERVER_ADDR_BASE + pathOffset);
                 InputStream in = url.openStream();
                 JsonReader jr = new JsonReader(new InputStreamReader(in));
+                jr.beginObject();
                 while (jr.hasNext()) {
                     switch (jr.nextName()) {
                         case "files":
-                            Log.e("show latlng file", jr.nextString());
-//                            jr.beginArray();
-//                            while (jr.hasNext()) {
-//                                Log.e("show latlng file", jr.)
-//                            }
-//                            jr.endArray();
+
+                            readArray(jr);
                             break;
                         default:jr.skipValue();
                             break;
                     }
                 }
+                jr.endObject();
 
             } catch (MalformedURLException e) {
 
@@ -175,11 +176,65 @@ public class RunningRecordsActivity extends AppCompatActivity {
             return null;
         }
 
-        private void saveFiles(JsonReader reader) {
+        private void readArray(JsonReader reader) {
+            try {
+                reader.beginArray();
+                RunningEntryUtils utils = new RunningEntryUtils(RunningRecordsActivity.this);
+                RunningData data = null;
+                while (reader.hasNext()) {
+                    data = readObject(reader);
+                    RunningDataJsonFileWriter writer = new RunningDataJsonFileWriter(
+                            RunningRecordsActivity.this, data
+                    );
+                    data.setLatLngFile(writer.save());
+                    utils.insert(data);
+                }
+                reader.endArray();
+            } catch (IOException e) {}
+        }
+
+        private RunningData readObject(JsonReader reader) {
+            RunningData data = RunningData.getInstance();
             try {
                 reader.beginObject();
+                while (reader.hasNext()) {
+                    switch (reader.nextName()) {
+                        case "timestamp":
+                            data.setTimestamp(reader.nextLong());
+                            break;
+                        case "finish":
+                            data.setFinishTime(reader.nextLong());
+                            break;
+                        case "duration":
+                            data.setDuration(reader.nextLong());
+                            break;
+                        case "distance":
+                            data.setDistance(reader.nextInt());
+                            break;
+                        case "start":
+                            data.setStartTime(reader.nextLong());
+                            break;
+                        case "sequence":
+                            data.setSequenceNumber(reader.nextInt());
+                            break;
+                        case "calories":
+                            data.setCalories(reader.nextInt());
+                            break;
+                        case "steps":
+                            data.setSteps(reader.nextInt());
+                            break;
+                        case "latlngs":
+                            data.setLatLngs(JsonFileParser.parserArray(reader));
+                            break;
+                        default:reader.skipValue();
+                            break;
+                    }
+                }
                 reader.endObject();
+                return data;
             } catch (IOException e) {}
+            return null;
+
         }
     }
 
