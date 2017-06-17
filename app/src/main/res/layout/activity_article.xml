@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,7 +16,28 @@
 
     </android.support.v7.widget.Toolbar>
     <WebView
+        android:layout_below="@id/tb_article_toolbar"
         android:id="@+id/wv_article_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</LinearLayout>
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/pb_article_activity_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ProgressBar
+        android:id="@+id/pb_article_activity_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+    <TextView
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/pb_article_activity_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:text="@string/article_activity_loading_content"
+        />
+    </RelativeLayout>
+</RelativeLayout>

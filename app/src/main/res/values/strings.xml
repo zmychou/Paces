@@ -79,6 +79,8 @@
     <string name="pedometer_activity_today">今天</string>
     <string name="pedometer_activity_daily_target">每日目标:2000</string>
     <string name="pedometer_activity_has_walk">步数</string>
+    <string name="pedometer_activity_distance">今日距离:M</string>
+    <string name="pedometer_activity_duration">活动时长</string>
     <!--SignupActivity-->
     <string name="signup_activity_title">注册</string>
     <string name="user_agreement">我同意用户协议</string>
@@ -110,8 +112,11 @@
     <!--MorePageFragment-->
     <string name="more_page_fragment_article">跑步小知识</string>
     <string name="more_page_fragment_music">音乐</string>
-    <string name="more_page_fragment_chat">畅聊</string>
+    <string name="more_page_fragment_chat">更多功能,敬请期待...</string>
     <string name="more_page_fragment_pedometer">计步器</string>
+
+    <!--ArticleActivity-->
+    <string name="article_activity_loading_content">玩命加载中......</string>
 
     <!--activity-->
     <string name="logout">退出登录</string>

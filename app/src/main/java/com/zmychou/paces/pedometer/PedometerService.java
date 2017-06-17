@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.zmychou.paces.database.PedometerDataEntryUtil;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.login.LoginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class PedometerService extends Service implements DataChangeListener{
     private Pedometer mPedometer;
     private ArrayList<OnStepChangeListener> mObserver;
     private static String SAVE_STEP = "save_step";
+    private long mTimestamp;
 
     @Override
     public void onUpdateStepRate(int steps) {
@@ -52,6 +56,7 @@ public class PedometerService extends Service implements DataChangeListener{
         super.onCreate();
         mObserver = new ArrayList<>();
         mPedometer = new Pedometer();
+        mTimestamp = System.currentTimeMillis();
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -68,6 +73,33 @@ public class PedometerService extends Service implements DataChangeListener{
         registerReceiver(receiver, filter);
     }
 
+    /**
+     * 公式 H=0.262S+155.911
+     * 1]姚力,高以群,王辉,吕晓森,田立新. 利用步长分析身高的实验研究[J]. 刑事技术,1999,(01):17-19.
+     * @param steps
+     * @return
+     */
+    public float calculateDistance(int steps) {
+        float h = getHeight() > 165 ? getHeight() : 170;
+        float d =(float) ((((h - 155.911) / 0.262) * steps));
+        return ((int)(d / 100));
+    }
+
+
+    private float getHeight() {
+        SharedPreferences sp = getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
+        String sex = sp.getString(UserInfoEntryUtil.GENDER, "0");
+        if (!"0".equals(sex)) {
+            return 170f;
+        }
+        String ht = sp.getString(UserInfoEntryUtil.HEIGHT, "170");
+        return Float.valueOf(ht);
+    }
+
+    public long getDuration() {
+        return System.currentTimeMillis() - mTimestamp;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -82,7 +114,10 @@ public class PedometerService extends Service implements DataChangeListener{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             String date = sdf.format(timestamp);
             sdf.applyPattern("HH");
-            PedometerDataEntryUtil.insert(this, timestamp, date, sdf.format(timestamp), 0, 0L, 0);
+            int step = mPedometer.getStepCount();
+            PedometerDataEntryUtil.insert(this, timestamp, date, sdf.format(timestamp),
+                    step, calculateDistance(step), timestamp - mTimestamp);
+            mTimestamp = timestamp;
         }
         return super.onStartCommand(intent, flags, startId);
     }

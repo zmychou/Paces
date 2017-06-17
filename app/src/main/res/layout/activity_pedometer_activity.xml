@@ -15,6 +15,12 @@
         />
 
     <TextView
+        android:id="@+id/tv_pedometer_activity_anchor"
+        android:layout_centerHorizontal="true"
+        android:layout_width="150dp"
+        android:layout_height="30dp" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pedometer_activity_today"
@@ -50,5 +56,48 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="55dp"
         android:textColor="@color/colorOrangeLight"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="0.0"
+        android:textColor="@color/colorOrangeLight"
+        android:textSize="25sp"
+        android:layout_alignRight="@id/tv_pedometer_activity_anchor"
+        android:id="@+id/tv_pedometer_activity_distance"
+        android:layout_below="@id/tv_pedestrian_steps"
+        android:layout_marginRight="100dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pedometer_activity_distance"
+        android:textSize="20sp"
+        android:id="@+id/tv_pedometer_activity_distance_label"
+        android:layout_below="@id/tv_pedometer_activity_distance"
+        android:layout_alignRight="@id/tv_pedometer_activity_distance"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="00:00:00"
+        android:textColor="@color/colorOrangeLight"
+        android:textSize="25sp"
+        android:layout_alignLeft="@id/tv_pedometer_activity_anchor"
+        android:id="@+id/tv_pedometer_activity_duration"
+        android:layout_below="@id/tv_pedestrian_steps"
+        android:layout_marginLeft="100dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pedometer_activity_duration"
+        android:textSize="20sp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/tv_pedometer_activity_duration_label"
+        android:layout_below="@id/tv_pedometer_activity_duration"
+        android:layout_alignLeft="@id/tv_pedometer_activity_duration"
         />
 </RelativeLayout>
