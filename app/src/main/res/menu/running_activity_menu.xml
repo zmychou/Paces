@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <item android:id="@+id/running_activity_menu_play_and_pause"
+    <item android:id="@+id/running_activity_menu_music"
         android:title="暂停"
-        android:icon="@drawable/play_fill"
+        android:icon="@drawable/music_fill"
         app:showAsAction="always"
         />
-    <item android:icon="@drawable/playback_start_pause"
+    <item android:icon="@drawable/next"
         android:title="开始"
         android:id="@+id/running_activity_menu_next"
         app:showAsAction="always"

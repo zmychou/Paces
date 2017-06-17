@@ -77,6 +77,8 @@ public class AudioPlaybackService extends Service {
                         case CMD_RESTART:
                             AudioPlaybackModel.getInstance().restart();
                             break;
+                        case CMD_PREV:
+                            AudioPlaybackModel.getInstance().prev();
                         default:break;
                     }
                 }

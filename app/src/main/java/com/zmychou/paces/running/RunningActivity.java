@@ -35,6 +35,7 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.zmychou.paces.R;
 import com.zmychou.paces.io.JsonFileParser;
+import com.zmychou.paces.music.AudioListActivity;
 import com.zmychou.paces.music.AudioPlaybackService;
 import com.zmychou.paces.pedometer.DataChangeListener;
 import com.zmychou.paces.settings.SettingsActivity;
@@ -77,6 +78,12 @@ public class RunningActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_running_toolbar);
         toolbar.inflateMenu(R.menu.running_activity_menu);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.map);
@@ -136,6 +143,7 @@ public class RunningActivity extends AppCompatActivity
         mVelocity.setText(velocity);
         mCalories.setText(calories);
         mSteps.setText(steps);
+        drawPolyline();
     }
     /**
      * When an activity create ,invoke this method to prepare the map ,such as show the user
@@ -159,8 +167,11 @@ public class RunningActivity extends AppCompatActivity
         }
     }
 
-    public void setPolyline(@NonNull String... fileNames) {
-        ArrayList<LatLng> list = new JsonFileParser().parserLatLngArray(this,fileNames[0]);
+    public void drawPolyline() {
+        if (runningService == null) {
+            return;
+        }
+        ArrayList<LatLng> list = runningService.getLatLngs();
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.setPoints(list);
         polylineOptions.color(getResources().getColor(R.color.colorOrangeLight));
@@ -327,6 +338,10 @@ public class RunningActivity extends AppCompatActivity
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.running_activity_menu_next:
+                AudioListActivity.sendCommand(this, AudioPlaybackService.CMD_NEXT);
+                break;
+            case R.id.running_activity_menu_music:
+                startActivity(new Intent(this, AudioListActivity.class));
                 break;
             default:break;
         }

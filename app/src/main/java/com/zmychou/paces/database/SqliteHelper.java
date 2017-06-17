@@ -28,6 +28,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(PedometerDataEntryUtil.CREATE_PEDOMETER_ENTRY);
         db.execSQL(RunningEntryUtils.CREATE_RUNNING_ENTRY);
     }
 

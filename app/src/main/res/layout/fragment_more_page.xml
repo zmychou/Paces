@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/colorGrayDark"
-        myns:src="@drawable/music"
+        myns:src="@drawable/music_fill"
         myns:text="@string/more_page_fragment_music"
         />
 

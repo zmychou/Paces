@@ -88,7 +88,8 @@
         <activity android:name=".login.ChangePasswordActivity" />
         <activity android:name=".settings.ArticleActivity" />
         <activity android:name=".weather.WeatherDetailsActivity" />
-        <activity android:name=".profile.SquareImageActivity"></activity>
+        <activity android:name=".profile.SquareImageActivity"/>
+        <service android:name=".pedometer.PedometerService"/>
     </application>
 
 </manifest>

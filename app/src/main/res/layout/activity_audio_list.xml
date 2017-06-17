@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zmychou.paces.music.AudioListActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_activity_audio_list_toolbar"
+        android:background="@color/colorGrayDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        toolbar:title="@string/audio_list_activity_title"
+        toolbar:navigationIcon="@mipmap/left"
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_audio_list"
         android:layout_width="match_parent"
@@ -13,6 +22,7 @@
         android:layout_height="0dp"/>
 
     <LinearLayout
+        android:background="@color/colorGrayDark"
         android:id="@+id/ll_control"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -26,18 +36,22 @@
             android:id="@+id/tv_audio_list_current_song"
             android:layout_width="0dp"
             android:gravity="center_vertical"
-            android:text="听到下雨的声音"
+            android:text="未开始播放"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/btn_audio_list_prev"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/prev"/>
         <ImageView
             android:id="@+id/btn_audio_list_play"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/play"/>
+            android:src="@drawable/start"/>
 
-        <ImageButton
-            android:clickable="true"
-            android:background="@drawable/playback_start_pause"
+        <ImageView
+            android:src="@drawable/next"
             android:id="@+id/btn_audio_list_next"
             android:layout_width="50dp"
             android:layout_height="50dp" />

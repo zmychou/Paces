@@ -37,6 +37,11 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     private static AudioPlaybackModel instance = new AudioPlaybackModel();
 
     private boolean mIsPause = false;
+    private static String mUri;
+
+    public static String getCurrentSongUri() {
+        return mUri;
+    }
 
     class AudionInfo {
         public String path;
@@ -76,6 +81,7 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
             mMediaPlayer.setDataSource(uri);
             mMediaPlayer.prepareAsync();
             notifyRegistrant(mPlayList.get(mCurrentPosition).title);
+            mUri = uri;
             Log.e("where am i",Thread.currentThread().getName());
         } catch (IOException e)  {
             //Toast.makeText(context, "无法播放该歌曲", Toast.LENGTH_SHORT).show();
@@ -116,7 +122,7 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
     }
 
     public void prev() {
-        String uri = getNext();
+        String uri = getPrev();
         start(uri, mCurrentPosition);
     }
 
@@ -179,7 +185,7 @@ public class AudioPlaybackModel implements MediaPlayer.OnPreparedListener,
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    observer.onSongChanged(name);
+                    observer.onSongChanged(mUri);
                 }
             });
 

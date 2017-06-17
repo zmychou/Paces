@@ -1,10 +1,14 @@
 package com.zmychou.paces.music;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
@@ -18,21 +22,34 @@ public class AudioListActivity extends AppCompatActivity implements
 
     private TextView mCurrentSong;
     private ImageView play;
+    private static Cursor mSongList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_activity_audio_list_toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AudioListActivity.this.finish();
+            }
+        });
         mCurrentSong = (TextView) findViewById(R.id.tv_audio_list_current_song);
         play = (ImageView) findViewById(R.id.btn_audio_list_play);
         play.setOnClickListener(this);
         findViewById(R.id.btn_audio_list_next).setOnClickListener(this);
+        findViewById(R.id.btn_audio_list_prev).setOnClickListener(this);
 
+        if (mSongList == null) {
+            mSongList = AudioPlaybackModel.getInstance().getAudios(this);
+        }
         AudioListAdapter adapter
-                = new AudioListAdapter(AudioPlaybackModel.getInstance().getAudios(this));
+                = new AudioListAdapter(mSongList);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_audio_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
+        onSongChanged(AudioPlaybackModel.getCurrentSongUri());
 
         AudioPlaybackModel.getInstance().registerForNotify(this);
     }
@@ -45,33 +62,50 @@ public class AudioListActivity extends AppCompatActivity implements
 //        v.getContext().startService(intent);
         switch (v.getId()) {
             case R.id.btn_audio_list_next:
-                sendCommand(AudioPlaybackService.CMD_NEXT);
+                sendCommand(this, AudioPlaybackService.CMD_NEXT);
                 break;
             case R.id.btn_audio_list_play:
                 AudioPlaybackModel model = AudioPlaybackModel.getInstance();
                 if (model.isPause()) {
-                    sendCommand(AudioPlaybackService.CMD_RESTART);
+                    sendCommand(this, AudioPlaybackService.CMD_RESTART);
                 }else {
-                    sendCommand(AudioPlaybackService.CMD_PAUSE);
+                    sendCommand(this, AudioPlaybackService.CMD_PAUSE);
                 }
                 if (model.isPlaying()) {
-                    play.setImageResource(R.mipmap.play);
+                    play.setImageResource(R.drawable.start);
                 } else {
-                    play.setImageResource(R.drawable.suspend);
+                    play.setImageResource(R.drawable.stop);
                 }
                 break;
+            case R.id.btn_audio_list_prev:
+                sendCommand(this, AudioPlaybackService.CMD_PREV);
             default:break;
         }
     }
 
-    private void sendCommand(int command) {
-        Intent intent = new Intent(this,AudioPlaybackService.class);
+    public static void sendCommand(Context context, int command) {
+        Intent intent = new Intent(context, AudioPlaybackService.class);
         intent.putExtra(AudioPlaybackService.EXTRA_COMMAND, command);
-        startService(intent);
+        context.startService(intent);
     }
 
     @Override
     public void onSongChanged(String name) {
-        mCurrentSong.setText(name);
+        if (mSongList == null) {
+            return;
+        }
+        mSongList.moveToFirst();
+        do {
+            if (mSongList.getString(mSongList.getColumnIndex(MediaStore.Audio.Media.DATA))
+                    .equals(name)) {
+
+                mCurrentSong.setText(mSongList.getString(mSongList.getColumnIndex(
+                        MediaStore.Audio.Media.TITLE
+                )));
+                play.setImageResource(R.drawable.stop);
+                break;
+            }
+        }
+        while (mSongList.moveToNext());
     }
 }

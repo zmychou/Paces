@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -26,9 +27,12 @@ import com.amap.api.maps.model.LatLng;
 import com.zmychou.paces.R;
 import com.zmychou.paces.database.RunningData;
 import com.zmychou.paces.database.RunningEntryUtils;
+import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.io.RunningDataJsonFileWriter;
+import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.pedometer.Pedometer;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class DataDeriveService extends Service {
@@ -90,7 +94,6 @@ public class DataDeriveService extends Service {
         public void onLocationChanged(AMapLocation location) {
 //            updateNotificationElapse++;
             velocity = location.getSpeed();
-            mSteps = mPedometer.getStepCount();
             updateUi();
 //            if (updateNotificationElapse > 5) {
 //                updateNotification("have run:"+mDistance+"meter");
@@ -163,6 +166,10 @@ public class DataDeriveService extends Service {
 
             return;
 
+    }
+
+    public ArrayList<LatLng> getLatLngs() {
+        return mLatLngs;
     }
 
     public void start(State state) {
@@ -283,6 +290,7 @@ public class DataDeriveService extends Service {
         mDistance = 0;
         mPerMileStartTime = currentTime;
         mTimeAccumulate = 0;
+        mSteps = mPedometer.getStepCount();
 
     }
 
@@ -293,9 +301,10 @@ public class DataDeriveService extends Service {
     public void updateUi() {
         if (mBindActivity != null) {
             //Total distance
-            String distance = mMiles+"."+(((int)mDistance));
+            DecimalFormat format = new DecimalFormat("##0.00");
+            String distance = format.format(mMiles + mDistance / 1000);//mMiles+"."+(((int)mDistance));
             mBindActivity.updateUi(distance, formatDuration(), getVelocity(),
-                    calculateCalories()+"",mSteps+"");
+                    calculateCalories()+"", mPedometer.getStepCount() + "");
         }
     }
 
@@ -304,7 +313,7 @@ public class DataDeriveService extends Service {
     }
 
     private int calculateCalories() {
-        return (int)(mMiles + mDistance / 1000) * getUserWeight();
+        return (int)((mMiles + mDistance / 1000) * getUserWeight());
     }
 
     private String formatDuration() {
@@ -330,7 +339,13 @@ public class DataDeriveService extends Service {
 
     public int getUserWeight() {
         //get from user settings
-        return 55;
+        SharedPreferences sp = getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
+        String user = sp.getString(UserInfoEntryUtil._ID, null);
+        if (user == null) {
+            //假如用户未登录就默认返回55kg
+            return 55;
+        }
+        return Integer.parseInt(sp.getString(UserInfoEntryUtil.WEIGHT, "55"));
     }
 
 

@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -145,6 +146,10 @@ public class Pedometer implements SensorEventListener {
 
     public int getStepCount(){
         return mSteps[AXIS_TOTAL];
+    }
+
+    public void clear() {
+        mSteps[AXIS_TOTAL] = 0;
     }
 
     public int getRunningSteps() {
@@ -308,8 +313,9 @@ public class Pedometer implements SensorEventListener {
             mSteps[AXIS_X] = tmp;
             mSteps[AXIS_Y] = tmp;
             mSteps[AXIS_Z] = tmp;
+            Log.e("pedometerr", "debug");
             if (mActivity != null) {
-                mActivity.setSteps(mSteps[AXIS_TOTAL]);
+//                mActivity.setSteps(mSteps[AXIS_TOTAL]);
             }
         }
     }
