@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -64,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login(true);
                 break;
             case R.id.tv_login_forget_password:
+                startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.tv_login_visitor:
                 login(false);

@@ -24,6 +24,19 @@
 
     <!--ProfileActivity-->
     <string name="profile_activity_title">个人详情</string>
+    <string name="profile_activity_logout_confirm">确定退出?</string>
+    <string name="profile_activity_logout_message">退出将清除所有用户数据!</string>
+
+    <!--ChangePasswordActivity-->
+    <string name="change_password_activity_current_pwd">原密码</string>
+    <string name="change_password_activity_new">新密码</string>
+    <string name="change_password_activity_new_confirm">再输入一次新密码</string>
+    <string name="change_password_activity_change">提交修改</string>
+    <string name="change_password_activity_title">修改密码</string>
+    <string name="change_password_activity_code">输入验证码</string>
+    <string name="change_password_activity_input_your_password">请输入密码</string>
+    <string name="change_password_activity_password_not_null">密码不能为空</string>
+    <string name="change_password_activity_password_not_identical">密码不一致</string>
 
     <!--MainActivity-->
     <string name="exit_activity_warn">再按一次退出应用</string>

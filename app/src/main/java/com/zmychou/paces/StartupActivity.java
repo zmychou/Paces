@@ -35,7 +35,11 @@ public class StartupActivity extends AppCompatActivity {
                     finish();
                     return;
                 }
-                startActivity(new Intent(StartupActivity.this, MainActivity.class));
+                if (preferences.getBoolean(LoginActivity.KEY_AUTO_LOGIN, false)){
+                    startActivity(new Intent(StartupActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(StartupActivity.this, LoginActivity.class));
+                }
                 finish();
             }
         }, 2000);

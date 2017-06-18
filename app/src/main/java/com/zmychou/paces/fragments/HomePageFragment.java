@@ -63,6 +63,7 @@ import java.util.HashMap;
  */
 public class HomePageFragment extends Fragment implements WeatherListener , View.OnClickListener{
 
+    private static boolean hasSynchronized = false;
     private ImageView mSummarize;
     private ImageView mUserPic;
     private ImageView mWeather;
@@ -106,10 +107,13 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
                 mOwingActivity.startActivity(new Intent(mOwingActivity, RunningRecordsActivity.class));
             }
         });
+
+        //检查网络状况
         ConnectivityManager connManager
                 = (ConnectivityManager) mOwingActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
 
+        //显示用户信息
         SharedPreferences preferences = mOwingActivity.getSharedPreferences(
                 LoginActivity.TAG, Context.MODE_PRIVATE);
         String userName = preferences.getString(UserInfoEntryUtil.NICK_NAME,"用户");
@@ -118,6 +122,8 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         TextView id = (TextView) mOwingActivity.findViewById(R.id.user_id);
         name.setText(userName);
         id.setText(userId);
+
+        //显示天气信息
         if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
             showWeather("qinhuangdao");
             loadAvatar(preferences);
@@ -125,6 +131,7 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
             Toast.makeText(mOwingActivity, "网络链接错误!", Toast.LENGTH_SHORT).show();
         }
 
+        //设置点击监听事件
         mUserPic.setOnClickListener(this);
         mWeather.setOnClickListener(this);
         mUser.setOnClickListener(this);
@@ -137,10 +144,16 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         setRunningHistory();
     }
 
+    /**
+     * 在日历上显示历史记录,如果本地数据库为空,为了防止是用户清除了本地数据或者用户新登录,与服务器同步一次数据
+     */
     private void setRunningHistory() {
+
         RunningEntryUtils utils = new RunningEntryUtils(mOwingActivity);
         Cursor cursor = utils.getAllSummarize();
-        if (!cursor.moveToFirst()) {
+
+        //如果本地数据为空切未与服务器同步,则进行同步,否则说明本地有数据或服务器无历史记录
+        if (!cursor.moveToFirst() && !hasSynchronized) {
             final AlertDialog dialog = new AlertDialog.Builder(mOwingActivity)
                     .setView(R.layout.waiting_view)
                     .setTitle(R.string.synchronize_title)
@@ -154,8 +167,11 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
                 }
             };
             task.execute();
+            hasSynchronized = true;
             return;
         }
+
+
         mDistance.setText((utils.getTotalDistance() / 1000)+"");
         mTimes.setText(utils.getTotalTimes()+"");
         long duration = utils.getTotalDuration();
@@ -171,12 +187,18 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         sb.append(second > 9 ? second : "0" + second);
         mDuration.setText(sb.toString());
         ArrayList<String>  timestamps = new ArrayList<>();
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+
+        Log.e("Home page fragment", "debug");
+        //
         do {
             timestamps.add(cursor.getString(cursor.getColumnIndex(RunningEntryUtils.TIME_STAMP)));
 
-
         } while (cursor.moveToNext());
 
+        //设置历史记录在日历上显示
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         Date date = new Date();
         for (String timestamp : timestamps) {
@@ -188,6 +210,10 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
 
     }
 
+    /**
+     * 加载头像图片
+     * @param sp 存储用户信息的SharePreferences
+     */
     private void loadAvatar(SharedPreferences sp) {
         ImageLoader loader = new ImageLoader();
         File file = new File(Environment.getExternalStorageDirectory(), "Paces/cache/avatar/paces");
@@ -201,6 +227,9 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
                 .load();
     }
 
+    /**
+     * 显示天气信息
+     */
     private void showWeather(String city) {
         mProgressBar.setVisibility(View.VISIBLE);
         WeatherSearch weatherSearch = new WeatherSearch(mOwingActivity);
@@ -208,6 +237,12 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         city = city == null ? "beijing" : city;
         weatherSearch.searchLiveWeather(city);
     }
+
+    /**
+     * 获取天气信息后的回调
+     * @param result 包含天气信息的结果
+     * @param state 表示是否获取成功的状态
+     */
 
     @Override
     public void onWeatherSearchResult(HashMap<String, String> result, String state) {
@@ -244,6 +279,20 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         }
     }
 
+    /**
+     * 设置是否已经与服务器同步的标志变量 hasSynchronized
+     * @param b 布尔类型变量
+     */
+    public static void setHasSynchronized(boolean b) {
+        hasSynchronized = b;
+    }
+
+    /**
+     * 修改头像,获得本地图片后的回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -279,6 +328,9 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         Toast.makeText(mOwingActivity, R.string.cancel_operate, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * 修改头像的图片来源的选择弹窗,可以选择从相册或者拍照获取照片
+     */
     public void showSourceDialog() {
         AlertDialog dialog = new AlertDialog.Builder(mOwingActivity)
                 .setItems(R.array.choose_avatar_from_array, new DialogInterface.OnClickListener() {
@@ -304,7 +356,16 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
         dialog.show();
     }
 
+    /**
+     * 修改头像,将头新像上传服务器的的工作线程类
+     */
     class UpdateAvatarTask extends AsyncTask<String, Void, HashMap<String, String>> {
+
+        /**
+         *
+         * @param params
+         * @return
+         */
         @Override
         protected HashMap<String, String> doInBackground(String... params) {
 
@@ -327,6 +388,11 @@ public class HomePageFragment extends Fragment implements WeatherListener , View
             return null;
         }
 
+        /**
+         * 上传头像
+         * @param filePath 资源图片路径
+         * @return 服务器反馈处理结果的输入流对象
+         */
         public InputStream updateAvatar(String filePath) {
             try {
                 FileInputStream in = new FileInputStream(new File(filePath));

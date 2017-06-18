@@ -16,10 +16,8 @@
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_below="@id/tb_signup_activity_toolbar"
-        android:background="@drawable/input_marquee"
+        android:background="@drawable/two_line"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_height="50dp"
@@ -31,27 +29,25 @@
         android:layout_width="match_parent"
         />
     <EditText
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@drawable/input_marquee"
+        android:background="@drawable/two_line"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_height="50dp"
         android:hint="@string/signup_hint_password"
         android:id="@+id/et_signup_password"
+        android:inputType="textPassword"
 
         android:maxLines="1"
         android:layout_below="@id/et_signup_username"
         android:layout_width="match_parent"
         />
     <EditText
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@drawable/input_marquee"
+        android:background="@drawable/two_line"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_height="50dp"
         android:hint="@string/signup_hint_password_check"
+        android:inputType="textPassword"
         android:id="@+id/et_signup_password_check"
         android:layout_below="@id/et_signup_password"
         android:maxLines="1"

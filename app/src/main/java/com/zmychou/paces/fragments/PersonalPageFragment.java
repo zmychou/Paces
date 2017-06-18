@@ -15,6 +15,7 @@ import com.zmychou.paces.R;
 import com.zmychou.paces.customview.ItemView;
 import com.zmychou.paces.customview.MoreItemView;
 import com.zmychou.paces.database.server.UserInfoEntryUtil;
+import com.zmychou.paces.login.ChangePasswordActivity;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.network.ImageLoader;
 import com.zmychou.paces.profile.ProfileActivity;
@@ -47,9 +48,11 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
         MoreItemView settings = (MoreItemView) mHost.findViewById(R.id.itv_settings);
         MoreItemView about = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_about);
         MoreItemView feedback = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_feedback);
+        MoreItemView changePassword = (MoreItemView) mHost.findViewById(R.id.miv_fragment_personal_change_password);
 
         profile.setOnClickListener(this);
         feedback.setOnClickListener(this);
+        changePassword.setOnClickListener(this);
 
         SharedPreferences sp = mHost.getSharedPreferences(LoginActivity.TAG, Context.MODE_PRIVATE);
         ImageLoader.getOne()
@@ -72,6 +75,9 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.miv_fragment_personal_about:
                 startActivity(new Intent(mHost, AboutActivity.class));
+                break;
+            case R.id.miv_fragment_personal_change_password:
+                startActivity(new Intent(mHost, ChangePasswordActivity.class));
                 break;
             case R.id.miv_fragment_personal_feedback:
                 AboutActivity.sendMail(mHost);
