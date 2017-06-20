@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,9 @@ public class PublishMomentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_moment);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_activity_publish_moment_toolbar);
+        setSupportActionBar(toolbar);
 
         final EditText content = (EditText) findViewById(R.id.et_publish_moment_input);
         Button send = (Button) findViewById(R.id.btn_publish_moment_publish);

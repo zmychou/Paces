@@ -61,7 +61,7 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
                 + result.get(WeatherResultParser.WEATHER));
         mWind.setText(result.get(WeatherResultParser.WIND));
         mWindSpeed.setText(result.get(WeatherResultParser.WIND_SPEED) + "级");
-        mHumidity.setText(result.get(WeatherResultParser.HUMIDITY));
+        mHumidity.setText(result.get(WeatherResultParser.HUMIDITY) + "%");
         mAqi.setText(result.get(WeatherResultParser.AQI));
         mPM2_5.setText(result.get(WeatherResultParser.PM2_5));
         mPM10.setText(result.get(WeatherResultParser.PM10));

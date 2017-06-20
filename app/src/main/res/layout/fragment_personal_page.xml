@@ -57,7 +57,7 @@
         android:id="@+id/miv_fragment_personal_change_password"
         android:background="@color/colorGrayDark"
         android:layout_marginTop="5dp"
-        v7ns:src="@drawable/info"
+        v7ns:src="@drawable/password"
         v7ns:text="@string/change_password_activity_title"
         android:layout_below="@id/miv_fragment_personal_about"
         android:layout_width="match_parent"

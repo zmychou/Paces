@@ -23,16 +23,17 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:minLines="6"
         android:gravity="start"
-        android:background="@drawable/input_marquee"
-        android:layout_margin="@dimen/activity_horizontal_margin"/>
+        android:background="@drawable/two_line"
+        />
 
     <Button
         android:id="@+id/btn_publish_moment_publish"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/two_line"
         android:layout_below="@id/et_publish_moment_input"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:text="发表"/>
 
 </RelativeLayout>
