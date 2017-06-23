@@ -31,6 +31,7 @@ import com.zmychou.paces.database.server.UserInfoEntryUtil;
 import com.zmychou.paces.io.RunningDataJsonFileWriter;
 import com.zmychou.paces.login.LoginActivity;
 import com.zmychou.paces.pedometer.Pedometer;
+import com.zmychou.paces.util.Format;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -253,7 +254,12 @@ public class DataDeriveService extends Service {
                         }
                         //Do some cleaning job,then stopSelf
                         Intent intent = new Intent(mBindActivity, ViewRunningRecordActivity.class);
-                        intent.putExtra(RunningRecordsAdapter.TIME_STAMP,timestamp+"");
+                        intent.putExtra(RunningRecordsAdapter.TIME_STAMP, timestamp + "");
+                        intent.putExtra(RunningRecordsAdapter.EXTRA_DURATION,
+                                Format.formatTime((long)mRunningData.getDuration()));
+
+                        intent.putExtra(RunningRecordsAdapter.EXTRA_DISTANCE,
+                                mRunningData.getDistance() / 1000 + "");
                         mBindActivity.startActivity(intent);
                         mBindActivity.finish();
                         DataDeriveService.this.stopSelf();

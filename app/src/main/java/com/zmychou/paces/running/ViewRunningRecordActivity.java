@@ -131,6 +131,8 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_running_record);
+
+        //导航栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_running_record_detail_toolbar);
         toolbar.inflateMenu(R.menu.running_record_detail_menu);
         toolbar.setOnMenuItemClickListener(this);
@@ -140,15 +142,19 @@ public class ViewRunningRecordActivity extends AppCompatActivity implements Tool
                 ViewRunningRecordActivity.this.finish();
             }
         });
+
+        //找到控件
         TextView duration = (TextView) findViewById(R.id.tv_view_running_record_activity_duration);
         TextView distance = (TextView) findViewById(R.id.tv_view_running_record_activity_distance);
-        Intent intent = getIntent();
 
+        //获取意图内容
+        Intent intent = getIntent();
         mTimestamp = intent.getStringExtra(RunningRecordsAdapter.TIME_STAMP);
         mDistance = intent.getStringExtra(RunningRecordsAdapter.EXTRA_DISTANCE);
         mDuration = intent.getStringExtra(RunningRecordsAdapter.EXTRA_DURATION);
         duration.setText(mDuration);
         distance.setText(mDistance);
+
 
         mMapView = (MapView) findViewById(R.id.mv_details_record);
         mMapView.onCreate(savedInstanceState);
